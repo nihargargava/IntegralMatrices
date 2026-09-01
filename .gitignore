@@ -1,0 +1,46 @@
+# Lean and Lake build artifacts
+/.lake/
+/build/
+*.olean
+*.ilean
+*.olean.server
+*.trace
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# Root-level Lean scratch files
+/Check*.lean
+
+# TeX build artifacts and generated PDFs
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+*.pdf
+
+# Editor and operating-system files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Local environment files
+.env
+.env.*
+!.env.example
