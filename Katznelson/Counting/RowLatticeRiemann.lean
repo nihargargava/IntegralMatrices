@@ -77,6 +77,61 @@ theorem tsum_rowMatrixZLattice_eq_integralRowMatrices
     (e.tsum_eq (fun A : rowMatrixZLattice V n =>
       f (T⁻¹ • (((A : rowMatrixRealSpan V n) : M n m (K_ℝ[K])))))).symm
 
+/- The same unrestricted sum can be written as a sum over independent rows,
+   using the product equivalence from `RowLattice`. -/
+theorem tsum_rowMatrixZLattice_eq_rowTuples
+    {m k n : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (T : ℝ) :
+    (∑' A : rowMatrixZLattice V n,
+        f (T⁻¹ • (((A : rowMatrixRealSpan V n) : M n m (K_ℝ[K]))))) =
+      ∑' A : Fin n → rowZLattice V,
+        f (T⁻¹ • (fun i j =>
+          (((A i : rowZLattice V) : Fin m → K_ℝ[K]) j))) := by
+  let e := rowMatrixZLatticeEquiv (n := n) V
+  let F : (Fin n → rowZLattice V) → ℝ := fun A =>
+    f (T⁻¹ • (fun i j =>
+      (((A i : rowZLattice V) : Fin m → K_ℝ[K]) j)))
+  calc
+    (∑' A : rowMatrixZLattice V n,
+        f (T⁻¹ • (((A : rowMatrixRealSpan V n) : M n m (K_ℝ[K]))))) =
+        ∑' A : rowMatrixZLattice V n, F (e A) := by
+      apply tsum_congr
+      intro A
+      congr 1
+    _ = ∑' A : Fin n → rowZLattice V, F A := e.tsum_eq F
+    _ = ∑' A : Fin n → rowZLattice V,
+        f (T⁻¹ • (fun i j =>
+          (((A i : rowZLattice V) : Fin m → K_ℝ[K]) j))) := by
+      rfl
+
+/-- Reindex the rank-conditioned row-matrix lattice sum by the integral
+matrices whose rows lie in `Λ_D` and whose rank is `k`. -/
+theorem tsum_rowMatrixZLattice_rank_eq_integralRowMatrices
+    {m k n : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (T : ℝ) :
+    (∑' A : {A : rowMatrixZLattice V n // rowMatrixRank V A = k},
+        f (T⁻¹ • (((A.1 : rowMatrixRealSpan V n) :
+          M n m (K_ℝ[K]))))) =
+      ∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = k},
+        f (T⁻¹ • embedMatrix A.1) := by
+  let e := rankIntegralRowMatricesEquivRowMatrixZLattice (n := n) V
+  simpa [e] using
+    (e.tsum_eq
+      (fun A : {A : rowMatrixZLattice V n // rowMatrixRank V A = k} =>
+        f (T⁻¹ • (((A.1 : rowMatrixRealSpan V n) :
+          M n m (K_ℝ[K])))))).symm
+
+theorem summable_rowMatrixTerm
+    {m k n : ℕ} (V : Grassmannian K m k)
+    {f : M n m (K_ℝ[K]) → ℝ} (h_f : Admissible f)
+    {T : ℝ} (hT : 0 < T) :
+    Summable (fun A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A} =>
+      f (T⁻¹ • embedMatrix A.1)) := by
+  exact (summable_scaled_integralMatrices f h_f hT).comp_injective
+    Subtype.val_injective
+
 /-- The exact general-lattice estimate for `M_n(Λ_D)`, before replacing
 its dimension, covolume, and radius by the paper's product formulas. -/
 theorem Admissible.rowMatrix_latticeRiemann_estimate
@@ -109,6 +164,28 @@ theorem Admissible.rowMatrix_latticeRiemann_estimate
     rowMatrixSubspaceIntegral,
     tsum_rowMatrixZLattice_eq_integralRowMatrices V f T] using
     hestimate T hT hRadius
+
+/-- Counting-facing form of the row-matrix estimate.  Under the positive-rank
+hypotheses used for fixed-rank matrices, the exponent is the paper's
+`n * k * degree K` and the real span is automatically nonzero. -/
+theorem Admissible.rowMatrix_latticeRiemann_estimate_rank
+    {m k n : ℕ} (V : Grassmannian K m k)
+    {f : M n m (K_ℝ[K]) → ℝ} (h_f : Admissible f)
+    (hk : 0 < k) (hn : 0 < n) :
+    ∃ Cₐ : ℝ, 0 < Cₐ ∧ ∀ T : ℝ, 0 < T →
+      rowMatrixFundamentalRadius V n / T ≤ 1 →
+      |(∑' A : {A : IntegralMatrix K n m // rowsInIntegralRowModule V A},
+            f (T⁻¹ • embedMatrix A.1)) /
+            T ^ (n * (k * degree K)) -
+          (rowMatrixLatticeCovolume V n)⁻¹ *
+            rowMatrixSubspaceIntegral V n f| ≤
+        Cₐ * rowMatrixFundamentalRadius V n /
+          (rowMatrixLatticeCovolume V n * T) := by
+  obtain ⟨Cₐ, hCₐ, hestimate⟩ :=
+    h_f.rowMatrix_latticeRiemann_estimate V
+      (rowMatrixRealSpan_ne_bot_of_pos V hk hn)
+  refine ⟨Cₐ, hCₐ, fun T hT hRadius => ?_⟩
+  simpa [rowMatrixRealSpan_finrank V] using hestimate T hT hRadius
 
 end
 

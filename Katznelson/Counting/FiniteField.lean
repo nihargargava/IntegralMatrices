@@ -240,6 +240,22 @@ theorem reduceMatrix_col (P : PrimeIdeal K) {n m : ℕ}
     (reduceMatrix P A).col j = residueColumns P A j := by
   rfl
 
+/- The matrix-level lift condition is exactly containment of the span of its
+   reduced columns.  This is the bridge from the lattice average to the
+   finite-field containment probability in Lemma `le:counting`. -/
+theorem mem_matricesInLift_iff_codeSpan_le (P : PrimeIdeal K)
+    {n m s : ℕ} (S : Code P n s) (A : IntegralMatrix K n m) :
+    A ∈ matricesInLift P S ↔ codeSpan P (residueColumns P A) ≤ S.1 := by
+  rw [mem_matricesInLift_iff]
+  constructor
+  · intro h
+    rw [codeSpan, Submodule.span_le]
+    rintro _ ⟨j, rfl⟩
+    exact (mem_rawLift_iff P S (fun i => A i j)).1 (h j)
+  · intro h j
+    apply (mem_rawLift_iff P S (fun i => A i j)).2
+    exact h (Submodule.subset_span (Set.mem_range_self j))
+
 theorem reduceMatrix_rank_eq_span_finrank (P : PrimeIdeal K) {n m : ℕ}
     (A : IntegralMatrix K n m) :
     matrixRank (reduceMatrix P A) =
@@ -631,6 +647,21 @@ noncomputable def codeContainmentCorrection (P : PrimeIdeal K)
 noncomputable def codeContainmentError (P : PrimeIdeal K)
     (n s k : ℕ) : ℝ :=
   codeContainmentCorrection P n s k - 1
+
+@[simp]
+theorem codeContainmentCorrection_zero (P : PrimeIdeal K) (n s : ℕ)
+    (hsn : s ≤ n) :
+    codeContainmentCorrection P n s 0 = 1 := by
+  rw [codeContainmentCorrection]
+  exact div_self ((show 0 < (2 : ℝ)⁻¹ ^ s by positivity).trans_le
+    (gaussianCorrection_lower_bound
+      (idealNorm P : ℝ) (two_le_idealNorm_real P) hsn)).ne'
+
+@[simp]
+theorem codeContainmentError_zero (P : PrimeIdeal K) (n s : ℕ)
+    (hsn : s ≤ n) :
+    codeContainmentError P n s 0 = 0 := by
+  simp [codeContainmentError, codeContainmentCorrection_zero P n s hsn]
 
 theorem codeContainmentProbability_eq (P : PrimeIdeal K)
     {n s k : ℕ} (y : Fin k → (Fin n → residueField P))

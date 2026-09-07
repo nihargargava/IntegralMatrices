@@ -33,6 +33,31 @@ theorem finrank_matrixRowSpace {n m : ℕ} (A : IntegralMatrix K n m) :
   rw [matrixRowSpace, integralMatrixRank, matrixRank,
     ← Matrix.rank_eq_finrank_span_row]
 
+theorem algebraicMatrix_eq_zero_of_integralMatrixRank_eq_zero
+    {n m : ℕ} (A : IntegralMatrix K n m)
+    (hA : integralMatrixRank A = 0) :
+    algebraicMatrix A = 0 := by
+  have hspan :
+      Submodule.span K (Set.range (algebraicMatrix A).row) = ⊥ := by
+    apply Submodule.finrank_eq_zero.mp
+    rw [← Matrix.rank_eq_finrank_span_row]
+    exact hA
+  ext i j
+  have hi : (algebraicMatrix A).row i ∈
+      Submodule.span K (Set.range (algebraicMatrix A).row) :=
+    Submodule.subset_span (Set.mem_range_self i)
+  rw [hspan] at hi
+  simpa using congrFun (show (algebraicMatrix A).row i = 0 from hi) j
+
+theorem integralMatrix_eq_zero_of_integralMatrixRank_eq_zero
+    {n m : ℕ} (A : IntegralMatrix K n m)
+    (hA : integralMatrixRank A = 0) :
+    A = 0 := by
+  have hAlg := algebraicMatrix_eq_zero_of_integralMatrixRank_eq_zero A hA
+  ext i j
+  simpa [algebraicMatrix] using
+    congrArg (fun B : M n m K => B i j) hAlg
+
 /- The point of `Gr(k,K^m)` attached to a rank-`k` matrix. -/
 noncomputable def rowSpaceOfRank {n m k : ℕ}
     (A : {A : IntegralMatrix K n m // integralMatrixRank A = k}) :
@@ -199,6 +224,14 @@ theorem rowsInIntegralRowModule_iff_rowSpace_le {n m k : ℕ}
   · intro h i
     exact h (Set.mem_range_self i)
 
+theorem integralMatrixRank_le_of_rowsInIntegralRowModule
+    {n m k : ℕ} (V : Grassmannian K m k) (A : IntegralMatrix K n m)
+    (hrows : rowsInIntegralRowModule V A) :
+    integralMatrixRank A ≤ k := by
+  have hle := Submodule.finrank_mono
+    ((rowsInIntegralRowModule_iff_rowSpace_le V A).1 hrows)
+  simpa [finrank_matrixRowSpace, V.2] using hle
+
 theorem rowSpace_eq_of_rowsIn_of_rank {n m k : ℕ}
     (V : Grassmannian K m k) (A : IntegralMatrix K n m)
     (hrows : rowsInIntegralRowModule V A)
@@ -207,6 +240,18 @@ theorem rowSpace_eq_of_rowsIn_of_rank {n m k : ℕ}
   apply Submodule.eq_of_le_of_finrank_le
   · exact (rowsInIntegralRowModule_iff_rowSpace_le V A).1 hrows
   · rw [V.2, finrank_matrixRowSpace, hrank]
+
+theorem rowSpace_eq_iff_rank_eq_of_rowsIn {n m k : ℕ}
+    (V : Grassmannian K m k) (A : IntegralMatrix K n m)
+    (hrows : rowsInIntegralRowModule V A) :
+    matrixRowSpace A = V.1 ↔ integralMatrixRank A = k := by
+  constructor
+  · intro hspace
+    have hfin := congrArg
+      (fun W : Submodule K (Fin m → K) => Module.finrank K W) hspace
+    simpa [finrank_matrixRowSpace, V.2] using hfin
+  · intro hrank
+    exact rowSpace_eq_of_rowsIn_of_rank V A hrows hrank
 
 theorem rowsInIntegralRowModule_of_rowSpace_eq {n m k : ℕ}
     (V : Grassmannian K m k) (A : IntegralMatrix K n m)

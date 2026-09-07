@@ -16,4 +16,6 @@ require mathlib from git
       `Katznelson.Counting.RiemannSum, `Katznelson.Counting.ControlledRiemann,
       `Katznelson.Counting.SubspaceRiemann,
       `Katznelson.Counting.RowLatticeRiemann,
+      `Katznelson.Counting.Schmidt,
+      `Katznelson.Counting.LiftAverage,
       `Katznelson.MainTheorems, `main]

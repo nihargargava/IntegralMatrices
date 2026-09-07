@@ -124,6 +124,53 @@ noncomputable def liftScale (P : PrimeIdeal K) (n s : ℕ) : ℝ :=
   Real.rpow (idealNorm P : ℝ)
     ((1 - (s : ℝ) / (n : ℝ)) / (degree K : ℝ))
 
+theorem liftScale_pos (P : PrimeIdeal K) (n s : ℕ) :
+    0 < liftScale P n s := by
+  rw [liftScale]
+  apply Real.rpow_pos_of_pos
+  have hnorm : idealNorm P ≠ 0 := by
+    intro hzero
+    apply P.2.2
+    exact Ideal.absNorm_eq_zero_iff.mp hzero
+  exact Nat.cast_pos.mpr (Nat.pos_of_ne_zero hnorm)
+
+/- The scale in equation (eq:def_of_L) has exactly the normalization used in
+   the fixed-rank term: for `s ≤ n`, its `k n d`-th power is the algebraic
+   norm power `N(P)^(k(n-s))`. -/
+theorem liftScale_pow_eq_idealNorm_pow (P : PrimeIdeal K)
+    {n s k : ℕ} (hsn : s ≤ n) (hn : 0 < n) :
+    (liftScale P n s) ^ (k * n * degree K) =
+      (idealNorm P : ℝ) ^ (k * (n - s)) := by
+  have hnorm : idealNorm P ≠ 0 := by
+    intro hzero
+    apply P.2.2
+    exact Ideal.absNorm_eq_zero_iff.mp hzero
+  have hq : 0 < (idealNorm P : ℝ) :=
+    Nat.cast_pos.mpr (Nat.pos_of_ne_zero hnorm)
+  have hd : 0 < (degree K : ℝ) := by
+    exact_mod_cast (show 0 < degree K from Module.finrank_pos)
+  have hn' : 0 < (n : ℝ) := by exact_mod_cast hn
+  have hexp :
+      ((1 - (s : ℝ) / (n : ℝ)) / (degree K : ℝ)) *
+          ((k * n * degree K : ℕ) : ℝ) =
+        ((k * (n - s) : ℕ) : ℝ) := by
+    rw [Nat.cast_mul, Nat.cast_mul, Nat.cast_mul, Nat.cast_sub hsn]
+    field_simp [ne_of_gt hn', ne_of_gt hd]
+  calc
+    (liftScale P n s) ^ (k * n * degree K) =
+        (liftScale P n s) ^ ((k * n * degree K : ℕ) : ℝ) := by
+      symm
+      exact Real.rpow_natCast _ _
+    _ = (idealNorm P : ℝ) ^
+          (((1 - (s : ℝ) / (n : ℝ)) / (degree K : ℝ)) *
+            ((k * n * degree K : ℕ) : ℝ)) := by
+      rw [liftScale, Real.rpow_mul hq.le]
+      rfl
+    _ = (idealNorm P : ℝ) ^ ((k * (n - s) : ℕ) : ℝ) := by
+      rw [hexp]
+    _ = (idealNorm P : ℝ) ^ (k * (n - s)) := by
+      exact Real.rpow_natCast _ _
+
 /- The normalized lattice `T_𝓟⁻¹ Λ` associated to a code. -/
 noncomputable def normalizedLift (P : PrimeIdeal K) {n s : ℕ} (S : Code P n s) :
     Set (Fin n → K_ℝ[K]) :=

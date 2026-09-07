@@ -14,6 +14,10 @@ Never create, edit, reformat, regenerate, or apply patches to any `.tex` file, i
 
 Follow the proof order in the paper: establish Voronoi, covering-radius, Minkowski, Hadamard, Riemann-sum, and number-field lattice lemmas; formalize the echelon-matrix trijection and tail estimates; prove the rank-induction counting argument; then prove `th:main` and `th:higher_moments`. Preserve the paper’s notation and hypotheses, including the `T^(k*n*d)` main term, `T⁻¹ log T` error, `𝓛(𝓟,s)`, and the echelon-integral limit.
 
+If a cited paper or reference needed for a proof is inaccessible, stop at that point and ask the author to supply the relevant PDF. Do not reconstruct the missing result from memory or use an unverified substitute.
+
+Attribute all mathematical results, definitions, proof ideas, quotations, references, and reused code or formalization correctly. Preserve the distinction between results proved in the checked-in paper, results taken from cited sources, and new Lean infrastructure or proofs developed here; include the appropriate citation or provenance in comments and notes when it is not already clear.
+
 ## Build, Test, and Development Commands
 
 - The project uses Lake with Mathlib `master` and Lean `v4.34.0-rc2` as recorded in `lean-toolchain`; use `lake build` for the full development.
