@@ -48,6 +48,55 @@ def HasHeightCountBounds {α : Type*} (H : α → ℝ) (p : ℕ) : Prop :=
         cₗ * T ^ p ≤ (Set.ncard {x | H x ≤ T} : ℝ) ∧
         (Set.ncard {x | H x ≤ T} : ℝ) ≤ cᵤ * T ^ p
 
+/- The unit-height shells used in the paper's summation-by-parts argument.
+   They retain the integer indexing of the count function while making the
+   lower and upper height cutoffs explicit. -/
+def heightShell {α : Type*} (H : α → ℝ) (n : ℕ) : Set α :=
+  {x | (n : ℝ) ≤ H x ∧ H x < ((n + 1 : ℕ) : ℝ)}
+
+theorem heightShell_finite {α : Type*} {H : α → ℝ} {p : ℕ}
+    (hcount : HasHeightCountBounds H p) {n : ℕ} (hn : 1 ≤ n) :
+    (heightShell H n).Finite := by
+  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  have hT : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by
+    exact_mod_cast (by omega : 1 ≤ n + 1)
+  apply (hcut ((n + 1 : ℕ) : ℝ) hT).1.subset
+  intro x hx
+  exact hx.2.le
+
+theorem heightShell_ncard_upper {α : Type*} {H : α → ℝ} {p : ℕ}
+    (hcount : HasHeightCountBounds H p) :
+    ∃ cᵤ : ℝ, 0 < cᵤ ∧ ∀ {n : ℕ}, 1 ≤ n →
+      (Set.ncard (heightShell H n) : ℝ) ≤
+        cᵤ * ((n + 1 : ℕ) : ℝ) ^ p := by
+  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  refine ⟨cᵤ, hcᵤ, ?_⟩
+  intro n hn
+  have hT : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by
+    exact_mod_cast (by omega : 1 ≤ n + 1)
+  have hfinite :
+      (Set.Finite {x | H x ≤ ((n + 1 : ℕ) : ℝ)}) :=
+    (hcut ((n + 1 : ℕ) : ℝ) hT).1
+  have hsubset : heightShell H n ⊆
+      {x | H x ≤ ((n + 1 : ℕ) : ℝ)} := by
+    intro x hx
+    exact hx.2.le
+  have hcard := Set.ncard_le_ncard hsubset hfinite
+  have hupper := (hcut ((n + 1 : ℕ) : ℝ) hT).2.2
+  have hcardR : (Set.ncard (heightShell H n) : ℝ) ≤
+      (Set.ncard {x | H x ≤ ((n + 1 : ℕ) : ℝ)} : ℝ) := by
+    exact_mod_cast hcard
+  exact hcardR.trans hupper
+
+theorem heightShell_inv_pow_le {α : Type*} {H : α → ℝ}
+    {n q : ℕ} (hn : 0 < n) {x : α} (hx : x ∈ heightShell H n) :
+    (H x)⁻¹ ^ q ≤ (n : ℝ)⁻¹ ^ q := by
+  have hnR : (0 : ℝ) < n := by exact_mod_cast hn
+  have hHR : 0 < H x := lt_of_lt_of_le hnR hx.1
+  have hinv : (H x)⁻¹ ≤ (n : ℝ)⁻¹ :=
+    (inv_le_inv₀ hHR hnR).2 hx.1
+  exact pow_le_pow_left₀ (inv_nonneg.mpr hHR.le) hinv q
+
 /- Imported source theorem.  This is intentionally an explicit interface so
    later Lean proofs can distinguish the cited height count from new
    consequences proved in this repository. -/
