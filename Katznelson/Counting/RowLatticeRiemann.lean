@@ -63,6 +63,69 @@ noncomputable def rowMatrixSubspaceIntegral
   @MeasureTheory.integral (rowMatrixRealSpan V n) ℝ inferInstance
     inferInstance msW mu (fun x => f x)
 
+theorem rowMatrixFundamentalRadius_nonneg
+    {m k n : ℕ} (V : Grassmannian K m k) :
+    0 ≤ rowMatrixFundamentalRadius V n := by
+  let hdisc : DiscreteTopology (rowMatrixZLattice V n) :=
+    rowMatrixZLattice.discreteTopology V n
+  let hZ : @IsZLattice ℝ inferInstance (rowMatrixRealSpan V n)
+      inferInstance inferInstance (rowMatrixZLattice V n) hdisc :=
+    @IsZLattice.mk ℝ inferInstance (rowMatrixRealSpan V n)
+      inferInstance inferInstance (rowMatrixZLattice V n) hdisc
+      (rowMatrixZLattice_span_top V n)
+  change 0 ≤ @latticeFundamentalRadius (rowMatrixRealSpan V n)
+    inferInstance inferInstance inferInstance (rowMatrixZLattice V n) hdisc hZ
+  exact @latticeFundamentalRadius_nonneg (rowMatrixRealSpan V n)
+    inferInstance inferInstance inferInstance (rowMatrixZLattice V n) hdisc hZ
+
+theorem rowMatrixFundamentalRadius_pos
+    {m k n : ℕ} (V : Grassmannian K m k)
+    (hk : 0 < k) (hn : 0 < n) :
+    0 < rowMatrixFundamentalRadius V n := by
+  let hdisc : DiscreteTopology (rowMatrixZLattice V n) :=
+    rowMatrixZLattice.discreteTopology V n
+  let hZ : @IsZLattice ℝ inferInstance (rowMatrixRealSpan V n)
+      inferInstance inferInstance (rowMatrixZLattice V n) hdisc :=
+    @IsZLattice.mk ℝ inferInstance (rowMatrixRealSpan V n)
+      inferInstance inferInstance (rowMatrixZLattice V n) hdisc
+      (rowMatrixZLattice_span_top V n)
+  letI : Nontrivial (rowMatrixRealSpan V n) :=
+    Submodule.nontrivial_iff_ne_bot.mpr
+      (rowMatrixRealSpan_ne_bot_of_pos V hk hn)
+  change 0 < @latticeFundamentalRadius (rowMatrixRealSpan V n)
+    inferInstance inferInstance inferInstance (rowMatrixZLattice V n) hdisc hZ
+  exact @latticeFundamentalRadius_pos (rowMatrixRealSpan V n)
+    inferInstance inferInstance inferInstance (rowMatrixZLattice V n) hdisc hZ
+    inferInstance
+
+theorem rowMatrixLatticeCovolume_pos
+    {m k n : ℕ} (V : Grassmannian K m k) :
+    0 < rowMatrixLatticeCovolume V n := by
+  let msX : MeasurableSpace (M n m (K_ℝ[K])) := borel _
+  let bsX : @BorelSpace (M n m (K_ℝ[K])) inferInstance msX := ⟨rfl⟩
+  let msW : MeasurableSpace (rowMatrixRealSpan V n) :=
+    @Subtype.instMeasurableSpace (M n m (K_ℝ[K]))
+      (fun x => x ∈ rowMatrixRealSpan V n) msX
+  let bsW : @BorelSpace (rowMatrixRealSpan V n) inferInstance msW :=
+    @Subtype.borelSpace (M n m (K_ℝ[K])) inferInstance msX bsX
+      (fun x => x ∈ rowMatrixRealSpan V n)
+  let mu : @Measure (rowMatrixRealSpan V n) msW :=
+    @Measure.euclideanHausdorffMeasure (rowMatrixRealSpan V n)
+      inferInstance msW bsW (Module.finrank ℝ (rowMatrixRealSpan V n))
+  change 0 < @ZLattice.covolume (rowMatrixRealSpan V n) inferInstance msW
+    (rowMatrixZLattice V n) mu
+  let hdisc : DiscreteTopology (rowMatrixZLattice V n) :=
+    rowMatrixZLattice.discreteTopology V n
+  let hZ : @IsZLattice ℝ inferInstance (rowMatrixRealSpan V n)
+      inferInstance inferInstance (rowMatrixZLattice V n) hdisc :=
+    @IsZLattice.mk ℝ inferInstance (rowMatrixRealSpan V n)
+      inferInstance inferInstance (rowMatrixZLattice V n) hdisc
+      (rowMatrixZLattice_span_top V n)
+  exact @ZLattice.covolume_pos (rowMatrixRealSpan V n) inferInstance inferInstance
+    inferInstance msW bsW (rowMatrixZLattice V n) hdisc hZ mu
+    (@isAddHaarMeasure_euclideanHausdorffMeasure (rowMatrixRealSpan V n)
+      inferInstance inferInstance inferInstance msW bsW)
+
 /-- Reindex the abstract row-matrix lattice sum by the integral matrices
 whose rows belong to `Λ_D`. -/
 theorem tsum_rowMatrixZLattice_eq_integralRowMatrices

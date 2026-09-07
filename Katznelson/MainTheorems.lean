@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.Matrix.Normed
+import Mathlib.Logic.Equiv.Basic
 import Katznelson.Foundations
 import Katznelson.Counting.Admissible
 import Katznelson.Counting.FiniteField
@@ -448,6 +449,84 @@ theorem rowMatrixZLatticeSum_eq_rank_add_lower
   rw [rowSpaceSum_eq_rank_add_lower V f h_f hT]
   rw [← tsum_rowMatrixZLattice_rank_eq_integralRowMatrices V f T]
 
+/- The rank-zero row-matrix stratum is the single zero matrix.  This is the
+   base case that is separated from the positive-rank induction in the
+   manuscript. -/
+theorem rowMatrixZLattice_rank_zero_sum
+    {K : Type*} [Field K] [NumberField K]
+    {m k n : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (T : ℝ) :
+    (∑' A : {A : rowMatrixZLattice V n // rowMatrixRank V A = 0},
+      f (T⁻¹ • (((A.1 : rowMatrixRealSpan V n) :
+        M n m (K_ℝ[K]))))) = f 0 := by
+  let z : {A : rowMatrixZLattice V n // rowMatrixRank V A = 0} :=
+    ⟨0, (rowMatrixRank_eq_zero_iff V (0 : rowMatrixZLattice V n)).2 rfl⟩
+  have hterm (A : {A : rowMatrixZLattice V n // rowMatrixRank V A = 0}) :
+      f (T⁻¹ • (((A.1 : rowMatrixRealSpan V n) :
+        M n m (K_ℝ[K])))) = if A = z then f 0 else 0 := by
+    by_cases hA : A = z
+    · subst A
+      simp [z]
+    · have hzero : A.1 = 0 :=
+        (rowMatrixRank_eq_zero_iff V A.1).1 A.2
+      exact False.elim (hA (Subtype.ext hzero))
+  rw [show (fun A : {A : rowMatrixZLattice V n // rowMatrixRank V A = 0} =>
+      f (T⁻¹ • (((A.1 : rowMatrixRealSpan V n) :
+        M n m (K_ℝ[K]))))) =
+      (fun A => if A = z then f 0 else 0) by funext A; exact hterm A]
+  have htsum :
+      (∑' A : {A : rowMatrixZLattice V n // rowMatrixRank V A = 0},
+        if A = z then f 0 else 0) =
+      (if z = z then f 0 else 0) :=
+    tsum_eq_single z (by
+      intro A hA
+      simp [hA])
+  simpa using htsum
+
+theorem integralRowMatrices_rank_zero_sum
+    {K : Type*} [Field K] [NumberField K]
+    {m k n : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (T : ℝ) :
+    (∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = 0},
+      f (T⁻¹ • embedMatrix A.1)) = f 0 := by
+  let z : {A : IntegralMatrix K n m //
+      rowsInIntegralRowModule V A ∧ integralMatrixRank A = 0} :=
+    ⟨0, ⟨by
+      intro i
+      exact (integralRowModule V).zero_mem, by
+      change Matrix.rank (algebraicMatrix (0 : IntegralMatrix K n m)) = 0
+      rw [show algebraicMatrix (0 : IntegralMatrix K n m) = 0 by
+        ext i j
+        simp [algebraicMatrix]]
+      exact Matrix.rank_zero⟩⟩
+  have hterm (A : {A : IntegralMatrix K n m //
+      rowsInIntegralRowModule V A ∧ integralMatrixRank A = 0}) :
+      f (T⁻¹ • embedMatrix A.1) = if A = z then f 0 else 0 := by
+    by_cases hA : A = z
+    · subst A
+      have hzeroEmbed : embedMatrix (0 : IntegralMatrix K n m) = 0 := by
+        ext i j
+        simp [embedMatrix]
+      rw [hzeroEmbed]
+      simp
+    · have hzero : A.1 = 0 :=
+        integralMatrix_eq_zero_of_integralMatrixRank_eq_zero A.1 A.2.2
+      exact False.elim (hA (Subtype.ext hzero))
+  rw [show (fun A : {A : IntegralMatrix K n m //
+      rowsInIntegralRowModule V A ∧ integralMatrixRank A = 0} =>
+      f (T⁻¹ • embedMatrix A.1)) =
+      (fun A => if A = z then f 0 else 0) by funext A; exact hterm A]
+  have htsum :
+      (∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = 0},
+        if A = z then f 0 else 0) =
+      (if z = z then f 0 else 0) :=
+    tsum_eq_single z (by
+      intro A hA
+      simp [hA])
+  simpa using htsum
+
 /- Split the lower-rank correction into its individual rank strata, as in
    the induction over `l < k` in the paper. -/
 theorem rowSpaceLowerSum_eq_sum_ranks
@@ -506,6 +585,318 @@ theorem rowSpaceLowerSum_eq_sum_ranks
       apply tsum_congr
       intro A
       rfl
+
+/- A lower-rank matrix in the row lattice of `V` has a unique row space
+   `W`, and that row space is contained in `V`.  This is the exact
+   row-space version of the regrouping used in the paper's low-rank
+   overcount. -/
+noncomputable def rowSpaceContainedRankEquiv
+    {K : Type*} [Field K] [NumberField K]
+    {n m k l : ℕ} (V : Grassmannian K m k) :
+    {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = l} ≃
+      Σ W : {W : Grassmannian K m l // W.1 ≤ V.1},
+        {A : IntegralMatrix K n m //
+          rowsInIntegralRowModule W.1 A ∧ integralMatrixRank A = l} := by
+  let e0 := rankMatrixEquivRowSpaces (K := K) (n := n) (m := m) (k := l)
+  let p : {A : IntegralMatrix K n m // integralMatrixRank A = l} → Prop :=
+    fun A => rowsInIntegralRowModule V A.1
+  let q : Grassmannian K m l → Prop := fun W => W.1 ≤ V.1
+  let qSig : (Σ W : Grassmannian K m l,
+      {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule W A ∧ integralMatrixRank A = l}) → Prop :=
+    fun WA => q WA.1
+  have hpq : ∀ A, p A ↔ qSig (e0 A) := by
+    intro A
+    constructor
+    · intro hA
+      change q (e0 A).1
+      change matrixRowSpace A.1 ≤ V.1
+      exact (rowsInIntegralRowModule_iff_rowSpace_le V A.1).1 hA
+    · intro hA
+      change matrixRowSpace A.1 ≤ V.1 at hA
+      exact (rowsInIntegralRowModule_iff_rowSpace_le V A.1).2 hA
+  let esub := e0.subtypeEquiv hpq
+  let esigma := Equiv.subtypeSigmaEquiv
+    (fun W : Grassmannian K m l => {A : IntegralMatrix K n m //
+      rowsInIntegralRowModule W A ∧ integralMatrixRank A = l}) q
+  let eflat := esub.trans esigma
+  let hsource :
+      (fun A : IntegralMatrix K n m =>
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = l) =
+      (fun A : IntegralMatrix K n m =>
+        integralMatrixRank A = l ∧ rowsInIntegralRowModule V A) := by
+    funext A
+    apply propext
+    constructor <;> intro h <;> exact ⟨h.2, h.1⟩
+  let esource :
+      {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = l} ≃
+      {A : {A : IntegralMatrix K n m // integralMatrixRank A = l} //
+        rowsInIntegralRowModule V A.1} :=
+    (Equiv.subtypeEquivProp hsource).trans
+      (Equiv.subtypeSubtypeEquivSubtypeInter
+        (fun A : IntegralMatrix K n m => integralMatrixRank A = l)
+        (fun A : IntegralMatrix K n m => rowsInIntegralRowModule V A)).symm
+  exact esource.trans eflat
+
+theorem tsum_integralMatrices_in_rowSpace_eq_sum_contained_rowSpaces
+    {K : Type*} [Field K] [NumberField K]
+    {n m k l : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    {T : ℝ} (hT : 0 < T) :
+    (∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = l},
+      f (T⁻¹ • embedMatrix A.1)) =
+      ∑' W : {W : Grassmannian K m l // W.1 ≤ V.1},
+        ∑' A : {A : IntegralMatrix K n m //
+          rowsInIntegralRowModule W.1 A ∧ integralMatrixRank A = l},
+          f (T⁻¹ • embedMatrix A.1) := by
+  let g : {A : IntegralMatrix K n m //
+      rowsInIntegralRowModule V A ∧ integralMatrixRank A = l} → ℝ :=
+    fun A => f (T⁻¹ • embedMatrix A.1)
+  let e := rowSpaceContainedRankEquiv (n := n) (m := m) (k := k) (l := l) V
+  have hg : Summable g := by
+    exact (summable_scaled_integralMatrices f h_f hT).comp_injective
+      Subtype.val_injective
+  have hge : Summable (g ∘ e.symm) := e.symm.summable_iff.mpr hg
+  calc
+    (∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = l}, g A) =
+        ∑' WA, g (e.symm WA) := (e.symm.tsum_eq g).symm
+    _ = ∑' W : {W : Grassmannian K m l // W.1 ≤ V.1},
+        ∑' A : {A : IntegralMatrix K n m //
+          rowsInIntegralRowModule W.1 A ∧ integralMatrixRank A = l},
+          (g ∘ e.symm) ⟨W, A⟩ := hge.tsum_sigma
+    _ = ∑' W : {W : Grassmannian K m l // W.1 ≤ V.1},
+        ∑' A : {A : IntegralMatrix K n m //
+          rowsInIntegralRowModule W.1 A ∧ integralMatrixRank A = l},
+          f (T⁻¹ • embedMatrix A.1) := by
+      apply tsum_congr
+      intro W
+      apply tsum_congr
+      intro A
+      have hA : (e.symm ⟨W, A⟩).1 = A.1 := by
+        have h := congrArg (fun X => X.2.1) (e.apply_symm_apply ⟨W, A⟩)
+        change (e.symm ⟨W, A⟩).1 = A.1 at h
+        exact h
+      simp [g, hA]
+
+/- Regrouping all strictly lower-rank matrices by their own row space.  The
+   `Fin k` index includes rank zero and is the form used by the subsequent
+   induction and extension-count estimates. -/
+theorem rowSpaceLowerSum_eq_sum_contained_rowSpaces
+    {K : Type*} [Field K] [NumberField K]
+    {n m k : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    {T : ℝ} (hT : 0 < T) :
+    (∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A < k},
+      f (T⁻¹ • embedMatrix A.1)) =
+      ∑ l : Fin k, ∑' W : {W : Grassmannian K m l.1 // W.1 ≤ V.1},
+        ∑' A : {A : IntegralMatrix K n m //
+          rowsInIntegralRowModule W.1 A ∧ integralMatrixRank A = l.1},
+          f (T⁻¹ • embedMatrix A.1) := by
+  rw [rowSpaceLowerSum_eq_sum_ranks V f h_f hT]
+  apply Finset.sum_congr rfl
+  intro l hl
+  exact tsum_integralMatrices_in_rowSpace_eq_sum_contained_rowSpaces
+    V f h_f hT
+
+/- The same regrouping in the lattice notation used by the Riemann-sum
+   estimate.  The conversion is rank-filtered, so no lower-rank terms are
+   silently identified with full-rank lattice points. -/
+theorem rowSpaceLowerSum_eq_sum_contained_rowMatrixZLattices
+    {K : Type*} [Field K] [NumberField K]
+    {n m k : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    {T : ℝ} (hT : 0 < T) :
+    (∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A < k},
+      f (T⁻¹ • embedMatrix A.1)) =
+      ∑ l : Fin k, ∑' W : {W : Grassmannian K m l.1 // W.1 ≤ V.1},
+        ∑' A : {A : rowMatrixZLattice W.1 n // rowMatrixRank W.1 A = l.1},
+          f (T⁻¹ • (((A.1 : rowMatrixRealSpan W.1 n) :
+            M n m (K_ℝ[K])))) := by
+  rw [rowSpaceLowerSum_eq_sum_contained_rowSpaces V f h_f hT]
+  apply Finset.sum_congr rfl
+  intro l hl
+  apply tsum_congr
+  intro W
+  exact (tsum_rowMatrixZLattice_rank_eq_integralRowMatrices W.1 f T).symm
+
+/- A finite-family Fubini/reindexing lemma for the overcount in the paper's
+   proof of `le:low_rank_terms` (around lines 1518--1534).  The finite
+   support hypothesis is the condition that permits the two summation orders
+   to be exchanged without importing an analytic estimate. -/
+private theorem sum_indicator_eq_ncard_mul
+    {β : Type*} {B : Set β} [Fintype B] (g : ℝ) (r : β → Prop) :
+    (∑ b : B, if r b.1 then g else 0) =
+      (B ∩ {b | r b}).ncard * g := by
+  classical
+  rw [show (∑ b : B, if r b.1 then g else 0) =
+      (∑ b : B, if r b.1 then (1 : ℝ) else 0) * g by
+    rw [Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro b hb
+    by_cases h : r b.1 <;> simp [h]]
+  rw [Finset.sum_boole]
+  have hcard : Fintype.card {b : B // r b.1} =
+      (B ∩ {b | r b}).ncard := by
+    let hfin : (B ∩ {b | r b}).Finite :=
+      (Set.toFinite B).subset Set.inter_subset_left
+    letI : Fintype (↥(B ∩ {b | r b})) := hfin.fintype
+    let e : {b : B // r b.1} ≃ (↥(B ∩ {b | r b})) :=
+      { toFun := fun b => ⟨b.1, b.1.2, b.2⟩
+        invFun := fun b => ⟨⟨b.1, b.2.1⟩, b.2.2⟩
+        left_inv := by intro b; rfl
+        right_inv := by intro b; rfl }
+    calc
+      Fintype.card {b : B // r b.1} = Fintype.card (↥(B ∩ {b | r b})) :=
+        Fintype.card_congr e
+      _ = hfin.toFinset.card := hfin.card_toFinset.symm
+      _ = (B ∩ {b | r b}).ncard :=
+        (Set.ncard_eq_toFinset_card _ hfin).symm
+  rw [← Fintype.card_subtype, hcard]
+
+theorem finite_sum_tsum_subtype_eq_tsum_ncard_mul
+    {α β : Type*} (B : Set α) [Fintype B] (g : β → ℝ)
+    (hg : (Function.support g).Finite) (r : β → α → Prop) :
+    (∑ b : B, ∑' x : {x : β // r x b.1}, g x.1) =
+      ∑' x : β, ((B ∩ {b | r x b}).ncard : ℝ) * g x := by
+  classical
+  let F : B → β → ℝ := fun b x => ({x | r x b.1}).indicator g x
+  have hsupport : (Function.support (Function.uncurry F)).Finite := by
+    refine (Set.finite_univ.prod hg).subset ?_
+    intro p hp
+    change F p.1 p.2 ≠ 0 at hp
+    by_cases hrel : r p.2 p.1.1
+    · have hg' : g p.2 ≠ 0 := by
+        intro hzero
+        apply hp
+        simp [F, hrel, hzero]
+      exact ⟨Set.mem_univ _, hg'⟩
+    · exfalso
+      apply hp
+      simp [F, hrel]
+  have hF : Summable (Function.uncurry F) :=
+    summable_of_hasFiniteSupport hsupport
+  calc
+    (∑ b : B, ∑' x : {x : β // r x b.1}, g x.1) =
+        ∑' b : B, ∑' x : {x : β // r x b.1}, g x.1 := by
+      rw [tsum_fintype]
+    _ = ∑' b : B, ∑' x : β, F b x := by
+      apply tsum_congr
+      intro b
+      exact tsum_subtype ({x : β | r x b.1}) g
+    _ = ∑' x : β, ∑' b : B, F b x := hF.tsum_comm.symm
+    _ = ∑' x : β, ((B ∩ {b | r x b}).ncard : ℝ) * g x := by
+      apply tsum_congr
+      intro x
+      rw [tsum_fintype]
+      exact sum_indicator_eq_ncard_mul (B := B) (g x)
+        (fun b : α => r x b)
+
+/- This is the exact finite-family version of the manuscript's `n_k(D')`
+   correction.  A lower-rank matrix is first assigned its own row space,
+   while the cardinality records how many members of the chosen rank-k
+   family contain that row space.  The theorem is deliberately qualitative:
+   the paper's bound for this cardinality still needs the projected-lattice
+   covolume argument. -/
+theorem finite_rowSpaceLowerSum_eq_sum_containedRowSpaceCounts
+    {K : Type*} [Field K] [NumberField K]
+    {n m k : ℕ} (B : Set (Grassmannian K m k)) [Fintype B]
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    {T : ℝ} (hT : 0 < T) :
+    (∑ V : B, ∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V.1 A ∧ integralMatrixRank A < k},
+      f (T⁻¹ • embedMatrix A.1)) =
+      ∑ l : Fin k, ∑' W : Grassmannian K m l.1,
+        ((B ∩ {V | W.1 ≤ V.1}).ncard : ℝ) *
+          (∑' A : {A : IntegralMatrix K n m //
+            rowsInIntegralRowModule W A ∧ integralMatrixRank A = l.1},
+            f (T⁻¹ • embedMatrix A.1)) := by
+  classical
+  let g : ∀ l : Fin k, Grassmannian K m l.1 → ℝ := fun l W =>
+    ∑' A : {A : IntegralMatrix K n m //
+      rowsInIntegralRowModule W A ∧ integralMatrixRank A = l.1},
+      f (T⁻¹ • embedMatrix A.1)
+  have hg : ∀ l : Fin k, (Function.support (g l)).Finite := by
+    intro l
+    let U : Set (IntegralMatrix K n m) :=
+      {A | f (T⁻¹ • embedMatrix A) ≠ 0}
+    have hU : U.Finite := by
+      simpa [U] using finite_scaledSupport_integralMatrices f h_f hT
+    let R : Set {A : IntegralMatrix K n m // integralMatrixRank A = l.1} :=
+      {A | A.1 ∈ U}
+    have hR : R.Finite := by
+      apply hU.preimage Subtype.val_injective.injOn
+    let S : Set (Grassmannian K m l.1) := rowSpaceOfRank '' R
+    have hS : S.Finite := hR.image rowSpaceOfRank
+    refine hS.subset ?_
+    intro W hW
+    by_contra hnot
+    have hz : g l W = 0 := by
+      rw [← tsum_zero]
+      apply tsum_congr
+      intro A
+      by_contra hA
+      apply hnot
+      refine ⟨⟨A.1, A.2.2⟩, ?_, ?_⟩
+      · change A.1 ∈ U
+        change f (T⁻¹ • embedMatrix A.1) ≠ 0 at hA
+        exact hA
+      · apply Subtype.ext
+        exact rowSpace_eq_of_rowsIn_of_rank W A.1 A.2.1 A.2.2
+    exact hW hz
+  calc
+    (∑ V : B, ∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V.1 A ∧ integralMatrixRank A < k},
+      f (T⁻¹ • embedMatrix A.1)) =
+        ∑ V : B, ∑ l : Fin k, ∑' W : {W : Grassmannian K m l.1 //
+          W.1 ≤ V.1}, g l W.1 := by
+      apply Finset.sum_congr rfl
+      intro V hV
+      rw [rowSpaceLowerSum_eq_sum_contained_rowSpaces V.1 f h_f hT]
+    _ = ∑ l : Fin k, ∑ V : B, ∑' W : {W : Grassmannian K m l.1 //
+          W.1 ≤ V.1}, g l W.1 := by
+      rw [Finset.sum_comm]
+    _ = ∑ l : Fin k, ∑' W : Grassmannian K m l.1,
+        ((B ∩ {V | W.1 ≤ V.1}).ncard : ℝ) * g l W := by
+      apply Finset.sum_congr rfl
+      intro l hl
+      exact finite_sum_tsum_subtype_eq_tsum_ncard_mul B (g l) (hg l)
+        (fun W V => W.1 ≤ V.1)
+    _ = ∑ l : Fin k, ∑' W : Grassmannian K m l.1,
+        ((B ∩ {V | W.1 ≤ V.1}).ncard : ℝ) *
+          (∑' A : {A : IntegralMatrix K n m //
+            rowsInIntegralRowModule W A ∧ integralMatrixRank A = l.1},
+            f (T⁻¹ • embedMatrix A.1)) := by
+      apply Finset.sum_congr rfl
+      intro l hl
+      apply tsum_congr
+      intro W
+      rfl
+
+/- The lower-rank correction splits into the isolated rank-zero term and the
+   positive lower ranks.  This is the form needed before applying the
+   induction hypothesis to `1 ≤ l < k`. -/
+theorem rowSpaceLowerSum_eq_zero_add_positive_ranks
+    {K : Type*} [Field K] [NumberField K]
+    {n m k : ℕ} (V : Grassmannian K m k)
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    {T : ℝ} (hT : 0 < T) (hk : 0 < k) :
+    (∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A < k},
+      f (T⁻¹ • embedMatrix A.1)) =
+      f 0 + ∑ l : Fin (k - 1), ∑' A : {A : IntegralMatrix K n m //
+        rowsInIntegralRowModule V A ∧ integralMatrixRank A = l.succ.1},
+        f (T⁻¹ • embedMatrix A.1) := by
+  obtain ⟨k', rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hk)
+  rw [rowSpaceLowerSum_eq_sum_ranks V f h_f hT]
+  rw [Fin.sum_univ_succ]
+  have hz := integralRowMatrices_rank_zero_sum V f T
+  simpa using hz
 
 /- Combining the two preceding identities gives the row-lattice version of
    the rank induction split: every point is either rank `k` or lies in one of
@@ -585,6 +976,26 @@ theorem lowRankScaleExponent_le_corrected
         Nat.cast_sub hnm.le]
       ring
     _ ≤ -(((n - m + k - 1 : ℕ) : ℤ)) := hneg
+
+theorem lowRankScaleExponent_le_neg_one
+    {n m k l : ℕ} (hnm : m < n) (hl : 1 ≤ l) (hlk : l < k) :
+    lowRankScaleExponent n m k l ≤ -1 := by
+  have hmain := lowRankScaleExponent_le_corrected hnm hl hlk
+  have hpositive : 1 ≤ n - m + k - 1 := by omega
+  have hpositive' : (1 : ℤ) ≤ ((n - m + k - 1 : ℕ) : ℤ) := by
+    exact_mod_cast hpositive
+  omega
+
+/- For `T ≥ 1`, the corrected low-rank exponent is at most the reciprocal
+   scale.  This is the direct real-power form of the exponent bookkeeping in
+   equation (19) and is useful when assembling the error estimate. -/
+theorem lowRankScalePower_le_inv
+    {n m k l : ℕ} {T : ℝ} (hT : 1 ≤ T)
+    (hnm : m < n) (hl : 1 ≤ l) (hlk : l < k) :
+    T ^ (lowRankScaleExponent n m k l : ℤ) ≤ T⁻¹ := by
+  rw [← zpow_neg_one]
+  exact zpow_le_zpow_right₀ hT
+    (lowRankScaleExponent_le_neg_one hnm hl hlk)
 
 /- The fixed-row-space estimate after restoring the rank condition.  This is
    the exact local form of the comparison in the proof of `th:main`; the

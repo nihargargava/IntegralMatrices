@@ -44,6 +44,21 @@ theorem norm_entry_le_frobenius
     ‖WithLp.toLp 2 fun i => WithLp.toLp 2 fun j => A i j‖
   exact (PiLp.norm_apply_le _ j).trans (PiLp.norm_apply_le _ i)
 
+/- The paper compares a matrix's Euclidean size with the sizes of its rows.
+   Our row vectors inherit the finite-product supremum norm, so the elementary
+   one-sided estimate below is the normalization-safe statement available
+   before a full product-norm identification. -/
+theorem norm_row_le_frobenius
+    {α : Type*} [NormedAddCommGroup α] {n m : ℕ}
+    (A : Matrix (Fin n) (Fin m) α) (i : Fin n) :
+    ‖A i‖ ≤ ‖A‖ := by
+  rw [Pi.norm_def]
+  change ↑(Finset.univ.sup (fun b : Fin m => ‖A i b‖₊)) ≤ ‖A‖₊
+  apply_mod_cast
+    (Finset.sup_le (s := (Finset.univ : Finset (Fin m))) (a := ‖A‖₊) ?_)
+  intro j hj
+  exact_mod_cast (norm_entry_le_frobenius A i j)
+
 section LinearAlgebra
 
 theorem exists_linearIndependent_subfamily_of_finrank_span_eq

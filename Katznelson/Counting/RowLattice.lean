@@ -824,6 +824,67 @@ theorem rowMatrixRank_le {m k n : ℕ}
   simpa [rowMatrixRank, B] using
     integralMatrixRank_le_of_rowsInIntegralRowModule V B.1 B.2
 
+theorem rowMatrixRank_eq_zero_iff {m k n : ℕ}
+    (V : Grassmannian K m k) (A : rowMatrixZLattice V n) :
+    rowMatrixRank V A = 0 ↔ A = 0 := by
+  let e := integralRowMatricesEquivRowMatrixZLattice V n
+  have hzeroRows : rowsInIntegralRowModule V (0 : IntegralMatrix K n m) := by
+    intro i
+    exact (integralRowModule V).zero_mem
+  let zeroRows : {A : IntegralMatrix K n m // rowsInIntegralRowModule V A} :=
+    ⟨0, hzeroRows⟩
+  have hezero : e zeroRows = 0 := by
+    apply Subtype.ext
+    apply Subtype.ext
+    rw [integralRowMatricesEquivRowMatrixZLattice_coe]
+    ext i j
+    simp [zeroRows, embedMatrix]
+  constructor
+  · intro hA
+    have hzero : (e.symm A).1 = 0 :=
+      integralMatrix_eq_zero_of_integralMatrixRank_eq_zero
+        (e.symm A).1 hA
+    have heq : e.symm A = zeroRows := Subtype.ext hzero
+    calc
+      A = e (e.symm A) := (e.apply_symm_apply A).symm
+      _ = e zeroRows := by rw [heq]
+      _ = 0 := hezero
+  · intro hA
+    subst A
+    have hzero : (e.symm (0 : rowMatrixZLattice V n)).1 = 0 := by
+      apply integralMatrixEmbedding_injective (K := K) n m
+      change embedMatrix (e.symm (0 : rowMatrixZLattice V n)).1 =
+        embedMatrix (0 : IntegralMatrix K n m)
+      have h := congrArg (fun C : rowMatrixZLattice V n =>
+        ((C : rowMatrixRealSpan V n) : M n m (K_ℝ[K])))
+        (e.apply_symm_apply (0 : rowMatrixZLattice V n))
+      rw [integralRowMatricesEquivRowMatrixZLattice_coe] at h
+      rw [show embedMatrix (0 : IntegralMatrix K n m) = 0 by
+        ext i j
+        simp [embedMatrix]]
+      exact h
+    have heq : e.symm (0 : rowMatrixZLattice V n) = zeroRows :=
+      Subtype.ext hzero
+    change integralMatrixRank (e.symm (0 : rowMatrixZLattice V n)).1 = 0
+    rw [heq]
+    change Matrix.rank (algebraicMatrix (0 : IntegralMatrix K n m)) = 0
+    rw [show algebraicMatrix (0 : IntegralMatrix K n m) = 0 by
+      ext i j
+      simp [algebraicMatrix]]
+    exact Matrix.rank_zero
+
+theorem rowMatrixRank_pos_iff {m k n : ℕ}
+    (V : Grassmannian K m k) (A : rowMatrixZLattice V n) :
+    0 < rowMatrixRank V A ↔ A ≠ 0 := by
+  rw [Nat.pos_iff_ne_zero]
+  constructor
+  · intro hA hzero
+    apply hA
+    rw [hzero, rowMatrixRank_eq_zero_iff]
+  · intro hne hzero
+    apply hne
+    exact (rowMatrixRank_eq_zero_iff V A).1 hzero
+
 theorem rowMatrixRank_eq_iff_rowSpace_eq {m k n : ℕ}
     (V : Grassmannian K m k) (A : rowMatrixZLattice V n) :
     rowMatrixRank V A = k ↔

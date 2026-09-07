@@ -31,7 +31,15 @@ The current, machine-checked infrastructure includes:
   `n * (k * degree K)`, and the corresponding reciprocal-power summability
   result; and
 - height shells with finiteness, polynomial cardinality bounds, and the
-  reciprocal-height estimate used in Schmidt's summation argument.
+  reciprocal-height estimate used in Schmidt's summation argument;
+- dyadic height shells with a genuine partition and the optimal `p < q`
+  reciprocal-height summability consequence of polynomial height counting;
+  and
+- the rank-zero row-matrix base case and the positive lower-rank induction
+  split; and
+- the exact finite-family lower-rank overcount identity, with each lower-rank
+  matrix regrouped by its own row space and weighted by the number of chosen
+  rank-k row spaces containing it.
 
 The main remaining work is the quantitative geometry of the row lattices,
 the exact normalization of measures and heights, the echelon-tail estimates,
@@ -67,6 +75,8 @@ have been completely verified from definitions and proofs.
   `finrank ℝ (rowRealSpan V) = k * degree K`.
 - [x] Identify the `n`-row matrix space with the corresponding finite product
   of row spaces and prove the matrix-space dimension formula.
+- [x] Formalize finite height-shell bounds and the `p < q` reciprocal-tail
+  summability consequence of the polynomial count.
 - [ ] Prove the product formulas for matrix-lattice covolumes and fundamental
   radii.
 - [ ] Match the normalized measure, height, denominator, and Jacobian with
