@@ -96,7 +96,7 @@ have been completely verified from definitions and proofs.
   - [ ] Identify the limit with the convergent echelon-integral sum.
 - [ ] Finish and audit the formalization.
   - [ ] Replace all temporary opaque interfaces with definitions and proofs.
-  - [ ] Remove both public theorem `sorry`s.
+  - [ ] Remove the remaining public theorem `sorry`.
   - [ ] Remove scratch files and resolve nonessential linter warnings.
   - [ ] Run a clean `lake build` and audit statements against the manuscript.
 
