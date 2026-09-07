@@ -14,11 +14,11 @@ targets are:
 
 > [!IMPORTANT]
 > This formalization is under active development. The public theorem statements
-> are present in `main.lean`, but their final proofs are not yet complete.
+> are present in `main.lean`, but the end-to-end proofs are not yet complete.
 
 ## Current status
 
-The completed, machine-checked infrastructure includes:
+The current, machine-checked infrastructure includes:
 
 - Euclidean Minkowski embeddings and integral matrices over number fields;
 - admissible functions, compact-support finiteness, and lattice summability;
@@ -26,12 +26,27 @@ The completed, machine-checked infrastructure includes:
 - rank-drop estimates for reduction modulo prime ideals;
 - decomposition of fixed-rank matrices by rational row space;
 - primitive row lattices and denominator-clearing span results; and
-- general, controlled, subspace, and row-matrix lattice Riemann-sum estimates.
+- general, controlled, subspace, and row-matrix lattice Riemann-sum estimates;
+- the product equivalence for the `n`-row lattice, its dimension
+  `n * (k * degree K)`, and the corresponding reciprocal-power summability
+  result; and
+- height shells with finiteness, polynomial cardinality bounds, and the
+  reciprocal-height estimate used in Schmidt's summation argument.
 
-The main remaining work consists of the successive-minima and lattice-product
-geometry, echelon parametrization and Schmidt estimates, the fixed-rank
-induction, and the final lifts-of-codes convergence argument. Temporary opaque
-interfaces and the two final `sorry`s are tracked explicitly in the source.
+The main remaining work is the quantitative geometry of the row lattices,
+the exact normalization of measures and heights, the echelon-tail estimates,
+the fixed-rank induction, and the final lifts-of-codes argument. The current
+temporary interfaces are explicit in the source:
+
+- `main.lean` has one public `sorry`, in `fixed_rank_count`;
+- `Katznelson/MainTheorems.lean` has the two opaque constants
+  `errorConstant` and `relativeError`; and
+- `Katznelson/Counting/Schmidt.lean` exposes
+  `schmidt_rowSpaceHeight_count` as an explicitly attributed imported result.
+
+Consequently, a successful Lean build means that the present statements and
+infrastructure typecheck; it does not yet mean that the two main theorems
+have been completely verified from definitions and proofs.
 
 ## Formalization roadmap
 
@@ -48,24 +63,24 @@ interfaces and the two final `sorry`s are tracked explicitly in the source.
   associated primitive integral row lattice.
 - [x] Prove that the primitive row module spans its rational row space over
   both `K` and `ℚ`.
-- [ ] Complete the row-lattice geometry.
-  - [ ] Integrate the tested formula
-    `finrank ℝ (rowRealSpan V) = k * degree K`.
-  - [ ] Identify the `n`-row matrix space with the corresponding finite
-    product of row spaces.
-  - [ ] Prove the matrix-space dimension, covolume, and fundamental-radius
-    formulas.
-  - [ ] Match the normalized measure, height, denominator, and Jacobian with
-    the manuscript definitions.
+- [x] Prove the real-span dimension formula
+  `finrank ℝ (rowRealSpan V) = k * degree K`.
+- [x] Identify the `n`-row matrix space with the corresponding finite product
+  of row spaces and prove the matrix-space dimension formula.
+- [ ] Prove the product formulas for matrix-lattice covolumes and fundamental
+  radii.
+- [ ] Match the normalized measure, height, denominator, and Jacobian with
+  the manuscript definitions.
 - [ ] Formalize the remaining geometry-of-numbers preliminaries.
   - [ ] Voronoi domains and covering-radius estimates.
   - [ ] Minkowski and Hadamard inequalities in the required normalization.
   - [ ] Successive minima for number-field lattices.
 - [ ] Complete the matrix parametrization and subspace summation.
   - [ ] Define reduced-row-echelon representatives over `K`.
-  - [ ] Prove the paper's echelon-matrix/row-space/lattice trijection.
+  - [ ] Connect the Grassmannian-indexed decomposition to the paper's
+    echelon-matrix/row-space/lattice trijection.
   - [ ] Define and analyze the denominator `𝔇(D)`.
-  - [ ] Formalize the required Schmidt counting estimate.
+  - [ ] Replace the imported Schmidt counting interface with a formal proof.
   - [ ] Prove convergence and tail bounds for the echelon sum.
 - [ ] Prove the fixed-rank counting theorem.
   - [ ] Bound row spaces that interact with the support of `f`.
@@ -127,6 +142,13 @@ record the corresponding theorem, lemma, or equation label in comments.
 All `.tex` files are strictly read-only in this repository. If a manuscript
 issue is discovered, report its exact line numbers and a suggested correction;
 do not edit the TeX source.
+
+Mathematical results and proof ideas are attributed to their sources. Schmidt's
+1967 paper is the source of the original number-field height-counting argument;
+Thunder's 1992 paper is recorded as an effective asymptotic refinement. The
+corresponding local PDFs are kept in `papers/`, and source notes are kept in
+`notes/`. If a cited paper cannot be accessed, stop and request that the author
+provide a PDF rather than reconstructing the argument from memory.
 
 ## Contributing
 
