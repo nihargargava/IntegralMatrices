@@ -27,6 +27,14 @@ interfaces.
 
 The current Lean development consequently treats the row-space indexing as
 new infrastructure and reserves the source attribution for the mathematical
-height-counting input. The remaining formal work is to connect the explicit
-Schmidt count to the row-space height balls and then carry its tail estimate
-through the rank induction.
+height-counting input. The Lean consequences in `Schmidt.lean` take the
+height-counting statement as an explicit hypothesis; they do not introduce an
+axiom. A supporting Lean proof of that out-of-scope input remains separate from
+the preprint's main formalization. From the explicit hypothesis, the Lean file
+now proves the ordinary-shell reciprocal-height summability, the finite
+height-interval-to-shell comparison, a quantitative ordinary-shell Abel
+estimate (with Mathlib's `Ioc` endpoint convention), absolute summability under
+the paper's reciprocal-height domination, and qualitative vanishing of moving
+height tails. The paper's matrix-level quantitative `O(T^{-d})` tail still
+requires the endpoint/convention bridge, the covolume/Jacobian normalization
+bridge, and the corresponding echelon summand domination.

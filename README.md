@@ -30,11 +30,16 @@ The current, machine-checked infrastructure includes:
 - the product equivalence for the `n`-row lattice, its dimension
   `n * (k * degree K)`, and the corresponding reciprocal-power summability
   result; and
-- height shells with finiteness, polynomial cardinality bounds, and the
-  reciprocal-height estimate used in Schmidt's summation argument;
-- dyadic height shells with a genuine partition and the optimal `p < q`
-  reciprocal-height summability consequence of polynomial height counting;
-  and
+- ordinary height shells with finiteness, polynomial cardinality bounds, and
+  the unit-shell Abel/summation-by-parts route to the sharp `p < q`
+  reciprocal-height summability consequence, including the finite height-
+  interval comparison and a quantitative ordinary-shell Abel estimate;
+- the paper-side absolute-summability interface: a reciprocal-height
+  domination hypothesis now yields summability of the corresponding matrix or
+  subspace summands, together with the resulting qualitative vanishing of
+  moving height tails;
+- separately marked auxiliary dyadic-shell lemmas (not used as a formalization
+  of the paper's proof); and
 - the rank-zero row-matrix base case and the positive lower-rank induction
   split; and
 - the exact finite-family lower-rank overcount identity, with each lower-rank
@@ -49,8 +54,10 @@ temporary interfaces are explicit in the source:
 - `main.lean` has one public `sorry`, in `fixed_rank_count`;
 - `Katznelson/MainTheorems.lean` has the two opaque constants
   `errorConstant` and `relativeError`; and
-- `Katznelson/Counting/Schmidt.lean` exposes
-  `schmidt_rowSpaceHeight_count` as an explicitly attributed imported result.
+- `Katznelson/Counting/Schmidt.lean` contains height-counting consequences
+  parameterized by an explicit `HasHeightCountBounds` hypothesis.  Schmidt's
+  theorem itself is not currently an axiom or a hidden assumption; its Lean
+  proof remains supporting work outside the preprint's main scope.
 
 Consequently, a successful Lean build means that the present statements and
 infrastructure typecheck; it does not yet mean that the two main theorems
@@ -75,8 +82,9 @@ have been completely verified from definitions and proofs.
   `finrank ℝ (rowRealSpan V) = k * degree K`.
 - [x] Identify the `n`-row matrix space with the corresponding finite product
   of row spaces and prove the matrix-space dimension formula.
-- [x] Formalize finite height-shell bounds and the `p < q` reciprocal-tail
-  summability consequence of the polynomial count.
+- [x] Formalize finite ordinary height-shell bounds and the paper-aligned
+  Abel/summation-by-parts `p < q` reciprocal-tail consequence of the
+  polynomial count.
 - [ ] Prove the product formulas for matrix-lattice covolumes and fundamental
   radii.
 - [ ] Match the normalized measure, height, denominator, and Jacobian with
@@ -90,7 +98,8 @@ have been completely verified from definitions and proofs.
   - [ ] Connect the Grassmannian-indexed decomposition to the paper's
     echelon-matrix/row-space/lattice trijection.
   - [ ] Define and analyze the denominator `𝔇(D)`.
-  - [ ] Replace the imported Schmidt counting interface with a formal proof.
+  - [ ] Discharge the explicit Schmidt height-counting hypothesis with a
+    genuine supporting formalization.
   - [ ] Prove convergence and tail bounds for the echelon sum.
 - [ ] Prove the fixed-rank counting theorem.
   - [ ] Bound row spaces that interact with the support of `f`.
