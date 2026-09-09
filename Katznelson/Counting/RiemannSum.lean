@@ -1,6 +1,8 @@
 import Katznelson.Counting.Admissible
 import Mathlib.Algebra.Module.ZLattice.Covolume
+import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+import Mathlib.MeasureTheory.Measure.OpenPos
 import Mathlib.Topology.MetricSpace.ProperSpace
 
 /-!
@@ -148,6 +150,23 @@ theorem latticeFundamentalDomain_isAddFundamentalDomain
     IsAddFundamentalDomain L (latticeFundamentalDomain L) mu := by
   exact ZLattice.isAddFundamentalDomain (latticeBasis L) mu
 
+theorem lattice_ball_finite [ProperSpace E] {T : ℝ} :
+    Set.Finite {v : L | ‖(v : E)‖ ≤ T} := by
+  have hLclosed : IsClosed (L : Set E) :=
+    @AddSubgroup.isClosed_of_discrete _ _ _ _ _ L.toAddSubgroup
+      (inferInstanceAs (DiscreteTopology L))
+  have hfinite :
+      Set.Finite (Metric.closedBall (0 : E) T ∩ (L : Set E)) :=
+    Metric.finite_isBounded_inter_isClosed DiscreteTopology.isDiscrete
+      Metric.isBounded_closedBall hLclosed
+  refine (hfinite.preimage Subtype.val_injective.injOn).subset ?_
+  intro v hv
+  change (v : E) ∈ Metric.closedBall (0 : E) T ∩ (L : Set E)
+  constructor
+  · rw [Metric.mem_closedBall, dist_zero_right]
+    exact hv
+  · exact v.2
+
 theorem covolume_eq_measureReal_latticeFundamentalDomain
     [MeasurableSpace E] [BorelSpace E]
     (mu : Measure E) [Measure.IsAddHaarMeasure mu] :
@@ -155,6 +174,89 @@ theorem covolume_eq_measureReal_latticeFundamentalDomain
       mu.real (latticeFundamentalDomain L) := by
   exact ZLattice.covolume_eq_measure_fundamentalDomain L mu
     (latticeFundamentalDomain_isAddFundamentalDomain L mu)
+
+/- The paper's Lemma `le:ballvol` (lines 463--478).  The proof below uses
+the explicit half-open fundamental domain already used for the Riemann-sum
+estimate; its radius is a valid covering-radius substitute for this coarse
+bound. -/
+theorem lattice_ball_count
+    [MeasurableSpace E] [BorelSpace E] [ProperSpace E]
+    (mu : Measure E) [Measure.IsAddHaarMeasure mu] {T : ℝ} (hT : 0 < T) :
+    ∃ C : ℝ, 0 < C ∧
+      (Set.ncard {v : L | ‖(v : E)‖ ≤ T} : ℝ) ≤
+        C * (T + latticeFundamentalRadius L) ^ Module.finrank ℝ E *
+          (ZLattice.covolume L mu)⁻¹ := by
+  let S : Set L := {v : L | ‖(v : E)‖ ≤ T}
+  let F : Set E := latticeFundamentalDomain L
+  let R : ℝ := latticeFundamentalRadius L
+  have hS : S.Finite := by
+    simpa [S] using lattice_ball_finite L
+  have hR : 0 ≤ R := latticeFundamentalRadius_nonneg L
+  have hTR : 0 ≤ T + R := by linarith
+  have hFtop : mu F ≠ ⊤ :=
+    ne_of_lt (latticeFundamentalDomain_isBounded L).measure_lt_top
+  have hfund : IsAddFundamentalDomain L F mu :=
+    latticeFundamentalDomain_isAddFundamentalDomain L mu
+  have hunion :
+      (⋃ v ∈ hS.toFinset, (v : E) +ᵥ F) ⊆
+        Metric.closedBall (0 : E) (T + R) := by
+    intro x hx
+    rcases Set.mem_iUnion₂.mp hx with ⟨v, hv, hx⟩
+    have hvS : v ∈ S := hS.mem_toFinset.mp hv
+    rcases Set.mem_vadd_set.mp hx with ⟨y, hy, hxy⟩
+    rw [Metric.mem_closedBall, dist_zero_right]
+    rw [← hxy, vadd_eq_add]
+    calc
+      ‖(v : E) + y‖ ≤ ‖(v : E)‖ + ‖y‖ := norm_add_le _ _
+      _ ≤ T + R := add_le_add hvS (norm_le_latticeFundamentalRadius L hy)
+  have hmeasure :
+      mu.real (⋃ v ∈ hS.toFinset, (v : E) +ᵥ F) =
+        (hS.toFinset.card : ℝ) * mu.real F := by
+    rw [measureReal_biUnion_finset₀
+      (hd := by
+        intro v hv w hw hvw
+        exact hfund.aedisjoint hvw)
+      (hm := by
+        intro v hv
+        exact hfund.nullMeasurableSet.vadd (v : E))
+      (h := by
+        intro v hv
+        rw [MeasureTheory.measure_vadd mu (v : E)]
+        exact hFtop)]
+    simp [MeasureTheory.measureReal_def, MeasureTheory.measure_vadd]
+  have hmeasure_le :
+      (hS.toFinset.card : ℝ) * mu.real F ≤
+        (T + R) ^ Module.finrank ℝ E *
+          mu.real (Metric.closedBall (0 : E) 1) := by
+    rw [← hmeasure]
+    calc
+      mu.real (⋃ v ∈ hS.toFinset, (v : E) +ᵥ F) ≤
+          mu.real (Metric.closedBall (0 : E) (T + R)) :=
+        measureReal_mono hunion measure_closedBall_lt_top.ne
+      _ = (T + R) ^ Module.finrank ℝ E *
+          mu.real (Metric.closedBall (0 : E) 1) :=
+        MeasureTheory.Measure.addHaar_real_closedBall' mu 0 hTR
+  have hcard :
+      (Set.ncard S : ℝ) * ZLattice.covolume L mu ≤
+        (T + R) ^ Module.finrank ℝ E *
+          mu.real (Metric.closedBall (0 : E) 1) := by
+    rw [Set.ncard_eq_toFinset_card S hS,
+      covolume_eq_measureReal_latticeFundamentalDomain L mu]
+    exact hmeasure_le
+  have hcovpos : 0 < ZLattice.covolume L mu := ZLattice.covolume_pos L mu
+  have hunitpos : 0 < mu.real (Metric.closedBall (0 : E) 1) := by
+    rw [MeasureTheory.measureReal_def]
+    apply ENNReal.toReal_pos
+    · exact (Metric.measure_closedBall_pos mu 0 zero_lt_one).ne'
+    · exact measure_closedBall_lt_top.ne
+  refine ⟨mu.real (Metric.closedBall (0 : E) 1), hunitpos, ?_⟩
+  have hdiv :
+      (Set.ncard S : ℝ) ≤
+        ((T + R) ^ Module.finrank ℝ E *
+          mu.real (Metric.closedBall (0 : E) 1)) /
+          ZLattice.covolume L mu :=
+    (le_div_iff₀ hcovpos).2 hcard
+  simpa [S, R, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hdiv
 
 end FundamentalDomain
 
@@ -215,6 +317,77 @@ theorem summable_scaled_lattice (f : E → ℝ) (h_f : Admissible f)
   exact summable_scaled_lattice_of_hasCompactSupport L f h_f.compactSupport hT
 
 end FiniteSupport
+
+section FilteredFiniteSupport
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [ProperSpace E]
+variable (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
+
+/- A compactly supported scaled function has a finite rank-filtered lattice
+   sum.  This is the counting estimate used for the inner sum in the
+   lower-rank induction argument. -/
+theorem lattice_subtype_scaled_sum_abs_le
+    (P : L → Prop) (g : E → ℝ) (hcompact : HasCompactSupport g)
+    {T B C : ℝ} (hT : 0 < T)
+    (hsupport : ∀ v : L, g (T⁻¹ • (v : E)) ≠ 0 → ‖(v : E)‖ ≤ B)
+    (hbound : ∀ v : L, |g (T⁻¹ • (v : E))| ≤ C) (hC : 0 ≤ C) :
+    |∑' v : {v : L // P v}, g (T⁻¹ • (v.1 : E))| ≤
+      C * (Set.ncard {v : L | ‖(v : E)‖ ≤ B} : ℝ) := by
+  let u : {v : L // P v} → ℝ := fun v => g (T⁻¹ • (v.1 : E))
+  let uf : L → ℝ := fun v => g (T⁻¹ • (v : E))
+  have hUf : (Function.support uf).Finite := by
+    change Set.Finite {v : L | uf v ≠ 0}
+    simpa [uf] using
+      finite_scaledSupport_lattice_of_hasCompactSupport L g hcompact hT
+  have hU : (Function.support u).Finite := by
+    change Set.Finite {v : {v : L // P v} | u v ≠ 0}
+    refine (hUf.preimage Subtype.val_injective.injOn).subset ?_
+    intro v hv
+    exact hv
+  let hball : Set.Finite {v : L | ‖(v : E)‖ ≤ B} :=
+    lattice_ball_finite L
+  have hsum : ∑' v : {v : L // P v}, u v =
+      ∑ v ∈ hU.toFinset, u v := by
+    apply tsum_eq_sum
+    intro v hv
+    change u v = 0
+    by_contra hzero
+    apply hv
+    exact hU.mem_toFinset.mpr hzero
+  have hcard : hU.toFinset.card ≤
+      (Set.ncard {v : L | ‖(v : E)‖ ≤ B}) := by
+    have himage : (Subtype.val '' Function.support u).Finite :=
+      hU.image Subtype.val
+    have hsubset : Subtype.val '' Function.support u ⊆
+        {v : L | ‖(v : E)‖ ≤ B} := by
+      rintro v ⟨w, hw, rfl⟩
+      exact hsupport w hw
+    calc
+      hU.toFinset.card = Set.ncard (Function.support u) := by
+        rw [Set.ncard_eq_toFinset_card (Function.support u) hU]
+      _ = Set.ncard (Subtype.val '' Function.support u) := by
+        symm
+        exact Set.ncard_image_of_injective _ Subtype.val_injective
+      _ ≤ Set.ncard {v : L | ‖(v : E)‖ ≤ B} :=
+        Set.ncard_le_ncard hsubset hball
+  rw [hsum]
+  calc
+    |∑ v ∈ hU.toFinset, u v| ≤
+        ∑ v ∈ hU.toFinset, |u v| := by
+      simpa using Finset.abs_sum_le_sum_abs (fun v => u v) hU.toFinset
+    _ ≤ ∑ v ∈ hU.toFinset, C := by
+      apply Finset.sum_le_sum
+      intro v hv
+      exact hbound v.1
+    _ = hU.toFinset.card * C := by
+      simp
+    _ ≤ (Set.ncard {v : L | ‖(v : E)‖ ≤ B} : ℝ) * C := by
+      exact mul_le_mul_of_nonneg_right (Nat.cast_le.mpr hcard) hC
+    _ = C * (Set.ncard {v : L | ‖(v : E)‖ ≤ B} : ℝ) := by
+      ring
+
+end FilteredFiniteSupport
 
 section ScaledOscillation
 

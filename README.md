@@ -27,6 +27,9 @@ The current, machine-checked infrastructure includes:
 - decomposition of fixed-rank matrices by rational row space;
 - primitive row lattices and denominator-clearing span results; and
 - general, controlled, subspace, and row-matrix lattice Riemann-sum estimates;
+- a general lattice ball-volume estimate and a finite rank-filtered lattice
+  sum bound, giving the corrected inequality used in the manuscript's
+  low-rank inner-sum step;
 - the product equivalence for the `n`-row lattice, its dimension
   `n * (k * degree K)`, and the corresponding reciprocal-power summability
   result; and
@@ -34,12 +37,26 @@ The current, machine-checked infrastructure includes:
   the unit-shell Abel/summation-by-parts route to the sharp `p < q`
   reciprocal-height summability consequence, including the finite height-
   interval comparison and a quantitative ordinary-shell Abel estimate;
+- the elementary positive-interval integral identities and the resulting
+  three-case finite ordinary-shell bound needed for the low-rank estimate;
 - the paper-side absolute-summability interface: a reciprocal-height
   domination hypothesis now yields summability of the corresponding matrix or
   subspace summands, together with the resulting qualitative vanishing of
   moving height tails;
-- separately marked auxiliary dyadic-shell lemmas (not used as a formalization
-  of the paper's proof); and
+- the manuscript's reduced-row-echelon type, the direct definition of
+  `Λ_D`, the real row-set `M_n(Λ_D)`, and a proved equality between the direct
+  and row-lattice definitions of `𝓕_l(T)`; and
+- uniqueness and existence of the manuscript's reduced-row-echelon
+  representative for every finite-dimensional row space, proved by induction
+  on the number of columns; the proof includes the zero-rank base case, the
+  zero-first-coordinate lift, and the normalized pivot-row construction; and
+- the denominator module from the paper's index definition, including the
+  common-denominator clearing lemma, the reduced-pivot coefficient lemma, and
+  the exact `n`-fold product index for its coefficient module, together with
+  the proved ambient-index identity corresponding to equation (21); and
+- the manuscript-facing unrestricted `M_n(Λ_D)` Riemann estimate, obtained
+  by the explicit direct-to-row-lattice reindexing and the proved matrix-space
+  dimension formula; and
 - the rank-zero row-matrix base case and the positive lower-rank induction
   split; and
 - the exact finite-family lower-rank overcount identity, with each lower-rank
@@ -52,8 +69,6 @@ the fixed-rank induction, and the final lifts-of-codes argument. The current
 temporary interfaces are explicit in the source:
 
 - `main.lean` has one public `sorry`, in `fixed_rank_count`;
-- `Katznelson/MainTheorems.lean` has the two opaque constants
-  `errorConstant` and `relativeError`; and
 - `Katznelson/Counting/Schmidt.lean` contains height-counting consequences
   parameterized by an explicit `HasHeightCountBounds` hypothesis.  Schmidt's
   theorem itself is not currently an axiom or a hidden assumption; its Lean
@@ -76,6 +91,9 @@ have been completely verified from definitions and proofs.
 - [x] Prove the rank-drop bounds for reduction modulo a prime ideal.
 - [x] Decompose rank-`k` matrices by rational row space and construct the
   associated primitive integral row lattice.
+- [x] Define the manuscript's echelon matrices and direct `Λ_D`/`M_n(Λ_D)`
+  support family, and prove its equality with the row-space implementation of
+  `𝓕_l(T)`.
 - [x] Prove that the primitive row module spans its rational row space over
   both `K` and `ℚ`.
 - [x] Prove the real-span dimension formula
@@ -83,10 +101,13 @@ have been completely verified from definitions and proofs.
 - [x] Identify the `n`-row matrix space with the corresponding finite product
   of row spaces and prove the matrix-space dimension formula.
 - [x] Formalize finite ordinary height-shell bounds and the paper-aligned
-  Abel/summation-by-parts `p < q` reciprocal-tail consequence of the
-  polynomial count.
+   Abel/summation-by-parts `p < q` reciprocal-tail consequence of the
+   polynomial count, including the positive/logarithmic/bounded exponent
+   cases needed by the low-rank sum.
 - [ ] Prove the product formulas for matrix-lattice covolumes and fundamental
-  radii.
+   radii.
+- [ ] Specialize the general ball-volume estimate to the row-matrix lattice
+   after resolving the expensive matrix/subtype measure normalization in Lean.
 - [ ] Match the normalized measure, height, denominator, and Jacobian with
   the manuscript definitions.
 - [ ] Formalize the remaining geometry-of-numbers preliminaries.
@@ -94,10 +115,10 @@ have been completely verified from definitions and proofs.
   - [ ] Minkowski and Hadamard inequalities in the required normalization.
   - [ ] Successive minima for number-field lattices.
 - [ ] Complete the matrix parametrization and subspace summation.
-  - [ ] Define reduced-row-echelon representatives over `K`.
-  - [ ] Connect the Grassmannian-indexed decomposition to the paper's
-    echelon-matrix/row-space/lattice trijection.
-  - [ ] Define and analyze the denominator `𝔇(D)`.
+  - [x] Define reduced-row-echelon representatives over `K`, and prove the
+    bijection with `Grassmannian K m l` by row space.
+  - [x] Define the denominator module, prove its finiteness/positivity, and
+    identify the image index with `M_n(Λ_D)` as in equation (21).
   - [ ] Discharge the explicit Schmidt height-counting hypothesis with a
     genuine supporting formalization.
   - [ ] Prove convergence and tail bounds for the echelon sum.

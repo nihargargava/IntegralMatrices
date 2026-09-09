@@ -1493,7 +1493,7 @@ We will now use the following to bound the low-rank terms that do not appear on 
     % Let $\mathcal{E}_{T} \in \M_{k \times m}(K)$ be as defined in~\cref{eq:defi_of_calT} and for $D \in \mathcal{E}_{T}$, let $\M_{n}(\Lambda_D)$ be as defined in~\cref{de:defi_of_M_t}. Then for $ T \geq 1$ one has
     \begin{equation}
         \tfrac{1}{T^{knd}}    \sum_{ D \in \mathcal{F}_{k}(T)} \sum_{\substack{A \in \M_{n}(\Lambda_{D}) \\ \rank A < k}} |f(\tfrac{1}{T} A)|   \leq 
-        \Cl[c]{lowrank} \frac{ \log T}{T^{dk(n-m)}} 
+        \Cl[c]{lowrank} \frac{ 1+ \log T}{T^{d(n-m+k-1)}} 
         \label{eq:loewrank}
     \end{equation}
     for some constant $\Cr{lowrank}>0$. 
@@ -1559,7 +1559,7 @@ From the rest of the proof, we will assume $l \geq 1$.
     the innermost sum above can be bounded as
     \begin{align}
         \sum_{\substack{A \in \M_{n}(\Lambda_{D'}) \\ \rank A = l }}^{}  
-        f(\tfrac{1}{T}A)  = 
+        f(\tfrac{1}{T}A)  \leq
         \sum_{\substack{A \in \M_{n}(\Lambda_{D'}) \\ \|A\| \leq \Cr{sup} T } }^{} \|f\|_{\infty}
       & \leq \Cr{ballvol} \|f\|_{\infty} (\Cr{sup} T + \rho(\Lambda_{D'      }))^{lnd} H(D')^{-n} \\
       & \leq \Cl[c]{lowrank2} H(D')^{-n} T^{lnd}.
@@ -1587,7 +1587,7 @@ From the rest of the proof, we will assume $l \geq 1$.
       & \leq 
       {(\Cr{crude2}T^{ld})^{k-l-n}}
       \eta( \Cr{crude2}T^{ld})
-      + (k-l-n)\int_{1}^{\Cr{crude2}T^{ld}} \eta(x) x^{k-l-n-1} \diff x   \\
+      + (n+l-k)\int_{1}^{\Cr{crude2}T^{ld}} \eta(x) x^{k-l-n-1} \diff x   \\
       \label{eq:ineqluaty_abel}
     \end{align}
     where we have
@@ -1601,23 +1601,36 @@ From the rest of the proof, we will assume $l \geq 1$.
     \begin{equation}
         \sum_{D' \in \mathcal{F}_{l}(T)}^{}
         H(D')^{k-l-n} 
-        \leq \Cl[c]{crudenew}\cdot T^{ld(m+k-l-n)} \log T,
-        \label{eq:inequality_semifinal}
+        \leq \Cl[c]{crudenew}\cdot 
+        \begin{cases}
+          T^{ld(m+k-l-n)} & \text{ if } m+k-l-n > 0 \\
+           1 + \log T&  \text{ if } m+k-l-n=0 \\ 
+           1 &\text{ if }m+k-l-n < 0 
+        \end{cases}
+        \label{eq:inequality_semifinal}.
     \end{equation}
-    where the $\log T$ term is needed in case $m+k-l-n=0$.
+    Set $\alpha_{l} = d \Big( (k-l)(m-l)  + n(l-k)\Big)$ and set $B_{l}(T)$ to be the right hand side of~\cref{eq:inequality_semifinal}.
     Putting~\cref{eq:inequality_semifinal} in~\cref{eq:inequality_final_desire} gives us
     \begin{align}
         \tfrac{1}{T^{knd}} \sum_{D \in \mathcal{F}_{k}{(T)}} \sum_{\substack{A \in \M_{n}(\Lambda_{D}) \\ 0 < \rank A < k }}^{}  
       & f(\tfrac{1}{T} A )  \\
-      & \leq \sum_{l=1}^{k-1} \Cr{lowrank3} \Cr{crudenew} \cdot T^{d((k-l)(m-l) + n(l - k)) + ld(m+k-l-n)}  \log T \\
-      & = \Cr{lowrank} T^{dN} \log T. 
+      & \leq  \Cr{lowrank3} \cdot \sum_{l=1}^{k-1} 
+      T^{ \alpha_{l}} B_{l}(T)
     \end{align}
+
+When $m+k-l-n > 0$, we know that $T^{\alpha_{l}} T^{ld(m+k-l-n)} = T^{d N }$ 
     where
     \begin{align}
         N  & =  (k-l)(m-l)  + n(l-k) + l(m+k-l-n)  \\
            & =    (l-k)(n-m+l) -l(n-m+l) +lk   \\
            & =    -k(n-m+l)  +lk   = -(n-m)k  \leq -1.
     \end{align}
+    Hence we have negative powers of $T$. 
+
+    For the case when $m+k-l-n < 0$, 
+    one gets that $T^{\alpha_{l}} (1 + \log T) \leq T^{-d(n-m+k-1)} (1 + \log T)$ 
+    since $d^{-1}\alpha_{l} = (m-l-n)(k-l) \leq - (n-m+k-1)$ with equality at $l=k-1$.
+    Finally, when $m+k-l-n = 0$ one has $\alpha_{l}\leq 0$ so we can bound the sum by a constant. In any case, $\sum_{l=1}^{k-1} T^{\alpha_{l}} B_{l}(T)$ is at most a constant times $(1 + \log T)T^{-d(n-m+k-1)}$. Hence we are done.
 \end{proof}
 
 \subsection{Putting it all together}
@@ -1664,7 +1677,7 @@ From the rest of the proof, we will assume $l \geq 1$.
         \mathfrak{D}(D)^{-n}\int_{\M_{n \times k}(\KR)} f( x D )\, dx \Big|  \\
              & + \tfrac{1}{T^{knd}}\sum_{D \in \mathcal{F}_{k}(T)}  \sum_{\substack{A \in \M_{n}(\Lambda_{D}) \\ \rank A < k}}^{} | f(\tfrac{1}{T} A ) |.
     \end{align}
-    From~\cref{le:low_rank_terms}, the last term is smaller than $\Cr{lowrank}T^{-dk(n-m)} \log T$, so it absorbs in the constant $\Cr{error2}$ without any problems.
+    From~\cref{le:low_rank_terms}, the last term is smaller than $\Cr{lowrank}T^{-d(n-m+k-1)}(1+ \log T)$, so it absorbs in the constant $\Cr{error2}$ without any problems.
     % VgSince $n-m \geq 1$ and $k \geq 2$
 
     As explained before, we know that from~\cref{co:covering_bound} that

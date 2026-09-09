@@ -279,6 +279,79 @@ theorem sum_Ioc_inv_pow_le_of_partial_sum
             (∫ t in (a : ℝ)..(b : ℝ), t ^ p * (t⁻¹ ^ (q + 1))) := by
       gcongr
 
+/- [derived consequence, paper lines 649--653] On a positive interval the
+   ordinary-shell integrand has the expected elementary antiderivative.  This
+   identity is used below to keep the three possible signs of `p - q`
+   separate; in particular, it does not silently turn a bounded negative-
+   exponent contribution into a decaying power. -/
+theorem intervalIntegral_nat_power_inv_power
+    {p q N : ℕ} (hN : 1 ≤ N) (hpq : p ≠ q) :
+    (∫ x in (1 : ℝ)..(N : ℝ),
+      x ^ p * (x⁻¹ ^ (q + 1))) =
+      (((N : ℝ) ^ ((p : ℝ) - q) - 1) / ((p : ℝ) - q)) := by
+  let r : ℝ := (p : ℝ) - q - 1
+  have hNreal : (1 : ℝ) ≤ N := by exact_mod_cast hN
+  have hpeq : (p : ℝ) ≠ q := by
+    exact_mod_cast hpq
+  have hpow : ∀ x ∈ Set.uIcc (1 : ℝ) (N : ℝ),
+      x ^ p * (x⁻¹ ^ (q + 1)) = x ^ r := by
+    intro x hx
+    have hx' := hx
+    rw [uIcc_of_le hNreal] at hx'
+    have hxpos : 0 < x := by
+      exact lt_of_lt_of_le zero_lt_one hx'.1
+    dsimp [r]
+    rw [← Real.rpow_natCast, ← Real.rpow_natCast,
+      Real.inv_rpow hxpos.le, ← Real.rpow_neg hxpos.le,
+      ← Real.rpow_add hxpos]
+    congr 1
+    push_cast
+    ring
+  rw [intervalIntegral.integral_congr hpow]
+  rw [integral_rpow]
+  · dsimp [r]
+    have hdenom : (p : ℝ) - q ≠ 0 := sub_ne_zero.mpr hpeq
+    simp only [Real.one_rpow]
+    congr 1
+    · congr 1
+      push_cast
+      ring
+    · push_cast
+      ring
+  · right
+    constructor
+    · intro hr
+      have hpqR : (p : ℝ) = q := by
+        dsimp [r] at hr
+        linarith
+      exact hpeq (by exact_mod_cast hpqR)
+    · exact notMem_uIcc_of_lt (by positivity) (by positivity)
+
+/- [derived consequence, paper lines 649--653] The borderline case is the
+   logarithmic integral in the manuscript's summation-by-parts estimate. -/
+theorem intervalIntegral_nat_power_inv_power_eq_log
+    {p N : ℕ} (hN : 1 ≤ N) :
+    (∫ x in (1 : ℝ)..(N : ℝ),
+      x ^ p * (x⁻¹ ^ (p + 1))) = Real.log (N : ℝ) := by
+  have hNreal : (1 : ℝ) ≤ N := by exact_mod_cast hN
+  have hpow : ∀ x ∈ Set.uIcc (1 : ℝ) (N : ℝ),
+      x ^ p * (x⁻¹ ^ (p + 1)) = x⁻¹ := by
+    intro x hx
+    have hx' := hx
+    rw [uIcc_of_le hNreal] at hx'
+    have hxpos : 0 < x := by
+      exact lt_of_lt_of_le zero_lt_one hx'.1
+    rw [← Real.rpow_natCast, ← Real.rpow_natCast,
+      Real.inv_rpow hxpos.le, ← Real.rpow_neg hxpos.le,
+      ← Real.rpow_add hxpos]
+    congr 1
+    have hexp : (p : ℝ) + -((p + 1 : ℕ) : ℝ) = -1 := by
+      push_cast
+      ring
+    rw [hexp, Real.rpow_neg_one]
+  rw [intervalIntegral.integral_congr hpow]
+  simpa using (integral_inv_of_pos (a := (1 : ℝ)) (b := (N : ℝ))
+    (by positivity) (by positivity))
 /- [derived consequence, paper lines 649--653] The improper integral which
    occurs in the Abel estimate has the expected power-law bound.  Keeping
    this as a separate lemma makes the passage from finite summation by parts
@@ -622,88 +695,6 @@ theorem iUnion_heightShell {α : Type*} {H : α → ℝ} :
     obtain ⟨n, hn, hxn⟩ := exists_mem_heightShell_of_one_le hx
     exact Set.mem_iUnion.2 ⟨⟨n, hn⟩, hxn⟩
 
-/- [Lean infrastructure] These dyadic shells are retained only as an
-   independently proved auxiliary tool.  They are not part of the manuscript's
-   summation-by-parts proof and are not used by the ordinary-shell path below. -/
-def heightDyadicShell {α : Type*} (H : α → ℝ) (j : ℕ) : Set α :=
-  {x | ((2 ^ j : ℕ) : ℝ) ≤ H x ∧ H x < ((2 ^ (j + 1) : ℕ) : ℝ)}
-
-theorem heightDyadicShell_disjoint {α : Type*} {H : α → ℝ} {j₁ j₂ : ℕ}
-    (hne : j₁ ≠ j₂) : Disjoint (heightDyadicShell H j₁) (heightDyadicShell H j₂) := by
-  rcases lt_or_gt_of_ne hne with hlt | hgt
-  · have hpow : 2 ^ (j₁ + 1) ≤ 2 ^ j₂ := by
-      apply Nat.pow_le_pow_right
-      · omega
-      · omega
-    rw [Set.disjoint_left]
-    intro x h₁ h₂
-    have hupper : H x < ((2 ^ (j₁ + 1) : ℕ) : ℝ) := h₁.2
-    have hlower : ((2 ^ j₂ : ℕ) : ℝ) ≤ H x := h₂.1
-    have hpowR : ((2 ^ (j₁ + 1) : ℕ) : ℝ) ≤ ((2 ^ j₂ : ℕ) : ℝ) := by
-      exact_mod_cast hpow
-    exact (not_le_of_gt hupper) (hpowR.trans hlower)
-  · have hpow : 2 ^ (j₂ + 1) ≤ 2 ^ j₁ := by
-      apply Nat.pow_le_pow_right
-      · omega
-      · omega
-    rw [Set.disjoint_left]
-    intro x h₁ h₂
-    have hupper : H x < ((2 ^ (j₂ + 1) : ℕ) : ℝ) := h₂.2
-    have hlower : ((2 ^ j₁ : ℕ) : ℝ) ≤ H x := h₁.1
-    have hpowR : ((2 ^ (j₂ + 1) : ℕ) : ℝ) ≤ ((2 ^ j₁ : ℕ) : ℝ) := by
-      exact_mod_cast hpow
-    exact (not_le_of_gt hupper) (hpowR.trans hlower)
-
-theorem heightDyadicShell_pairwiseDisjoint {α : Type*} {H : α → ℝ} :
-    (Set.univ : Set ℕ).PairwiseDisjoint (heightDyadicShell H) := by
-  intro j _ l _ hne
-  exact heightDyadicShell_disjoint hne
-
-theorem exists_mem_heightDyadicShell_of_one_le {α : Type*} {H : α → ℝ} {x : α}
-    (hx : 1 ≤ H x) : ∃ j : ℕ, x ∈ heightDyadicShell H j := by
-  let n : ℕ := ⌊H x⌋₊
-  have hnpos : 0 < n := by
-    exact (Nat.one_le_floor_iff (H x)).2 hx
-  let j : ℕ := Nat.log 2 n
-  have hlowN : 2 ^ j ≤ n := by
-    exact Nat.pow_log_le_self 2 (Nat.ne_of_gt hnpos)
-  have hlowNreal : ((2 ^ j : ℕ) : ℝ) ≤ (n : ℝ) := by
-    exact_mod_cast hlowN
-  have hfloorle : (n : ℝ) ≤ H x := by
-    simpa [n] using (Nat.floor_le (show 0 ≤ H x by positivity))
-  have hlow : ((2 ^ j : ℕ) : ℝ) ≤ H x := hlowNreal.trans hfloorle
-  have huppow : n < 2 ^ (j + 1) := by
-    simpa [j, Nat.succ_eq_add_one] using
-      Nat.lt_pow_succ_log_self (b := 2) (by omega) n
-  have huppN : n + 1 ≤ 2 ^ (j + 1) := Nat.succ_le_of_lt huppow
-  have hupp : H x < ((2 ^ (j + 1) : ℕ) : ℝ) := by
-    exact (Nat.lt_floor_add_one (H x)).trans_le (by exact_mod_cast huppN)
-  exact ⟨j, hlow, hupp⟩
-
-theorem iUnion_heightDyadicShell {α : Type*} {H : α → ℝ} :
-    ⋃ j : ℕ, heightDyadicShell H j = {x | 1 ≤ H x} := by
-  ext x
-  constructor
-  · intro hx
-    simp only [Set.mem_iUnion] at hx
-    obtain ⟨j, hj⟩ := hx
-    have hpowpos : 0 < 2 ^ j := pow_pos (by omega) _
-    exact le_trans (by exact_mod_cast
-      (Nat.one_le_iff_ne_zero.mpr hpowpos.ne')) hj.1
-  · intro hx
-    obtain ⟨j, hj⟩ := exists_mem_heightDyadicShell_of_one_le hx
-    exact Set.mem_iUnion.2 ⟨j, hj⟩
-
-theorem heightDyadicShell_finite {α : Type*} {H : α → ℝ} {p : ℕ}
-    (hcount : HasHeightCountBounds H p) {j : ℕ} :
-    (heightDyadicShell H j).Finite := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
-  have hT : (1 : ℝ) ≤ ((2 ^ (j + 1) : ℕ) : ℝ) := by
-    exact_mod_cast (Nat.one_le_iff_ne_zero.mpr (pow_ne_zero _ (by omega)))
-  apply (hcut _ hT).1.subset
-  intro x hx
-  exact hx.2.le
-
 theorem heightShell_finite {α : Type*} {H : α → ℝ} {p : ℕ}
     (hcount : HasHeightCountBounds H p) {n : ℕ} (hn : 1 ≤ n) :
     (heightShell H n).Finite := by
@@ -1020,6 +1011,193 @@ theorem heightShell_sum_Ioc_inv_pow_le
   · intro n hn
     exact hpartial hn
 
+/- [derived consequence, paper lines 649--653] A finite ordinary-shell sum
+   therefore has the three sign-dependent sizes dictated by the exponent
+   `p - q`: power growth, logarithmic growth, or a bounded contribution.  The
+   last branch is deliberately bounded rather than assigned a negative power
+   of the cutoff; this is the case distinction needed in the low-rank estimate
+   before any application-specific normalization. -/
+set_option maxHeartbeats 1000000 in
+theorem heightShell_sum_Ioc_one_le_by_exponent
+    {α : Type*} {H : α → ℝ} {p q b : ℕ}
+    (hcount : HasHeightCountBounds H p) (hb : 1 ≤ b) :
+    ∃ C : ℝ, 0 < C ∧
+      (∑ n ∈ Finset.Ioc 1 b,
+        (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) ≤
+        if q < p then C * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * (1 + Real.log (b : ℝ))
+        else C := by
+  have hbR : (1 : ℝ) ≤ (b : ℝ) := by exact_mod_cast hb
+  have hbpos : (0 : ℝ) < (b : ℝ) := lt_of_lt_of_le zero_lt_one hbR
+  obtain ⟨C, hC, hmain⟩ := heightShell_sum_Ioc_inv_pow_le
+    (H := H) (p := p) (a := 1) (b := b) (q := q) hcount le_rfl hb
+  norm_num at hmain
+  by_cases hqp : q < p
+  · have hpq : p ≠ q := by omega
+    have hqple : q ≤ p := hqp.le
+    have hdiff_cast : (p : ℝ) - q = ((p - q : ℕ) : ℝ) := by
+      rw [Nat.cast_sub hqple]
+    have hdiff : 0 < (p : ℝ) - q := by
+      rw [hdiff_cast]
+      exact_mod_cast (show 0 < p - q by omega)
+    have hendpoint_base :
+        (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) =
+          (b : ℝ) ^ ((p : ℝ) - q) := by
+      rw [← Real.rpow_natCast (b : ℝ) p,
+        ← Real.rpow_natCast ((b : ℝ)⁻¹) q,
+        Real.inv_rpow hbpos.le, ← Real.rpow_neg hbpos.le,
+        ← Real.rpow_add hbpos]
+      congr 1
+    have hendpoint :
+        (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) =
+          (b : ℝ) ^ ((p - q : ℕ) : ℝ) := by
+      rw [hendpoint_base, hdiff_cast]
+    have hIntegral := intervalIntegral_nat_power_inv_power
+      (p := p) (q := q) (N := b) (by exact hb) hpq
+    have hIntegralBound :
+        (((b : ℝ) ^ ((p - q : ℕ) : ℝ) - 1) /
+          ((p : ℝ) - q)) ≤
+          (b : ℝ) ^ ((p - q : ℕ) : ℝ) /
+            ((p : ℝ) - q) := by
+      apply div_le_div_of_nonneg_right _ hdiff.le
+      linarith
+    refine ⟨C * (1 + (q : ℝ) / ((p : ℝ) - q)), by positivity, ?_⟩
+    simp only [hqp, ↓reduceIte]
+    calc
+      (∑ n ∈ Finset.Ioc 1 b,
+          (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) ≤
+          C * (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) +
+            C * (q : ℝ) *
+              (∫ x in (1 : ℝ)..(b : ℝ),
+                x ^ p * (x⁻¹ ^ (q + 1))) := by
+        simpa only [inv_pow] using hmain
+      _ = C * (b : ℝ) ^ ((p - q : ℕ) : ℝ) +
+            C * (q : ℝ) *
+              (((b : ℝ) ^ ((p - q : ℕ) : ℝ) - 1) /
+                ((p : ℝ) - q)) := by
+          rw [show C * (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) =
+            C * ((b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q)) by ring,
+            hendpoint, hIntegral, hdiff_cast]
+      _ ≤ C * (b : ℝ) ^ ((p - q : ℕ) : ℝ) +
+            C * (q : ℝ) *
+              ((b : ℝ) ^ ((p - q : ℕ) : ℝ) /
+                ((p : ℝ) - q)) := by
+        gcongr
+      _ = C * (1 + (q : ℝ) / ((p : ℝ) - q)) *
+            (b : ℝ) ^ ((p - q : ℕ) : ℝ) := by ring
+  · by_cases hpq : p = q
+    · subst q
+      have hIntegral := intervalIntegral_nat_power_inv_power_eq_log
+        (p := p) (N := b) hb
+      have hendpoint :
+          (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ p) = 1 := by
+        rw [← Real.rpow_natCast (b : ℝ) p,
+          ← Real.rpow_natCast ((b : ℝ)⁻¹) p,
+          Real.inv_rpow hbpos.le, ← Real.rpow_neg hbpos.le,
+          ← Real.rpow_add hbpos]
+        rw [show (p : ℝ) + -(p : ℝ) = 0 by ring, Real.rpow_zero]
+      have hendpoint_C :
+          C * (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ p) = C := by
+        calc
+          C * (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ p) =
+              C * ((b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ p)) := by ring
+          _ = C := by rw [hendpoint]; ring
+      have hlog : 0 ≤ Real.log (b : ℝ) := Real.log_nonneg hbR
+      refine ⟨C * (1 + (p : ℝ)), by positivity, ?_⟩
+      simp only [lt_irrefl, ↓reduceIte]
+      calc
+        (∑ n ∈ Finset.Ioc 1 b,
+            (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ p)) ≤
+            C * (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ p) +
+              C * (p : ℝ) *
+                (∫ x in (1 : ℝ)..(b : ℝ),
+                x ^ p * (x⁻¹ ^ (p + 1))) := by
+          simpa only [inv_pow] using hmain
+      _ = C + C * (p : ℝ) * Real.log (b : ℝ) := by
+          rw [hendpoint_C, hIntegral]
+      _ ≤ C * (1 + (p : ℝ)) * (1 + Real.log (b : ℝ)) := by
+        have hnonneg : 0 ≤ C * ((p : ℝ) + Real.log (b : ℝ)) :=
+          mul_nonneg hC.le (add_nonneg (by positivity) hlog)
+        nlinarith
+    · have hpq' : p < q := by omega
+      have hdiff_cast : (q : ℝ) - p = ((q - p : ℕ) : ℝ) := by
+        rw [Nat.cast_sub hpq'.le]
+      have hdiff : 0 < (q : ℝ) - p := by
+        rw [hdiff_cast]
+        exact_mod_cast (show 0 < q - p by omega)
+      have hendpoint_base :
+          (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) =
+            (b : ℝ) ^ ((p : ℝ) - q) := by
+        rw [← Real.rpow_natCast (b : ℝ) p,
+          ← Real.rpow_natCast ((b : ℝ)⁻¹) q,
+          Real.inv_rpow hbpos.le, ← Real.rpow_neg hbpos.le,
+          ← Real.rpow_add hbpos]
+        congr 1
+      have hnegdiff_cast : (p : ℝ) - q = -((q - p : ℕ) : ℝ) := by
+        rw [Nat.cast_sub hpq'.le]
+        ring
+      have hendpoint :
+          (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) =
+            (b : ℝ) ^ (-((q - p : ℕ) : ℝ)) := by
+        rw [hendpoint_base, hnegdiff_cast]
+      have hIntegral := intervalIntegral_nat_power_inv_power
+        (p := p) (q := q) (N := b) (by exact hb) (by omega)
+      have hIntegralBound :
+          (((b : ℝ) ^ (-((q - p : ℕ) : ℝ)) - 1) /
+            ((p : ℝ) - q)) ≤
+            1 / ((q : ℝ) - p) := by
+        have hdenom : (p : ℝ) - q = -((q - p : ℕ) : ℝ) := hnegdiff_cast
+        rw [hdenom]
+        calc
+          ((b : ℝ) ^ (-((q - p : ℕ) : ℝ)) - 1) /
+              (-((q - p : ℕ) : ℝ)) =
+              (1 - (b : ℝ) ^ (-((q - p : ℕ) : ℝ))) /
+                ((q - p : ℕ) : ℝ) := by ring
+          _ ≤ 1 / ((q - p : ℕ) : ℝ) := by
+            apply div_le_div_of_nonneg_right _ (le_of_lt (by exact_mod_cast
+              (show 0 < q - p by omega)))
+            exact sub_le_self 1
+              (Real.rpow_nonneg (le_trans (by norm_num) hbR) _)
+          _ = 1 / ((q : ℝ) - p) := by
+            rw [hdiff_cast]
+      refine ⟨C * (1 + (q : ℝ) / ((q : ℝ) - p)), by positivity, ?_⟩
+      simp only [hqp, hpq, ↓reduceIte]
+      calc
+        (∑ n ∈ Finset.Ioc 1 b,
+            (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) ≤
+            C * (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) +
+              C * (q : ℝ) *
+                (∫ x in (1 : ℝ)..(b : ℝ),
+                x ^ p * (x⁻¹ ^ (q + 1))) := by
+          simpa only [inv_pow] using hmain
+      _ ≤ C * 1 + C * (q : ℝ) * (1 / ((q : ℝ) - p)) := by
+          rw [show C * (b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q) =
+            C * ((b : ℝ) ^ p * ((b : ℝ)⁻¹ ^ q)) by ring,
+            hendpoint, hIntegral, hnegdiff_cast]
+          have hbpow_le :
+              (b : ℝ) ^ (-((q - p : ℕ) : ℝ)) ≤ 1 := by
+            have hnegexp : -((q - p : ℕ) : ℝ) ≤ 0 := by
+              have hdiff_nat : 0 < ((q - p : ℕ) : ℝ) := by
+                exact_mod_cast (show 0 < q - p by omega)
+              linarith
+            have hpow := Real.rpow_le_rpow_of_exponent_le hbR hnegexp
+            simpa using hpow
+          have hfirst : (C : ℝ) * (b : ℝ) ^ (-((q - p : ℕ) : ℝ)) ≤ C * 1 := by
+            simpa using mul_le_mul_of_nonneg_left hbpow_le hC.le
+          have hIntegralBound' :
+              (((b : ℝ) ^ (-((q - p : ℕ) : ℝ)) - 1) /
+                (-((q - p : ℕ) : ℝ))) ≤
+              1 / ((q : ℝ) - p) := by
+            simpa [hnegdiff_cast] using hIntegralBound
+          have hsecond : C * (q : ℝ) *
+              (((b : ℝ) ^ (-((q - p : ℕ) : ℝ)) - 1) /
+                (-((q - p : ℕ) : ℝ))) ≤
+              C * (q : ℝ) * (1 / ((q : ℝ) - p)) := by
+            exact mul_le_mul_of_nonneg_left hIntegralBound'
+              (mul_nonneg hC.le (by positivity))
+          exact add_le_add hfirst hsecond
+        _ = C * (1 + (q : ℝ) / ((q : ℝ) - p)) := by ring
+
 /- [derived consequence, paper lines 642--653] Abel summation upgrades the
    shellwise estimate to the sharp threshold `p < q`.  The imported Mathlib
    lemma used here is itself the finite/infinite Abel argument; the ordinary
@@ -1103,6 +1281,119 @@ theorem heightShell_ncard_upper {α : Type*} {H : α → ℝ} {p : ℕ}
     exact_mod_cast hcard
   exact hcardR.trans hupper
 
+/- The manuscript sums over all positive-height subspaces below a cutoff.  The
+   Abel lemma above uses `Ioc 1 b`, which omits the first shell; this wrapper
+   restores that shell before the three-case estimate is used in the
+   low-rank argument. -/
+set_option maxHeartbeats 1000000 in
+theorem heightShell_sum_Icc_one_le_by_exponent
+    {α : Type*} {H : α → ℝ} {p q b : ℕ}
+    (hcount : HasHeightCountBounds H p) (hb : 1 ≤ b) :
+    ∃ C : ℝ, 0 < C ∧
+      (∑ n ∈ Finset.Icc 1 b,
+        (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) ≤
+        if q < p then C * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * (1 + Real.log (b : ℝ))
+        else C := by
+  obtain ⟨C₀, hC₀, hIoc⟩ :=
+    heightShell_sum_Ioc_one_le_by_exponent hcount hb
+  obtain ⟨C₁, hC₁, hshell⟩ := heightShell_ncard_upper hcount
+  have hshell₁ : (Set.ncard (heightShell H 1) : ℝ) ≤ C₁ * (2 : ℝ) ^ p := by
+    simpa using (hshell (n := 1) (by omega : 1 ≤ (1 : ℕ)))
+  have hsplit : Finset.Icc 1 b = insert 1 (Finset.Ioc 1 b) := by
+    ext n
+    simp only [Finset.mem_Icc, Finset.mem_insert, Finset.mem_Ioc]
+    omega
+  have hsum :
+      (∑ n ∈ Finset.Icc 1 b,
+        (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) =
+      (Set.ncard (heightShell H 1) : ℝ) +
+        ∑ n ∈ Finset.Ioc 1 b,
+          (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q) := by
+    rw [hsplit, Finset.sum_insert]
+    · simp
+    · simp
+  have hbR : (1 : ℝ) ≤ (b : ℝ) := by exact_mod_cast hb
+  have hlog : 1 ≤ 1 + Real.log (b : ℝ) := by
+    linarith [Real.log_nonneg hbR]
+  by_cases hqp : q < p
+  · have hpow : (1 : ℝ) ≤ (b : ℝ) ^ ((p - q : ℕ) : ℝ) := by
+      have hdiff_nonneg : (0 : ℝ) ≤ ((p - q : ℕ) : ℝ) := by positivity
+      simpa using Real.rpow_le_rpow_of_exponent_le hbR hdiff_nonneg
+    refine ⟨C₀ + C₁ * (2 : ℝ) ^ p, by positivity, ?_⟩
+    simp only [hqp, ↓reduceIte]
+    have hIoc' :
+        (∑ n ∈ Finset.Ioc 1 b,
+          (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) ≤
+          C₀ * (b : ℝ) ^ ((p - q : ℕ) : ℝ) := by
+      simpa only [hqp, ↓reduceIte] using hIoc
+    calc
+      (∑ n ∈ Finset.Icc 1 b,
+          (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) =
+          (Set.ncard (heightShell H 1) : ℝ) +
+            ∑ n ∈ Finset.Ioc 1 b,
+              (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q) := hsum
+      _ ≤ C₁ * (2 : ℝ) ^ p +
+          C₀ * (b : ℝ) ^ ((p - q : ℕ) : ℝ) :=
+        add_le_add hshell₁ hIoc'
+      _ ≤ (C₀ + C₁ * (2 : ℝ) ^ p) *
+          (b : ℝ) ^ ((p - q : ℕ) : ℝ) := by
+        have hC₁pow : C₁ * (2 : ℝ) ^ p ≤
+            (C₁ * (2 : ℝ) ^ p) *
+              (b : ℝ) ^ ((p - q : ℕ) : ℝ) := by
+          calc
+            C₁ * (2 : ℝ) ^ p =
+                (C₁ * (2 : ℝ) ^ p) * 1 := by ring
+            _ ≤ (C₁ * (2 : ℝ) ^ p) *
+                (b : ℝ) ^ ((p - q : ℕ) : ℝ) :=
+              mul_le_mul_of_nonneg_left hpow (by positivity)
+        calc
+          C₁ * (2 : ℝ) ^ p +
+              C₀ * (b : ℝ) ^ ((p - q : ℕ) : ℝ) ≤
+              (C₁ * (2 : ℝ) ^ p) *
+                (b : ℝ) ^ ((p - q : ℕ) : ℝ) +
+                C₀ * (b : ℝ) ^ ((p - q : ℕ) : ℝ) :=
+            add_le_add hC₁pow le_rfl
+          _ = (C₀ + C₁ * (2 : ℝ) ^ p) *
+              (b : ℝ) ^ ((p - q : ℕ) : ℝ) := by ring
+  · by_cases hpq : p = q
+    · subst q
+      refine ⟨C₀ + C₁ * (2 : ℝ) ^ p, by positivity, ?_⟩
+      simp only [lt_irrefl, ↓reduceIte]
+      have hIoc' :
+          (∑ n ∈ Finset.Ioc 1 b,
+            (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ p)) ≤
+            C₀ * (1 + Real.log (b : ℝ)) := by
+        simpa only [lt_irrefl, ↓reduceIte] using hIoc
+      calc
+        (∑ n ∈ Finset.Icc 1 b,
+            (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ p)) =
+            (Set.ncard (heightShell H 1) : ℝ) +
+              ∑ n ∈ Finset.Ioc 1 b,
+                (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ p) := hsum
+        _ ≤ C₁ * (2 : ℝ) ^ p + C₀ * (1 + Real.log (b : ℝ)) := by
+          exact add_le_add hshell₁ hIoc'
+        _ ≤ (C₀ + C₁ * (2 : ℝ) ^ p) *
+            (1 + Real.log (b : ℝ)) := by
+          have hC₁pow : 0 ≤ C₁ * (2 : ℝ) ^ p := by positivity
+          nlinarith [hlog]
+    · have hpq' : p < q := by omega
+      refine ⟨C₀ + C₁ * (2 : ℝ) ^ p, by positivity, ?_⟩
+      simp only [hqp, hpq, ↓reduceIte]
+      have hIoc' :
+          (∑ n ∈ Finset.Ioc 1 b,
+            (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) ≤ C₀ := by
+        simpa only [hqp, hpq, ↓reduceIte] using hIoc
+      calc
+        (∑ n ∈ Finset.Icc 1 b,
+            (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q)) =
+            (Set.ncard (heightShell H 1) : ℝ) +
+              ∑ n ∈ Finset.Ioc 1 b,
+                (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q) := hsum
+        _ ≤ C₁ * (2 : ℝ) ^ p + C₀ := by
+          exact add_le_add hshell₁ hIoc'
+        _ = C₀ + C₁ * (2 : ℝ) ^ p := by ring
+
 theorem heightShell_inv_pow_le {α : Type*} {H : α → ℝ}
     {n q : ℕ} (hn : 0 < n) {x : α} (hx : x ∈ heightShell H n) :
     (H x)⁻¹ ^ q ≤ (n : ℝ)⁻¹ ^ q := by
@@ -1133,6 +1424,169 @@ theorem heightShell_sum_inv_pow_le
     rw [Set.ncard_eq_toFinset_card (heightShell H n) hs]
   rw [hcard]
   simpa using hsum
+
+/- A finite family supported on positive heights below an integer cutoff is
+   bounded by the corresponding complete shell sum.  This is the bridge from
+   the paper's finite family `𝓕_l(T)` to the height-counting estimate. -/
+set_option maxHeartbeats 1000000 in
+theorem finite_height_inv_pow_sum_le_by_exponent
+    {α : Type*} {H : α → ℝ} {p q b : ℕ}
+    (hcount : HasHeightCountBounds H p) (hb : 1 ≤ b)
+    (S : Set α) (hS : S.Finite)
+    (hS_one : ∀ x ∈ S, 1 ≤ H x)
+    (hS_bound : ∀ x ∈ S, H x ≤ (b : ℝ)) :
+    ∃ C : ℝ, 0 < C ∧
+      (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+        if q < p then C * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * (1 + Real.log (b : ℝ))
+        else C := by
+  let I : Finset ℕ := Finset.Icc 1 b
+  have hShellFin (n : ℕ) (hn : n ∈ I) :
+      (heightShell H n).Finite := by
+    apply heightShell_finite hcount
+    exact Finset.mem_Icc.mp hn |>.1
+  have hFfin (n : ℕ) : (S ∩ heightShell H n).Finite := by
+    apply hS.subset
+    intro x hx
+    exact hx.1
+  let F : ℕ → Finset α := fun n => (hFfin n).toFinset
+  let U : Finset α := I.biUnion F
+  have hdisj : (I : Set ℕ).PairwiseDisjoint F := by
+    intro i hi j hj hne
+    change Disjoint (F i) (F j)
+    rw [Finset.disjoint_left]
+    intro x hxi hxj
+    apply Set.disjoint_left.1 (heightShell_disjoint hne)
+    · exact (hFfin i).mem_toFinset.mp hxi |>.2
+    · exact (hFfin j).mem_toFinset.mp hxj |>.2
+  have hU : (U : Set α) = S := by
+    ext x
+    constructor
+    · intro hx
+      simp only [U, Finset.mem_coe, Finset.mem_biUnion] at hx
+      obtain ⟨n, hn, hxn⟩ := hx
+      exact (hFfin n).mem_toFinset.mp hxn |>.1
+    · intro hx
+      obtain ⟨n, hn, hxn⟩ := exists_mem_heightShell_of_one_le (hS_one x hx)
+      have hnb : n ≤ b := by
+        have hnr : (n : ℝ) ≤ (b : ℝ) :=
+          le_trans hxn.1 (hS_bound x hx)
+        exact_mod_cast hnr
+      have hnI : n ∈ I := by
+        exact Finset.mem_Icc.2 ⟨hn, hnb⟩
+      exact Finset.mem_biUnion.2 ⟨n, hnI,
+        (hFfin n).mem_toFinset.2 ⟨hx, hxn⟩⟩
+  have hUfin : U = hS.toFinset := by
+    apply Finset.ext
+    intro x
+    change x ∈ (U : Set α) ↔ x ∈ hS.toFinset
+    rw [hU, hS.mem_toFinset]
+  have hsumU :
+      (∑ x ∈ U, (H x)⁻¹ ^ q) =
+        ∑ n ∈ I, ∑ x ∈ F n, (H x)⁻¹ ^ q := by
+    simpa [U] using
+      (Finset.sum_biUnion (s := I) (t := F) hdisj
+        (f := fun x : α => (H x)⁻¹ ^ q))
+  have hFsum (n : ℕ) (hn : n ∈ I) :
+      (∑ x ∈ F n, (H x)⁻¹ ^ q) ≤
+        (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q) := by
+    have hnpos : 0 < n := lt_of_lt_of_le (by omega) (Finset.mem_Icc.mp hn).1
+    have hfull := heightShell_sum_inv_pow_le (q := q) hcount hnpos
+    have hsubset : F n ⊆ (hShellFin n hn).toFinset := by
+      intro x hx
+      exact (hShellFin n hn).mem_toFinset.2
+        ((hFfin n).mem_toFinset.mp hx |>.2)
+    have hnonneg : ∀ x ∈ (hShellFin n hn).toFinset,
+        x ∉ F n → 0 ≤ (H x)⁻¹ ^ q := by
+      intro x hx hnot
+      have hxn := (hShellFin n hn).mem_toFinset.mp hx
+      have hnR : (0 : ℝ) < n := by exact_mod_cast hnpos
+      have hHR : 0 < H x := lt_of_lt_of_le hnR hxn.1
+      exact pow_nonneg (inv_nonneg.mpr hHR.le) q
+    calc
+      (∑ x ∈ F n, (H x)⁻¹ ^ q) ≤
+          ∑ x ∈ (hShellFin n hn).toFinset, (H x)⁻¹ ^ q :=
+        Finset.sum_le_sum_of_subset_of_nonneg hsubset hnonneg
+      _ ≤ (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q) := by
+        simpa using hfull
+  obtain ⟨C, hC, hshell⟩ := heightShell_sum_Icc_one_le_by_exponent hcount hb
+  refine ⟨C, hC, ?_⟩
+  calc
+    (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) = ∑ x ∈ U, (H x)⁻¹ ^ q := by
+      rw [hUfin]
+    _ = ∑ n ∈ I, ∑ x ∈ F n, (H x)⁻¹ ^ q := hsumU
+    _ ≤ ∑ n ∈ I,
+        (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q) := by
+      exact Finset.sum_le_sum (fun n hn => hFsum n hn)
+    _ ≤ if q < p then C * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * (1 + Real.log (b : ℝ))
+        else C := by
+      simpa [I] using hshell
+
+/- The weighted form used in the low-rank argument.  The support is kept as an
+   explicit finite set: this is the formal counterpart of restricting to
+   `𝓕_l(T)`, and it avoids replacing the manuscript's family by an unproved
+   dyadic decomposition. -/
+set_option maxHeartbeats 1000000 in
+theorem tsum_abs_le_finite_height_inv_pow
+    {α : Type*} {H : α → ℝ} {p q b : ℕ}
+    (hcount : HasHeightCountBounds H p) (hb : 1 ≤ b)
+    (w : α → ℝ) (S : Set α) (hS : S.Finite)
+    (hS_one : ∀ x ∈ S, 1 ≤ H x)
+    (hS_bound : ∀ x ∈ S, H x ≤ (b : ℝ))
+    (hzero : ∀ x ∉ S, w x = 0) (C : ℝ) (hC : 0 ≤ C)
+    (hw : ∀ x ∈ S, |w x| ≤ C * (H x)⁻¹ ^ q) :
+    ∃ D : ℝ, 0 < D ∧
+      |∑' x : α, w x| ≤
+        if q < p then C * D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * D * (1 + Real.log (b : ℝ))
+        else C * D := by
+  have hzero' : ∀ x ∉ hS.toFinset, w x = 0 := by
+    intro x hx
+    apply hzero
+    exact fun hxs => hx (hS.mem_toFinset.2 hxs)
+  have hsum : (∑' x : α, w x) = ∑ x ∈ hS.toFinset, w x :=
+    tsum_eq_sum hzero'
+  have hsumabs :
+      |∑ x ∈ hS.toFinset, w x| ≤ ∑ x ∈ hS.toFinset, |w x| := by
+    simpa [Real.norm_eq_abs] using
+      (norm_sum_le (s := hS.toFinset) (f := w))
+  have hpoint_sum :
+      (∑ x ∈ hS.toFinset, |w x|) ≤
+        ∑ x ∈ hS.toFinset, C * (H x)⁻¹ ^ q := by
+    exact Finset.sum_le_sum (fun x hx => hw x (hS.mem_toFinset.1 hx))
+  have hsum_scaled :
+      (∑ x ∈ hS.toFinset, C * (H x)⁻¹ ^ q) =
+        C * ∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q := by
+    rw [Finset.mul_sum]
+  obtain ⟨D, hD, hheight⟩ :=
+    finite_height_inv_pow_sum_le_by_exponent hcount hb S hS hS_one hS_bound
+  have hCheight :
+      C * (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+        C * (if q < p then D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+          else if p = q then D * (1 + Real.log (b : ℝ))
+          else D) :=
+    mul_le_mul_of_nonneg_left hheight hC
+  refine ⟨D, hD, ?_⟩
+  rw [hsum]
+  calc
+    |∑ x ∈ hS.toFinset, w x| ≤ ∑ x ∈ hS.toFinset, |w x| := hsumabs
+    _ ≤ ∑ x ∈ hS.toFinset, C * (H x)⁻¹ ^ q := hpoint_sum
+    _ = C * ∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q := hsum_scaled
+    _ ≤ C * (if q < p then D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then D * (1 + Real.log (b : ℝ))
+        else D) := hCheight
+    _ = if q < p then C * D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * D * (1 + Real.log (b : ℝ))
+        else C * D := by
+      by_cases hqp : q < p
+      · simp only [hqp, ↓reduceIte]
+        ring
+      · by_cases hpq : p = q
+        · simp only [hqp, hpq, lt_irrefl, ↓reduceIte]
+          ring
+        · simp only [hqp, hpq, ↓reduceIte]
+ 
 
 /- The shell partition can be assembled into the actual reciprocal-height sum.
    The sharp `p < q` range comes from the Abel argument above.  We restrict to
@@ -1396,11 +1850,12 @@ theorem summable_of_abs_le_height_inv_pow_all
       |w x| ≤ C * (H x)⁻¹ ^ q) :
     Summable w := by
   obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
-  let S : Set α := {x | 1 ≤ H x}
+  have hcount' : HasHeightCountBounds H p := ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩
   let L : Set α := {x | H x < 1}
   have hL : L.Finite := by
     apply (hcut 1 le_rfl).1.subset
     intro x hx
+    change H x ≤ 1
     exact hx.le
   let wL : α → ℝ := L.indicator w
   have hwL_support : (Function.support wL).Finite := by
@@ -1410,18 +1865,15 @@ theorem summable_of_abs_le_height_inv_pow_all
     apply hx
     simp [wL, hxL]
   have hwL : Summable wL := summable_of_hasFiniteSupport hwL_support
-  have hwS : Summable (fun x : S => w x.1) := by
-    exact summable_of_abs_le_height_inv_pow hcount hpq hw
-  have hwS' : Summable (S.indicator w) := by
-    exact (summable_subtype_iff_indicator (s := S)).mpr hwS
-  have hdecomp : w = wL + S.indicator w := by
+  have hwS' : Summable ({x : α | 1 ≤ H x}.indicator w) := by
+    exact (summable_subtype_iff_indicator (s := {x : α | 1 ≤ H x})).mp
+      (summable_of_abs_le_height_inv_pow hcount' hpq hw)
+  have hdecomp : w = wL + ({x : α | 1 ≤ H x}.indicator w) := by
     funext x
     by_cases hx : H x < 1
-    · have hxS : x ∉ S := by simpa [S] using (not_le_of_gt hx)
-      simp [wL, L, hx, hxS]
+    · simp [wL, L, hx, not_le_of_gt hx]
     · have hxL : x ∉ L := by simpa [L] using hx
-      have hxS : x ∈ S := by simpa [S] using (le_of_not_gt hx)
-      simp [wL, L, hxL, hxS]
+      simp [wL, L, hx, hxL, le_of_not_gt hx]
   rw [hdecomp]
   exact hwL.add hwS'
 
@@ -1592,183 +2044,6 @@ theorem height_inv_pow_tail_tendsto_zero
   simpa [g] using
     (tendsto_tsum_of_dominated_convergence hsum hpoint hbound)
 
-theorem summable_heightDyadicShell_inv_pow
-    {α : Type*} {H : α → ℝ} {p q : ℕ}
-    (hcount : HasHeightCountBounds H p) (hpq : p < q) :
-    Summable (fun j : ℕ =>
-      (Set.ncard (heightDyadicShell H j) : ℝ) *
-        (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q)) := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
-  have hcard : ∀ j : ℕ,
-      (Set.ncard (heightDyadicShell H j) : ℝ) ≤
-        cᵤ * ((2 ^ (j + 1) : ℕ) : ℝ) ^ p := by
-    intro j
-    have hT : (1 : ℝ) ≤ ((2 ^ (j + 1) : ℕ) : ℝ) := by
-      exact_mod_cast (Nat.one_le_iff_ne_zero.mpr (pow_ne_zero _ (by omega)))
-    have hfinite :
-        (Set.Finite {x | H x ≤ ((2 ^ (j + 1) : ℕ) : ℝ)}) :=
-      (hcut _ hT).1
-    have hsubset : heightDyadicShell H j ⊆
-        {x | H x ≤ ((2 ^ (j + 1) : ℕ) : ℝ)} := by
-      intro x hx
-      exact hx.2.le
-    have hcard' := Set.ncard_le_ncard hsubset hfinite
-    have hcardR : (Set.ncard (heightDyadicShell H j) : ℝ) ≤
-        (Set.ncard {x | H x ≤ ((2 ^ (j + 1) : ℕ) : ℝ)} : ℝ) := by
-      exact_mod_cast hcard'
-    exact hcardR.trans ((hcut _ hT).2.2)
-  let d : ℕ := q - p
-  have hd : 0 < d := by omega
-  let r : ℝ := (2 : ℝ)⁻¹ ^ d
-  have hr0 : 0 ≤ r := by
-    exact pow_nonneg (by positivity) _
-  have hr1 : r < 1 := by
-    dsimp [r]
-    apply pow_lt_one₀
-    · positivity
-    · norm_num
-    · omega
-  have hgeom : Summable (fun j : ℕ => r ^ j) :=
-    summable_geometric_of_lt_one hr0 hr1
-  have hbound : ∀ j : ℕ,
-      (Set.ncard (heightDyadicShell H j) : ℝ) *
-          (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) ≤
-        (cᵤ * (2 : ℝ) ^ p) * r ^ j := by
-    intro j
-    have hcardj := hcard j
-    have hstep : ((2 ^ (j + 1) : ℕ) : ℝ) =
-        (2 : ℝ) * ((2 ^ j : ℕ) : ℝ) := by
-      norm_num [pow_succ, Nat.cast_mul, mul_comm]
-    have hbpos : 0 < ((2 ^ j : ℕ) : ℝ) := by positivity
-    have hpow : ((2 ^ (j + 1) : ℕ) : ℝ) ^ p ≤
-        (2 : ℝ) ^ p * ((2 ^ j : ℕ) : ℝ) ^ p := by
-      rw [hstep, mul_pow]
-    have hident : ((2 ^ j : ℕ) : ℝ) ^ p *
-        (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) =
-        (((2 ^ j : ℕ) : ℝ)⁻¹ ^ (q - p)) := by
-      simp only [inv_pow]
-      field_simp [ne_of_gt hbpos]
-      rw [← pow_add, Nat.add_sub_of_le (by omega)]
-    have hrident : (((2 ^ j : ℕ) : ℝ)⁻¹ ^ (q - p)) = r ^ j := by
-      dsimp [r, d]
-      calc
-        (((2 ^ j : ℕ) : ℝ)⁻¹ ^ (q - p)) =
-            (((2 : ℝ) ^ j)⁻¹ ^ (q - p)) := by norm_num
-        _ = (((2 : ℝ)⁻¹) ^ j) ^ (q - p) := by rw [← inv_pow]
-        _ = ((2 : ℝ)⁻¹) ^ (j * (q - p)) := by rw [pow_mul]
-        _ = ((2 : ℝ)⁻¹) ^ ((q - p) * j) := by rw [Nat.mul_comm]
-        _ = (((2 : ℝ)⁻¹) ^ (q - p)) ^ j := by rw [pow_mul]
-    calc
-      (Set.ncard (heightDyadicShell H j) : ℝ) *
-          (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) ≤
-          (cᵤ * ((2 ^ (j + 1) : ℕ) : ℝ) ^ p) *
-            (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) := by
-              exact mul_le_mul_of_nonneg_right hcardj (by positivity)
-      _ ≤ (cᵤ * ((2 : ℝ) ^ p * ((2 ^ j : ℕ) : ℝ) ^ p)) *
-            (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) := by
-              exact mul_le_mul_of_nonneg_right
-                (mul_le_mul_of_nonneg_left hpow hcᵤ.le) (by positivity)
-      _ = (cᵤ * (2 : ℝ) ^ p) * r ^ j := by
-              rw [show (cᵤ * ((2 : ℝ) ^ p * ((2 ^ j : ℕ) : ℝ) ^ p)) *
-                    (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) =
-                    (cᵤ * (2 : ℝ) ^ p) *
-                      (((2 ^ j : ℕ) : ℝ) ^ p *
-                        (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q)) by ring]
-              rw [hident, hrident]
-  apply Summable.of_nonneg_of_le (fun j => by positivity) hbound
-  exact hgeom.mul_left (cᵤ * (2 : ℝ) ^ p)
-
-theorem heightDyadicShell_inv_pow_le {α : Type*} {H : α → ℝ}
-    {j q : ℕ} {x : α} (hx : x ∈ heightDyadicShell H j) :
-    (H x)⁻¹ ^ q ≤ (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) := by
-  have hbpos : (0 : ℝ) < ((2 ^ j : ℕ) : ℝ) := by positivity
-  have hHx : 0 < H x := lt_of_lt_of_le hbpos hx.1
-  have hinv : (H x)⁻¹ ≤ ((2 ^ j : ℕ) : ℝ)⁻¹ :=
-    (inv_le_inv₀ hHx hbpos).2 hx.1
-  exact pow_le_pow_left₀ (inv_nonneg.mpr hHx.le) hinv q
-
-theorem summable_height_inv_pow_of_one_le_dyadic
-    {α : Type*} {H : α → ℝ} {p q : ℕ}
-    (hcount : HasHeightCountBounds H p) (hpq : p < q) :
-    Summable (fun x : {x : α // 1 ≤ H x} => (H x.1)⁻¹ ^ q) := by
-  let β := {x : α // 1 ≤ H x}
-  let f : β → ℝ := fun x => (H x.1)⁻¹ ^ q
-  let s : ℕ → Set β :=
-    fun j => {x | (x.1 : α) ∈ heightDyadicShell H j}
-  have hs_unique : ∀ i : β, ∃! j : ℕ, i ∈ s j := by
-    intro i
-    obtain ⟨j, hij⟩ := exists_mem_heightDyadicShell_of_one_le i.2
-    refine ⟨j, hij, ?_⟩
-    intro j' hj'
-    by_contra hne
-    exact Set.disjoint_left.1 (heightDyadicShell_disjoint hne) hj' hij
-  have hs_finite : ∀ j, (s j).Finite := by
-    intro j
-    have hpre : ({x : β | (x : α) ∈ heightDyadicShell H j}).Finite := by
-      apply (heightDyadicShell_finite hcount).preimage
-      intro x hx y hy hxy
-      exact Subtype.ext hxy
-    simpa [s] using hpre
-  have hf_nonneg : ∀ i : β, 0 ≤ f i := by
-    intro i
-    apply pow_nonneg
-    exact inv_nonneg.mpr (le_trans zero_le_one i.2)
-  rw [summable_partition hf_nonneg hs_unique]
-  constructor
-  · intro j
-    exact (hs_finite j).summable (fun i : β => f i)
-  · let a : ℕ → ℝ := fun j =>
-      (Set.ncard (heightDyadicShell H j) : ℝ) *
-        (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q)
-    have ha : Summable a := by
-      simpa [a] using summable_heightDyadicShell_inv_pow hcount hpq
-    let g : ℕ → ℝ := fun j => ∑' i : s j, f i
-    change Summable g
-    refine Summable.of_nonneg_of_le
-      (f := a) (g := g)
-      (fun j => tsum_nonneg (fun i => hf_nonneg i))
-      (fun j => ?_) ha
-    let hs := hs_finite j
-    letI : Fintype (s j) := hs.fintype
-    have hcard : Fintype.card (s j) =
-        Set.ncard (heightDyadicShell H j) := by
-      have himage : ((fun x : β => (x : α)) '' s j) = heightDyadicShell H j := by
-        ext x
-        constructor
-        · rintro ⟨y, hy, rfl⟩
-          exact hy
-        · intro hx
-          have hpowone : 1 ≤ 2 ^ j :=
-            Nat.one_le_iff_ne_zero.mpr (pow_ne_zero _ (by omega))
-          have hpowoneR : (1 : ℝ) ≤ ((2 ^ j : ℕ) : ℝ) := by
-            exact_mod_cast hpowone
-          have hxone : 1 ≤ H x := hpowoneR.trans hx.1
-          refine ⟨⟨x, hxone⟩, hx, rfl⟩
-      have himcard : ((fun x : β => (x : α)) '' s j).ncard =
-          (s j).ncard := by
-        apply (Set.ncard_image_iff hs).2
-        intro x hx y hy hxy
-        exact Subtype.ext hxy
-      calc
-        Fintype.card (s j) = (s j).ncard := Set.fintypeCard_eq_ncard (s j)
-        _ = ((fun x : β => (x : α)) '' s j).ncard := himcard.symm
-        _ = Set.ncard (heightDyadicShell H j) := by rw [himage]
-    have hinner : g j ≤ a j := by
-      change (∑' i : s j, f i) ≤ a j
-      rw [tsum_eq_sum (s := Finset.univ) (fun b hb =>
-        (hb (Finset.mem_univ b)).elim)]
-      calc
-        (∑ x : s j, f x) ≤
-            ∑ x : s j, (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) := by
-          apply Finset.sum_le_sum
-          intro x hx
-          exact heightDyadicShell_inv_pow_le x.property
-        _ = (Set.ncard (heightDyadicShell H j) : ℝ) *
-            (((2 ^ j : ℕ) : ℝ)⁻¹ ^ q) := by
-          simp [Finset.sum_const, hcard]
-        _ = a j := rfl
-    exact hinner
-
 /- The following consequences are parameterized by the height-counting input.
    The source of that input is Schmidt's theorem, but this file does not hide
    it behind an axiom: a future supporting formalization must supply an actual
@@ -1782,15 +2057,6 @@ theorem summable_rowSpaceHeight_inv_pow_of_one_le
       1 ≤ rowSpaceHeight V} => (rowSpaceHeight V.1)⁻¹ ^ q) := by
   exact summable_height_inv_pow_of_one_le hcount hmq
 
-/- Auxiliary dyadic consequence, not a step of the manuscript's proof. -/
-theorem summable_rowSpaceHeight_inv_pow_of_one_le_of_lt
-    {m k q : ℕ}
-    (hcount : HasHeightCountBounds
-      (rowSpaceHeight (K := K) (m := m) (k := k)) m)
-    (hmq : m < q) :
-    Summable (fun V : {V : Grassmannian K m k //
-      1 ≤ rowSpaceHeight V} => (rowSpaceHeight V.1)⁻¹ ^ q) := by
-  exact summable_height_inv_pow_of_one_le_dyadic hcount hmq
 
 /- The intermediate-rank hypothesis in Schmidt's theorem is essential to its
    formulation, but the full-rank stratum is elementary: there is only the

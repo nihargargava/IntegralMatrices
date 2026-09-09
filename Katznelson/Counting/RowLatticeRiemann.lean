@@ -123,8 +123,8 @@ theorem rowMatrixLatticeCovolume_pos
       (rowMatrixZLattice_span_top V n)
   exact @ZLattice.covolume_pos (rowMatrixRealSpan V n) inferInstance inferInstance
     inferInstance msW bsW (rowMatrixZLattice V n) hdisc hZ mu
-    (@isAddHaarMeasure_euclideanHausdorffMeasure (rowMatrixRealSpan V n)
-      inferInstance inferInstance inferInstance msW bsW)
+      (@isAddHaarMeasure_euclideanHausdorffMeasure (rowMatrixRealSpan V n)
+        inferInstance inferInstance inferInstance msW bsW)
 
 /-- Reindex the abstract row-matrix lattice sum by the integral matrices
 whose rows belong to `Λ_D`. -/
