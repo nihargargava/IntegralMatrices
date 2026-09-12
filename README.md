@@ -1,204 +1,131 @@
 # Formalization of Integral Matrices of Fixed Rank
 
-This repository is a Lean 4 formalization of the preprint
-[*Integral matrices of fixed rank over number fields*](https://arxiv.org/abs/2510.11673)
-by Nihar Gargava, Vlad Serban, Maryna Viazovska, and Ilaria Viglino.
+This repository formalizes the preprint [*Integral matrices of fixed rank over
+number fields*](https://arxiv.org/abs/2510.11673) by Nihar Gargava, Vlad
+Serban, Maryna Viazovska, and Ilaria Viglino. The checked-in source
+[`papers/katznelson.tex`](papers/katznelson.tex) is the authoritative version
+used by the formalization.
 
-The project follows the notation and proof strategy of the paper. Its two main
-targets are:
+The project has two targets:
 
-1. the asymptotic count of fixed-rank matrices over the ring of integers of a
-   number field, with the stated `T⁻¹ log T` error; and
-2. the convergence theorem for moments over lattices obtained from lifts of
-   algebraic codes.
+1. the fixed-rank asymptotic count for integral matrices over a number field,
+   with main scale `T^(k*n*degree K)`, error `O(T⁻¹ log T)`, and the stated
+   no-log refinement; and
+2. convergence of moments for lifts of algebraic codes to the echelon-integral
+   expression in Theorem `th:higher_moments`.
 
-> [!IMPORTANT]
-> This formalization is under active development. The public theorem statements
-> are present in `main.lean`, but the end-to-end proofs are not yet complete.
+## Status
 
-## Current status
+Both public theorem paths in [`main.lean`](main.lean) are machine checked.
+There are no `sorry`, `axiom`, or `opaque` declarations in the development.
+Where the audit found a mathematical error in the current TeX, the exact
+location and proposed correction are recorded in
+[`notes/paper-issues.md`](notes/paper-issues.md); the Lean development follows
+the author's approved corrected reading while the corresponding manuscript
+edits are pending.
 
-The current, machine-checked infrastructure includes:
+The fixed-rank theorem is conditional on the explicit argument
+`HasHeightCountBounds`, which is the polynomial upper-count interface used
+from Schmidt's external height-counting theorem for the intermediate ranks
+`1 ≤ l < m`. This is intentional: Schmidt's theorem is outside the scope of
+the preprint and is exposed as a hypothesis rather than hidden as an axiom.
+The full-rank Grassmannian is a singleton and is handled internally.
 
-- Euclidean Minkowski embeddings and integral matrices over number fields;
-- admissible functions, compact-support finiteness, and lattice summability;
-- finite-field Grassmannian counts and code-containment estimates;
-- rank-drop estimates for reduction modulo prime ideals;
-- decomposition of fixed-rank matrices by rational row space;
-- primitive row lattices and denominator-clearing span results; and
-- general, controlled, subspace, and row-matrix lattice Riemann-sum estimates;
-- a general lattice ball-volume estimate and a finite rank-filtered lattice
-  sum bound, giving the corrected inequality used in the manuscript's
-  low-rank inner-sum step;
-- the product equivalence for the `n`-row lattice, its dimension
-  `n * (k * degree K)`, and the corresponding reciprocal-power summability
-  result; and
-- ordinary height shells with finiteness, polynomial cardinality bounds, and
-  the unit-shell Abel/summation-by-parts route to the sharp `p < q`
-  reciprocal-height summability consequence, including the finite height-
-  interval comparison and a quantitative ordinary-shell Abel estimate;
-- the elementary positive-interval integral identities and the resulting
-  three-case finite ordinary-shell bound needed for the low-rank estimate;
-- the paper-side absolute-summability interface: a reciprocal-height
-  domination hypothesis now yields summability of the corresponding matrix or
-  subspace summands, together with the resulting qualitative vanishing of
-  moving height tails;
-- the manuscript's reduced-row-echelon type, the direct definition of
-  `Λ_D`, the real row-set `M_n(Λ_D)`, and a proved equality between the direct
-  and row-lattice definitions of `𝓕_l(T)`; and
-- uniqueness and existence of the manuscript's reduced-row-echelon
-  representative for every finite-dimensional row space, proved by induction
-  on the number of columns; the proof includes the zero-rank base case, the
-  zero-first-coordinate lift, and the normalized pivot-row construction; and
-- the denominator module from the paper's index definition, including the
-  common-denominator clearing lemma, the reduced-pivot coefficient lemma, and
-  the exact `n`-fold product index for its coefficient module, together with
-  the proved ambient-index identity corresponding to equation (21); and
-- the manuscript-facing unrestricted `M_n(Λ_D)` Riemann estimate, obtained
-  by the explicit direct-to-row-lattice reindexing and the proved matrix-space
-  dimension formula; and
-- the rank-zero row-matrix base case and the positive lower-rank induction
-  split; and
-- the exact finite-family lower-rank overcount identity, with each lower-rank
-  matrix regrouped by its own row space and weighted by the number of chosen
-  rank-k row spaces containing it.
+The checked development now includes:
 
-The main remaining work is the quantitative geometry of the row lattices,
-the exact normalization of measures and heights, the echelon-tail estimates,
-the fixed-rank induction, and the final lifts-of-codes argument. The current
-temporary interfaces are explicit in the source:
+- the number-field matrix spaces, integral embeddings, and the manuscript's
+  discriminant/trace normalization;
+- admissible functions, compact-support finiteness, and controlled lattice
+  Riemann sums;
+- Voronoi domains, covering radii, Hadamard and Minkowski estimates;
+- number-field successive minima and the Fieker--Stehlé block-selection
+  argument;
+- reduced-row-echelon representatives and their equivalence with rational
+  Grassmannian points;
+- the paper's denominator module and its exact `n`-fold index;
+- the exact bridge between `𝓕_l(T)` and the bounded row-space family;
+- Schmidt/Abel ordinary-shell estimates with the manuscript's literal
+  counting function `η(x)`, cutoff `X`, `alpha_l`, and `B_l(T)` bookkeeping;
+- the literal termwise-absolute lower-rank and height-tail estimates;
+- the rank-induction and final error assembly;
+- the absolute convergence and exact identity
+  `mainConstant = ∑_D 𝔇(D)⁻ⁿ ∫ f(xD) dx`; and
+- a proved equivalence between codes and the literal family `𝓛(𝓟,s)`, a
+  proved equivalence between integral representatives and each literal
+  Cartesian power `Λ^m`, and the resulting manuscript-facing average;
+- the finite-field rank grouping, scaling limit, and literal echelon-integral
+  limit for the higher-moment theorem; and
+- the finite-index and covolume calculation for the normalized lift family,
+  including the manuscript-normalized unit-covolume statement in
+  `Katznelson/Counting/LiftCovolume.lean`.
 
-- `main.lean` has one public `sorry`, in `fixed_rank_count`;
-- `Katznelson/Counting/Schmidt.lean` contains height-counting consequences
-  parameterized by an explicit `HasHeightCountBounds` hypothesis.  Schmidt's
-  theorem itself is not currently an axiom or a hidden assumption; its Lean
-  proof remains supporting work outside the preprint's main scope.
+Three narrowly scoped adaptations are recorded explicitly. The exceptional
+case `degree K = k = 1`, `m = n - 1` uses the author's approved
+critical-radius argument. In the admissibility/Riemann subsystem, the Lean
+implementation uses Mathlib's raw Euclidean mixed-space metric rather than
+making the manuscript's discriminant/trace metric a global typeclass; exact
+main-term measures and constants are nevertheless bridged to the manuscript
+normalization. Finally, the large-radius branch of the uniform Riemann
+estimate uses a compact-support lattice count instead of extending the
+error-function proof. These deviations are author-approved only in their
+stated local scopes. All other parts follow the checked-in manuscript's
+notation and proof path. The final statement and provenance audit are
+complete.
+Non-fatal style linter warnings do not affect the checked theorem paths.
 
-Consequently, a successful Lean build means that the present statements and
-infrastructure typecheck; it does not yet mean that the two main theorems
-have been completely verified from definitions and proofs.
+## Main declarations
 
-## Formalization roadmap
+- `Katznelson.fixed_rank_count` formalizes Theorem `th:main`.
+- `Katznelson.lifts_of_codes_convergence` formalizes Theorem
+  `th:higher_moments`.
+- `Katznelson.manuscriptLiftsMoment_eq_liftsMoment` proves that the literal
+  average over `𝓛(𝓟,s)` is the code-indexed form used in the calculation.
+- `Katznelson.tsum_echelon_denominator_integral_eq_mainConstant` proves the
+  manuscript formula for the fixed-rank main constant.
+- `Katznelson.manuscriptEchelonIntegralLimit_eq_echelonIntegralLimit` bridges
+  the literal higher-moment limit to the internal row-space representation.
 
-- [x] State both main results in `main.lean` using the paper's notation and
-  hypotheses.
-- [x] Define the number-field, Euclidean, integral-matrix, prime-ideal, code,
-  and lifted-lattice foundations.
-- [x] Formalize admissible functions, support bounds, summability, and general
-  lattice Riemann-sum estimates.
-- [x] Prove the finite-field Grassmannian counts and uniform code-containment
-  probability estimates.
-- [x] Prove the rank-drop bounds for reduction modulo a prime ideal.
-- [x] Decompose rank-`k` matrices by rational row space and construct the
-  associated primitive integral row lattice.
-- [x] Define the manuscript's echelon matrices and direct `Λ_D`/`M_n(Λ_D)`
-  support family, and prove its equality with the row-space implementation of
-  `𝓕_l(T)`.
-- [x] Prove that the primitive row module spans its rational row space over
-  both `K` and `ℚ`.
-- [x] Prove the real-span dimension formula
-  `finrank ℝ (rowRealSpan V) = k * degree K`.
-- [x] Identify the `n`-row matrix space with the corresponding finite product
-  of row spaces and prove the matrix-space dimension formula.
-- [x] Formalize finite ordinary height-shell bounds and the paper-aligned
-   Abel/summation-by-parts `p < q` reciprocal-tail consequence of the
-   polynomial count, including the positive/logarithmic/bounded exponent
-   cases needed by the low-rank sum.
-- [ ] Prove the product formulas for matrix-lattice covolumes and fundamental
-   radii.
-- [ ] Specialize the general ball-volume estimate to the row-matrix lattice
-   after resolving the expensive matrix/subtype measure normalization in Lean.
-- [ ] Match the normalized measure, height, denominator, and Jacobian with
-  the manuscript definitions.
-- [ ] Formalize the remaining geometry-of-numbers preliminaries.
-  - [ ] Voronoi domains and covering-radius estimates.
-  - [ ] Minkowski and Hadamard inequalities in the required normalization.
-  - [ ] Successive minima for number-field lattices.
-- [ ] Complete the matrix parametrization and subspace summation.
-  - [x] Define reduced-row-echelon representatives over `K`, and prove the
-    bijection with `Grassmannian K m l` by row space.
-  - [x] Define the denominator module, prove its finiteness/positivity, and
-    identify the image index with `M_n(Λ_D)` as in equation (21).
-  - [ ] Discharge the explicit Schmidt height-counting hypothesis with a
-    genuine supporting formalization.
-  - [ ] Prove convergence and tail bounds for the echelon sum.
-- [ ] Prove the fixed-rank counting theorem.
-  - [ ] Bound row spaces that interact with the support of `f`.
-  - [ ] Establish the possible-successive-minima estimates.
-  - [ ] Control the lower-rank terms.
-  - [ ] Carry out the rank induction and sum over row spaces.
-  - [ ] Identify the main constant and prove the `T⁻¹ log T` error.
-  - [ ] Prove the no-logarithm refinement outside the exceptional case.
-- [ ] Prove convergence for lifts of codes.
-  - [ ] Expand the finite code average and group matrices by rank.
-  - [ ] Control rank-drop and vanishing terms under the lift scaling.
-  - [ ] Apply the fixed-rank asymptotic to each surviving rank.
-  - [ ] Identify the limit with the convergent echelon-integral sum.
-- [ ] Finish and audit the formalization.
-  - [ ] Replace all temporary opaque interfaces with definitions and proofs.
-  - [ ] Remove the remaining public theorem `sorry`.
-  - [ ] Remove scratch files and resolve nonessential linter warnings.
-  - [ ] Run a clean `lake build` and audit statements against the manuscript.
+## Building
 
-## Building the project
-
-Install [elan](https://github.com/leanprover/elan) and Git, then clone the
-repository. Elan will select the Lean version pinned in `lean-toolchain`
-(`v4.34.0-rc2`). The Mathlib revision is recorded in `lake-manifest.json`.
+Install [elan](https://github.com/leanprover/elan) and Git. Elan selects the
+Lean version recorded in `lean-toolchain`; Lake uses the Mathlib revision in
+`lake-manifest.json`.
 
 ```bash
 lake exe cache get
 lake build
 ```
 
-Useful focused checks include:
+Useful focused checks are:
 
 ```bash
 lake build main
-lake build Katznelson.Counting.RowLattice
-lake build Katznelson.Counting.RowLatticeRiemann
+lake build Katznelson.FinalAssembly
+lake env lean Katznelson/Counting/MainTermNormalization.lean
+lake env lean Katznelson/Counting/LiftCovolume.lean
+lake env lean Katznelson/Counting/UniformLowerRankLiteral.lean
 ```
-
-Run `lake update` only when intentionally updating the Mathlib dependency.
 
 ## Repository layout
 
 | Path | Contents |
 | --- | --- |
-| `main.lean` | Public statements of the two main theorems |
-| `Katznelson/Foundations.lean` | Number-field, matrix, embedding, and norm conventions |
-| `Katznelson/Counting/` | Finite-field, rank, row-space, lattice, and Riemann-sum arguments |
-| `Katznelson/Lifts.lean` | Codes, lifted lattices, scaling, and moment definitions |
-| `Katznelson/MainTheorems.lean` | Assembly layer and temporary theorem interfaces |
-| `papers/katznelson.tex` | Authoritative manuscript used to align statements and proofs |
-| `AGENTS.md` | Contributor workflow, roadmap, and coding conventions |
+| [`main.lean`](main.lean) | Public statements of the two main theorems |
+| [`Katznelson/FinalAssembly.lean`](Katznelson/FinalAssembly.lean) | Final fixed-rank case split and error assembly |
+| [`Katznelson/MainTheorems.lean`](Katznelson/MainTheorems.lean) | Shared counting and lifts infrastructure |
+| [`Katznelson/Counting/`](Katznelson/Counting/) | Geometry, echelon, height, Riemann-sum, and counting modules |
+| [`Katznelson/Lifts.lean`](Katznelson/Lifts.lean) | Codes, lifted lattices, scaling, and moments |
+| [`papers/`](papers/) | Authoritative manuscript and accessible references |
+| [`notes/`](notes/) | Paper issues, formalization issues, and source attribution |
+| [`AGENTS.md`](AGENTS.md) | Fidelity, attribution, and contribution rules |
 
-## Formalization policy
+## Provenance and license
 
-Proofs should follow the manuscript closely enough that the formal development
-also checks the paper's argument. Preserve its notation where practical and
-record the corresponding theorem, lemma, or equation label in comments.
+The development distinguishes manuscript steps, cited inputs, derived
+consequences, and Lean-only infrastructure in nearby comments. Reused metric
+and covolume code from Nihar Gargava's GPL-3.0 project
+[*MeanValueIdealLattices*](https://github.com/nihargargava/MeanValueIdealLattices)
+is attributed in the relevant source files and in
+[`notes/source-attribution.md`](notes/source-attribution.md).
 
-All `.tex` files are strictly read-only in this repository. If a manuscript
-issue is discovered, report its exact line numbers and a suggested correction;
-do not edit the TeX source.
-
-Mathematical results and proof ideas are attributed to their sources. Schmidt's
-1967 paper is the source of the original number-field height-counting argument;
-Thunder's 1992 paper is recorded as an effective asymptotic refinement. The
-corresponding local PDFs are kept in `papers/`, and source notes are kept in
-`notes/`. If a cited paper cannot be accessed, stop and request that the author
-provide a PDF rather than reconstructing the argument from memory.
-
-## Contributing
-
-Contributions are welcome, especially self-contained Mathlib lemmas and work on
-the next roadmap milestone. Before opening a pull request:
-
-1. read `AGENTS.md`;
-2. keep changes focused on one mathematical component;
-3. run the relevant focused build and, when practical, `lake build`; and
-4. state which part of the paper is covered and whether any scaffolding remains.
-
-Please do not present the repository as a completed verification until both
-public theorems build without `sorry` or opaque proof placeholders.
+This repository is licensed under GPL-3.0-only; see [`LICENSE`](LICENSE).

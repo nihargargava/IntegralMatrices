@@ -19,8 +19,12 @@ section
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
-/-- The hypotheses actually used by the lattice Riemann-sum proof. -/
-structure RiemannControl (f : E → ℝ) where
+/- [Lean infrastructure for paper `re:help`, lines 550--562] The hypotheses
+   actually used by the lattice Riemann-sum proof, with an explicit upper
+   range for the error-function parameter.  Omitting `εMax` means the
+   manuscript's original range `0 < ε ≤ 1`; a separately proved update of
+   the error control may instantiate a larger fixed range. -/
+structure RiemannControl (f : E → ℝ) (εMax : ℝ := 1) where
   oscillation : E → ℝ → ℝ
   compactSupport : HasCompactSupport f
   integrable : Integrable f
@@ -30,30 +34,52 @@ structure RiemannControl (f : E → ℝ) where
   abs_sub_le :
     ∀ {x y ε}, dist x y ≤ ε → |f x - f y| ≤ oscillation x ε
   oscillation_integrable :
-    ∀ ε, 0 < ε → ε ≤ 1 →
+    ∀ ε, 0 < ε → ε ≤ εMax →
       Integrable (fun x => oscillation x ε)
         (μHE[Module.finrank ℝ E] : Measure E)
   oscillation_bound :
-    ∃ C : ℝ, 0 < C ∧ ∀ ε, 0 < ε → ε ≤ 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ ε, 0 < ε → ε ≤ εMax →
       ∫ x : E, oscillation x ε
         ∂(μHE[Module.finrank ℝ E] : Measure E) ≤ C * ε
+
+/- [Lean infrastructure for paper `re:help`, lines 550--562] Replace only
+   the proved range of a fixed ambient oscillation control.  The two supplied
+   hypotheses are exactly the analytic content of the manuscript's phrase
+   "suitably updating the constant"; this definition does not assert that
+   they follow automatically from the original `ε ≤ 1` control. -/
+def RiemannControl.withUpdatedRange
+    {f : E → ℝ} {εOld εMax : ℝ} (h : RiemannControl f εOld)
+    (hIntegrable : ∀ ε, 0 < ε → ε ≤ εMax →
+      Integrable (fun x => h.oscillation x ε)
+        (μHE[Module.finrank ℝ E] : Measure E))
+    (hBound : ∃ C : ℝ, 0 < C ∧ ∀ ε, 0 < ε → ε ≤ εMax →
+      ∫ x : E, h.oscillation x ε
+        ∂(μHE[Module.finrank ℝ E] : Measure E) ≤ C * ε) :
+    RiemannControl f εMax where
+  oscillation := h.oscillation
+  compactSupport := h.compactSupport
+  integrable := h.integrable
+  oscillation_nonneg := h.oscillation_nonneg
+  abs_sub_le := h.abs_sub_le
+  oscillation_integrable := hIntegrable
+  oscillation_bound := hBound
 
 variable [Nontrivial E]
 variable (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
 
 omit [Nontrivial E] in
 theorem RiemannControl.scaled_oscillation_integrable
-    {f : E → ℝ} (h : RiemannControl f) {T ε : ℝ}
-    (hT : 0 < T) (hε : 0 < ε) (hεone : ε ≤ 1) :
+    {f : E → ℝ} {εMax : ℝ} (h : RiemannControl f εMax) {T ε : ℝ}
+    (hT : 0 < T) (hε : 0 < ε) (hεMax : ε ≤ εMax) :
     Integrable (fun x : E => h.oscillation (T⁻¹ • x) ε)
       (μHE[Module.finrank ℝ E] : Measure E) := by
-  exact (h.oscillation_integrable ε hε hεone).comp_smul
+  exact (h.oscillation_integrable ε hε hεMax).comp_smul
     (inv_ne_zero hT.ne')
 
 theorem controlled_cell_integral_error_bound
-    (f : E → ℝ) (h : RiemannControl f)
+    (f : E → ℝ) {εMax : ℝ} (h : RiemannControl f εMax)
     {T : ℝ} (hT : 0 < T) (v : L)
-    (hRadius : latticeFundamentalRadius L / T ≤ 1) :
+    (hRadius : latticeFundamentalRadius L / T ≤ εMax) :
     |∫ x in latticeFundamentalDomain L,
         (f (T⁻¹ • (v : E)) - f (T⁻¹ • ((v : E) + x)))
         ∂(μHE[Module.finrank ℝ E] : Measure E)| ≤
@@ -84,9 +110,9 @@ theorem controlled_cell_integral_error_bound
   exact h.abs_sub_le (dist_scaled_add_latticePoint_le L hT v hx)
 
 theorem controlled_tsum_cell_integral_error_bound
-    (f : E → ℝ) (h : RiemannControl f)
+    (f : E → ℝ) {εMax : ℝ} (h : RiemannControl f εMax)
     {T : ℝ} (hT : 0 < T)
-    (hRadius : latticeFundamentalRadius L / T ≤ 1) :
+    (hRadius : latticeFundamentalRadius L / T ≤ εMax) :
     |∑' v : L, ∫ x in latticeFundamentalDomain L,
         (f (T⁻¹ • (v : E)) - f (T⁻¹ • ((v : E) + x)))
         ∂(μHE[Module.finrank ℝ E] : Measure E)| ≤
@@ -145,9 +171,9 @@ theorem controlled_tsum_cell_integral_error_bound
     _ = ∫ x : E, g x ∂mu := hb_tsum
 
 theorem controlled_covolume_mul_latticeSum_sub_integral_le
-    (f : E → ℝ) (h : RiemannControl f)
+    (f : E → ℝ) {εMax : ℝ} (h : RiemannControl f εMax)
     {T : ℝ} (hT : 0 < T)
-    (hRadius : latticeFundamentalRadius L / T ≤ 1) :
+    (hRadius : latticeFundamentalRadius L / T ≤ εMax) :
     |ZLattice.covolume L
           (μHE[Module.finrank ℝ E] : Measure E) *
         (∑' v : L, f (T⁻¹ • (v : E))) -
@@ -220,9 +246,9 @@ theorem controlled_covolume_mul_latticeSum_sub_integral_le
   exact controlled_tsum_cell_integral_error_bound L f h hT hRadius
 
 theorem controlled_latticeRiemann_estimate_weighted
-    (f : E → ℝ) (h : RiemannControl f) :
+    (f : E → ℝ) {εMax : ℝ} (h : RiemannControl f εMax) :
     ∃ Cₐ : ℝ, 0 < Cₐ ∧ ∀ T : ℝ, 0 < T →
-      latticeFundamentalRadius L / T ≤ 1 →
+      latticeFundamentalRadius L / T ≤ εMax →
       |ZLattice.covolume L
             (μHE[Module.finrank ℝ E] : Measure E) *
           ((∑' v : L, f (T⁻¹ • (v : E))) /
@@ -269,9 +295,9 @@ theorem controlled_latticeRiemann_estimate_weighted
   simpa [ε, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hraw'
 
 theorem controlled_latticeRiemann_estimate
-    (f : E → ℝ) (h : RiemannControl f) :
+    (f : E → ℝ) {εMax : ℝ} (h : RiemannControl f εMax) :
     ∃ Cₐ : ℝ, 0 < Cₐ ∧ ∀ T : ℝ, 0 < T →
-      latticeFundamentalRadius L / T ≤ 1 →
+      latticeFundamentalRadius L / T ≤ εMax →
       |(∑' v : L, f (T⁻¹ • (v : E))) /
             T ^ Module.finrank ℝ E -
           (ZLattice.covolume L

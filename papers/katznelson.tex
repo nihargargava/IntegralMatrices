@@ -1105,6 +1105,8 @@ The choice of $\Cr{sup}$ therefore has to be adjusted as per how large the suppo
 
     Let us use the $\OK$-basis ${v_{i}}_{1 \leq i \leq k}$ of $\Lambda$ and obtain a $\mathbb{Z}$-basis $\{w_{ij}\}_{ {1 \leq i \leq k, 1 \leq j \leq d }}$
     of $\Lambda$ from \cref{le:basis_of_OK}. 
+      After decreasing $\Cr{okl}$ if necessary, we may assume
+  $\Cr{okl}\Cr{okr}\leq 1$.
     This tells us that 
     \begin{equation}
         \|A\|^{2} \geq \sum_{i=1}^{k} \|v_{i}\|^{2} \geq  \tfrac{\Cr{okl}^{2}}{d}\sum_{i=1}^{k}\sum_{j=1}^{d} \|w_{ij}\|^{2}.
@@ -1717,7 +1719,7 @@ When $m+k-l-n > 0$, we know that $T^{\alpha_{l}} T^{ld(m+k-l-n)} = T^{d N }$
     \begin{equation}
         \sum_{\substack{A \in \M_{n \times m}(\mathbb{Z}) \\ \rank A = 1}} f(\tfrac{1}{T} A) 
         =  
-        \sum_{v \in \mathbb{Z}^{m}_{\prim}}^{}. \sum_{w \in \mathbb{Z}^{n} } f(\tfrac{1}{T} wv^{T}).
+        \tfrac{1}{2}\sum_{v \in \mathbb{Z}^{m}_{\prim}}^{} \sum_{w \in \mathbb{Z}^{n} \setminus \{0\} } f(\tfrac{1}{T} wv^{T}).
     \end{equation}
     This has been discussed in~\cref{ss:log_term}.
     

@@ -1,4 +1,4 @@
-import Katznelson.MainTheorems
+import Katznelson.FinalAssembly
 import Mathlib.Analysis.Matrix.Normed
 
 /-!
@@ -26,11 +26,25 @@ This is Theorem `th:main` of `papers/katznelson.tex`: for an admissible
 function on `M_{n × m}(K_ℝ)`, the rank-k integral-matrix sum has order
 `T^(k*n*d)`, with normalized additive error bounded by `T⁻¹ log T`.
 Unless `d = k = 1` and `m = n - 1`, the logarithm can be dropped.
+
+The explicit `hcount` argument is the [cited input] from Schmidt,
+*On Heights of Algebraic Subspaces* (1967), Theorem 3, as represented and
+attributed in `Katznelson.Counting.Schmidt`; it is not a local axiom.
 -/
+/- [derived consequence; author-approved local metric adaptation of paper
+   Theorem `th:main`, lines 157--203 and proof lines 1641--1800]
+   the exceptional branch at lines 1716--1724 uses the author's explicitly
+   permitted critical-radius adaptation.  The `Admissible` implementation
+   uses the separately documented, author-approved raw-Euclidean convention
+   only in the admissibility/Riemann subsystem; the exact displayed main
+   constant uses the manuscript-normalized Haar measure. -/
 theorem fixed_rank_count
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (h_dimensions : n > m ∧ m ≥ k ∧ k ≥ 1)
-    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f) :
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    (hcount : ∀ l : ℕ, 1 ≤ l → l ≤ k → l < m →
+      HasHeightCountBounds
+        (rowSpaceHeight (K := K) (m := m) (k := l)) m) :
     ∃ cMain cError : ℝ, 0 < cError ∧
       cMain = mainConstant n m k f ∧
       (∀ T : ℝ, 2 ≤ T →
@@ -40,20 +54,25 @@ theorem fixed_rank_count
         ∀ T : ℝ, 2 ≤ T →
           |fixedRankSum n m k f T / T ^ (k * n * degree K) - cMain| ≤
             cError * T⁻¹) := by
-  sorry
+  exact fixed_rank_count_from_assembled_estimates
+    h_dimensions f h_f hcount
 
-/- The first consequence needed in the lifts argument is the genuine limit
+/- [derived consequence of paper Theorem `th:main`] The first consequence
+   needed in the lifts argument is the genuine limit
    form of `th:main`.  The paper states an explicit `T⁻¹ log T` error; this
    lemma packages that estimate as convergence along the real scale. -/
 theorem fixedRankSum_normalized_tendsto
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (h_dimensions : n > m ∧ m ≥ k ∧ k ≥ 1)
-    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f) :
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    (hcount : ∀ l : ℕ, 1 ≤ l → l ≤ k → l < m →
+      HasHeightCountBounds
+        (rowSpaceHeight (K := K) (m := m) (k := l)) m) :
     Tendsto
       (fun T : ℝ => fixedRankSum n m k f T / T ^ (k * n * degree K))
       atTop (𝓝 (mainConstant n m k f)) := by
   obtain ⟨cMain, cError, hcError, hcMain, hestimate, _hbetter⟩ :=
-    fixed_rank_count h_dimensions f h_f
+    fixed_rank_count h_dimensions f h_f hcount
   have hlog : Tendsto (fun T : ℝ => Real.log T / T) atTop (𝓝 0) := by
     simpa using
       (Real.tendsto_pow_log_div_mul_add_atTop (1 : ℝ) 0 1 one_ne_zero)
@@ -72,12 +91,16 @@ theorem fixedRankSum_normalized_tendsto
     simpa [hcMain, Real.norm_eq_abs] using hestimate T hT
   · exact herror
 
-/- Composing the fixed-rank limit with the scale from (eq:def_of_L) gives the
+/- [derived consequence of paper Theorem `th:main` and equation
+   `eq:def_of_L`] Composing the fixed-rank limit with the scale gives the
    form used term-by-term in the lifts proof. -/
 theorem fixedRankSum_normalized_liftScale_tendsto
     {K : Type*} [Field K] [NumberField K]
     {n m k s : ℕ} (h_dimensions : n > m ∧ m ≥ k ∧ k ≥ 1)
-    (hsn : s < n) (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f) :
+    (hsn : s < n) (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    (hcount : ∀ l : ℕ, 1 ≤ l → l ≤ k → l < m →
+      HasHeightCountBounds
+        (rowSpaceHeight (K := K) (m := m) (k := l)) m) :
     Tendsto
       (fun P : PrimeIdeal K =>
         fixedRankSum n m k f (liftScale P n s) /
@@ -85,7 +108,7 @@ theorem fixedRankSum_normalized_liftScale_tendsto
       (comap (idealNorm : PrimeIdeal K → ℕ) atTop)
       (𝓝 (mainConstant n m k f)) := by
   simpa [Function.comp_def] using
-    (fixedRankSum_normalized_tendsto h_dimensions f h_f).comp
+    (fixedRankSum_normalized_tendsto h_dimensions f h_f hcount).comp
       (liftScale_tendsto_atTop hsn)
 
 /-!
@@ -94,14 +117,22 @@ theorem fixedRankSum_normalized_liftScale_tendsto
 This is Theorem `th:higher_moments`: for the permitted `s`, the m-th moment
 over `𝓛(𝓟,s)` converges as `𝓝(𝓟) → ∞` to the echelon-matrix integral sum.
 -/
+/- [derived consequence; author-approved local metric adaptation of paper
+   Theorem `th:higher_moments`] The fixed-rank input is `th:main`, with
+   Schmidt's Theorem 3 exposed through `hcount`; the same narrowly scoped
+   raw-Euclidean `Admissible` convention is used, while the limiting echelon
+   integrals have the proved manuscript Haar normalization. -/
 theorem lifts_of_codes_convergence
     {K : Type*} [Field K] [NumberField K]
     {n m s : ℕ} (h_n : 2 ≤ n) (h_m : 1 ≤ m ∧ m < n)
     (h_s : s = n - 1 ∨ (m ≤ s ∧ s < n ∧ m * (n - s) < n))
-    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f) :
+    (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
+    (hcount : ∀ l : ℕ, 1 ≤ l → l < m →
+      HasHeightCountBounds
+        (rowSpaceHeight (K := K) (m := m) (k := l)) m) :
     tendsToAtNorm
-      (fun P => liftsMoment P n m s f)
-      (echelonIntegralLimit n m s f) := by
+      (fun P => manuscriptLiftsMoment P n m s f)
+      (manuscriptEchelonIntegralLimit (K := K) n m f) := by
   have hmpos : 0 < m := h_m.1
   have hmnlt : m < n := h_m.2
   have hmn : m ≤ n := hmnlt.le
@@ -171,7 +202,7 @@ theorem lifts_of_codes_convergence
         omega
       have hnorm := fixedRankSum_normalized_liftScale_tendsto
         (K := K) (n := n) (m := m) (k := i.1 + 1) (s := s)
-        hdim hsnlt f h_f
+        hdim hsnlt f h_f (fun l hl hlk hlm => hcount l hl hlm)
       have hcorr := codeContainmentCorrection_tendsto_one
         (K := K) (n := n) (s := s) (k := i.1 + 1)
         (le_trans hik hms) hsn
@@ -223,9 +254,11 @@ theorem lifts_of_codes_convergence
       (𝓝 (echelonIntegralLimit n m s f)) := by
     rw [← hlimit]
     exact hsum
-  change Tendsto (fun P : PrimeIdeal K => liftsMoment P n m s f)
+  change Tendsto (fun P : PrimeIdeal K => manuscriptLiftsMoment P n m s f)
     (comap (idealNorm : PrimeIdeal K → ℕ) atTop)
-    (𝓝 (echelonIntegralLimit n m s f))
+    (𝓝 (manuscriptEchelonIntegralLimit (K := K) n m f))
+  simp_rw [manuscriptLiftsMoment_eq_liftsMoment]
+  rw [manuscriptEchelonIntegralLimit_eq_echelonIntegralLimit n m s f]
   exact hsum'.congr' (hQevent.mono fun P hP => by
     simpa [weighted] using (hidentity P hP).symm)
 

@@ -22,6 +22,9 @@ section
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- [Lean infrastructure for paper equation `eq:nthmoment`, lines 1828--1836]
+Rewrite one code-indexed lattice sum as an indicator sum on all integral
+matrices. -/
 theorem liftCodeSum_eq_tsum_integralMatrix_indicator
     (P : PrimeIdeal K) {n m s : ℕ} (S : Code P n s)
     (f : M n m (K_ℝ[K]) → ℝ) :
@@ -36,6 +39,7 @@ theorem liftCodeSum_eq_tsum_integralMatrix_indicator
     (fun A : IntegralMatrix K n m =>
       f ((liftScale P n s)⁻¹ • embedMatrix A))
 
+/- [Lean infrastructure for the preceding indicator reindexing] -/
 theorem liftCodeSum_eq_tsum_integralMatrix_indicator_if
     (P : PrimeIdeal K) {n m s : ℕ} (S : Code P n s)
     (f : M n m (K_ℝ[K]) → ℝ) :
@@ -49,6 +53,9 @@ theorem liftCodeSum_eq_tsum_integralMatrix_indicator_if
   intro A
   by_cases hA : A ∈ matricesInLift P S <;> simp [Set.indicator, hA]
 
+/- [derived consequence of paper equation `eq:nthmoment`, lines 1828--1836]
+For one integral matrix, summing the containment indicator counts precisely
+the codes containing its reduced column span. -/
 theorem sum_code_indicator_eq_card_containingCodes_mul
     (P : PrimeIdeal K) {n m s : ℕ} (A : IntegralMatrix K n m)
     (c : ℝ) :
@@ -66,6 +73,9 @@ theorem sum_code_indicator_eq_card_containingCodes_mul
         simp [containingCodes, mem_matricesInLift_iff_codeSpan_le]]
     simp [nsmul_eq_mul]
 
+/- [derived consequence of paper equation `eq:nthmoment`, lines 1828--1836]
+Interchange the finite code sum and the absolutely summable matrix sum to
+obtain the manuscript's containment-probability expansion. -/
 theorem liftsMoment_eq_tsum_codeContainmentProbability
     (P : PrimeIdeal K) (n m s : ℕ)
     (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f) :
@@ -132,7 +142,9 @@ theorem liftsMoment_eq_tsum_codeContainmentProbability
       simp [div_eq_mul_inv]
       ring
 
-/- The containment probability depends only on the span of the prescribed
+/- [derived consequence of the finite-field Grassmannian count used after
+paper equation `eq:nthmoment`] The containment probability depends only on
+the span of the prescribed
    vectors.  This removes the temporary independence assumption in the
    Gaussian-binomial formula and makes the formula rank-sensitive. -/
 theorem codeContainmentProbability_eq_of_finrank_codeSpan
@@ -171,6 +183,8 @@ theorem codeContainmentProbability_eq_of_finrank_codeSpan
   rw [hprob]
   exact codeContainmentProbability_eq P (y ∘ e) he hrs hsn
 
+/- [derived consequence of the preceding rank-sensitive finite-field count]
+Specialization to the reduced-column matrix rank. -/
 theorem codeContainmentProbability_eq_of_reduceMatrixRank_eq
     (P : PrimeIdeal K) {n m s r : ℕ}
     (A : IntegralMatrix K n m)
@@ -183,7 +197,9 @@ theorem codeContainmentProbability_eq_of_reduceMatrixRank_eq
     (residueColumns P A) (r := r) ?_ hrs hsn
   exact (reduceMatrix_rank_eq_span_finrank P A).symm.trans hrank
 
-/- The rank-drop terms are eventually outside the compact support.  This is
+/- [paper, proof of Theorem `th:higher_moments`, rank-drop step following
+equation `eq:nthmoment`] The rank-drop terms are eventually outside the
+compact support.  This is
    the support reduction used in the proof of `th:higher_moments`; the
    algebraic lower bound comes from `le:rankdrop`, while the positive
    exponent is exactly the paper's hypothesis
@@ -305,6 +321,9 @@ theorem exists_rankDrop_support_threshold
     by_contra hnonzero
     exact (not_lt_of_ge (hsupport _ hnonzero)) hnormlower
 
+/- [derived consequence of the preceding paper rank-drop step] On the support,
+reduction preserves every positive algebraic rank once the prime norm is
+large enough. -/
 theorem reduceMatrix_rank_eq_of_support_nonzero
     {n m s : ℕ} (hm : 0 < m) (hmn : m ≤ n) (hms : m ≤ s)
     (hcond : 1 - (s : ℝ) / (n : ℝ) < 1 / (m : ℝ))
@@ -324,7 +343,8 @@ theorem reduceMatrix_rank_eq_of_support_nonzero
   rw [hA] at heq
   exact heq
 
-/- Once rank-drop terms have been removed, the finite-field factor can be
+/- [derived consequence of the paper's rank-drop step and the finite-field
+containment count] Once rank-drop terms have been removed, the factor can be
    replaced pointwise by the factor indexed by the algebraic rank.  The
    zero-rank case is handled separately because the support lemma only needs
    to exclude positive-rank drops. -/
@@ -370,6 +390,9 @@ theorem weightedContainmentTerm_eq_of_large_prime
           (le_trans hrankle hms) hsn
       rw [hprob]
 
+/- [paper, proof of Theorem `th:higher_moments`, finite-field expansion after
+equation `eq:nthmoment`] Group the surviving matrix terms with the correction
+factor indexed by their algebraic rank. -/
 theorem exists_liftsMoment_eq_tsum_rankWeighted
     {n m s : ℕ} (hm : 0 < m) (hmn : m ≤ n) (hms : m ≤ s)
     (hsn : s ≤ n)

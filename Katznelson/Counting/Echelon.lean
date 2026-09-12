@@ -304,6 +304,47 @@ theorem echelonLambda_eq_integralRowModule {l m : ℕ}
   intro v
   rfl
 
+/- [derived consequence, paper equation `eq:defi_of_lambda`, lines 760--795]
+   Inclusion of the primitive lattices attached to two echelon representatives
+   is equivalent to inclusion of their rational row spaces.  This is the
+   bridge needed to translate the paper's `Λ_{D'} ⊆ Λ_D` condition into the
+   row-space indexing used by the counting development. -/
+theorem echelonLambda_le_iff_echelonRowSpace_le
+    {l l' m : ℕ} (D : EchelonMatrix K l m) (D' : EchelonMatrix K l' m) :
+    echelonLambda D' ≤ echelonLambda D ↔
+      (echelonRowSpace D').1 ≤ (echelonRowSpace D).1 := by
+  constructor
+  · intro h x hx
+    let x' : (echelonRowSpace D').1 := ⟨x, hx⟩
+    have hspan : Submodule.span K
+        (Set.range (fun w : integralRowModule (echelonRowSpace D') =>
+          (integralRowToRowSpace (echelonRowSpace D') w :
+            (echelonRowSpace D').1))) = ⊤ :=
+      span_range_integralRowToRowSpace (echelonRowSpace D')
+    have hxspan : x' ∈ Submodule.span K
+        (Set.range (fun w : integralRowModule (echelonRowSpace D') =>
+          (integralRowToRowSpace (echelonRowSpace D') w :
+            (echelonRowSpace D').1))) := by
+      rw [hspan]
+      trivial
+    refine Submodule.span_induction (p := fun x : (echelonRowSpace D').1 =>
+      fun _ => x.1 ∈ (echelonRowSpace D).1) ?_ ?_ ?_ ?_ hxspan
+    · rintro _ ⟨w, rfl⟩
+      have hw : w.1 ∈ echelonLambda D' := by
+        rw [echelonLambda_eq_integralRowModule]
+        exact w.2
+      change (fun j => (w.1 j : K)) ∈
+        Submodule.span K (Set.range D.1.row)
+      exact (mem_echelonLambda_iff D w.1).mp (h hw)
+    · exact (echelonRowSpace D).1.zero_mem
+    · intro x y _ _ hx hy
+      exact (echelonRowSpace D).1.add_mem hx hy
+    · intro c x _ hx
+      exact (echelonRowSpace D).1.smul_mem c hx
+  · intro h v hv
+    apply (mem_echelonLambda_iff D v).mpr
+    exact h ((mem_echelonLambda_iff D' v).mp hv)
+
 /- The denominator module from equation `de:denonimator` (line 193).  Its
    elements are the coefficient vectors `v ∈ O_K^l` for which the row
    combination `vᵀ D` has integral coordinates. -/
@@ -826,18 +867,19 @@ theorem tsum_echelonIntegralMatrices_eq_integralRowMatrices
 /- This is the real ambient version of the manuscript's notation `M_n(R)`
    from Definition `de:defi_of_M_t` (lines 1031--1036). -/
 def echelonLambdaRealSet {l m : ℕ} (D : EchelonMatrix K l m) :
-    Set (Fin m → K_ℝ[K]) :=
+    Set (RowVector K m) :=
   (integralVectorEmbedding (K := K) m) ''
     (echelonLambda D : Set (Fin m → 𝓞 K))
 
 def echelonMatrixSet {l m n : ℕ} (D : EchelonMatrix K l m) :
     Set (M n m (K_ℝ[K])) :=
-  {A | ∀ i, A i ∈ echelonLambdaRealSet D}
+  {A | ∀ i, rowVectorOfFun (A i) ∈ echelonLambdaRealSet D}
 
 @[simp]
 theorem mem_echelonMatrixSet_iff {l m n : ℕ}
     (D : EchelonMatrix K l m) (A : M n m (K_ℝ[K])) :
-    A ∈ echelonMatrixSet D ↔ ∀ i, A i ∈ echelonLambdaRealSet D := Iff.rfl
+    A ∈ echelonMatrixSet D ↔
+      ∀ i, rowVectorOfFun (A i) ∈ echelonLambdaRealSet D := Iff.rfl
 
 /- Every real matrix in `M_n(Λ_D)` is the embedding of a unique integral
    matrix whose rows lie in the direct module.  This is the concrete bridge
@@ -851,7 +893,7 @@ theorem mem_echelonMatrixSet_iff_exists_integralMatrix
         B ∈ echelonIntegralRowMatrixModule D n ∧ embedMatrix B = A := by
   constructor
   · intro hA
-    change ∀ i, A i ∈ echelonLambdaRealSet D at hA
+    change ∀ i, rowVectorOfFun (A i) ∈ echelonLambdaRealSet D at hA
     choose v hv using hA
     let B : IntegralMatrix K n m := fun i => v i
     have hB : B ∈ echelonIntegralRowMatrixModule D n := by
@@ -859,12 +901,13 @@ theorem mem_echelonMatrixSet_iff_exists_integralMatrix
       exact (hv i).1
     have hBA : embedMatrix B = A := by
       ext i j
-      exact congrFun (hv i).2 j
+      exact congrFun (congrArg WithLp.ofLp (hv i).2) j
     exact ⟨B, hB, hBA⟩
   · rintro ⟨B, hB, rfl⟩
     intro i
     refine ⟨B.row i, hB i, ?_⟩
-    ext j
+    apply PiLp.ext
+    intro j
     rfl
 
 /- The lattice used to represent `M_n(Λ_D)` after passing through the
@@ -1015,7 +1058,8 @@ theorem tsum_echelonIntegralMatrices_rank_eq_rowMatrixZLattice_rank
         f (T⁻¹ • (((A.1 : rowMatrixRealSpan (echelonRowSpace D) n) :
           M n m (K_ℝ[K])))) := by rfl
 
-/- The row-space implementation of the paper's family
+/- [Lean infrastructure for paper equation `eq:defi_of_calF`, lines 784--803]
+The row-space implementation of the paper's family
    `𝓕_l^(Csup)(T)` (equation `eq:defi_of_calF`).  The direct
    `Λ_D`-implementation and its equality with this definition are given
    below; keeping this representation is convenient for the existing lattice
@@ -1027,7 +1071,8 @@ noncomputable def calF {l m n : ℕ}
       ‖((A.1 : rowMatrixRealSpan (echelonRowSpace D) n) :
         M n m (K_ℝ[K]))‖ ≤ Csup * T}
 
-/- The manuscript separately declares `𝓕_0(T) = {0}`.  We record that
+/- [paper, equation `eq:defi_of_calF`, lines 784--803] The manuscript
+separately declares `𝓕_0(T) = {0}`.  We record that
    convention as a named family; the unique zero-row representative can be
    connected to `calF` after the zero-row echelon instance is developed. -/
 def calFZero {m : ℕ} : Set (EchelonMatrix K 0 m) := Set.univ
@@ -1739,7 +1784,8 @@ theorem mem_calF_iff {l m n : ℕ} {Csup T : ℝ}
             M n m (K_ℝ[K]))‖ ≤ Csup * T := by
   rfl
 
-/- The same family written with the manuscript's direct `M_n(Λ_D)` model. -/
+/- [paper, equation `eq:defi_of_calF`, lines 784--803] The same family written
+with the manuscript's direct `M_n(Λ_D)` model. -/
 noncomputable def calFDirect {l m n : ℕ}
     (Csup T : ℝ) : Set (EchelonMatrix K l m) :=
   {D | ∃ A : echelonIntegralMatrices (n := n) D,

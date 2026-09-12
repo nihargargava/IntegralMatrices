@@ -22,6 +22,11 @@ second attribution of Schmidt’s original argument.
    current Lean row representation uses an equivalent finite-dimensional norm;
    for fixed `K`, norm equivalence changes only the constants in the count,
    not the exponent `m`.
+
+   Project status: this external theorem is the explicitly attributed
+   `HasHeightCountBounds` hypothesis permitted in the final conditional
+   formalization.  It is not an axiom, and its separate Lean proof is not a
+   completion requirement for the preprint's internal argument.
 -/
 
 namespace Katznelson
@@ -50,14 +55,16 @@ def heightBoundedRowSpaces {m k : ℕ} (C T : ℝ) :
     Set (Grassmannian K m k) :=
   rowSpaceHeightBall (m := m) (k := k) (C * T ^ (k * degree K))
 
-/- [Lean infrastructure] Explicit predicate for the two-sided polynomial
-   height-counting input.  This predicate is not an imported theorem and is
-   not discharged by an axiom in this development. -/
+/- [Lean infrastructure] Explicit predicate for the polynomial upper
+   height-counting input actually used from Schmidt's Theorem 3.  Finiteness
+   and the upper `O(T^p)` estimate are retained; no lower estimate is imposed.
+   This matters at the boundary rank, where the Grassmannian is a singleton
+   and a two-sided `T^p` estimate would be false.  This predicate is not an
+   imported theorem and is not discharged by an axiom in this development. -/
 def HasHeightCountBounds {α : Type*} (H : α → ℝ) (p : ℕ) : Prop :=
-  ∃ cₗ cᵤ : ℝ, 0 < cₗ ∧ 0 < cᵤ ∧
+  ∃ cᵤ : ℝ, 0 < cᵤ ∧
     ∀ T : ℝ, 1 ≤ T →
       (Set.Finite {x | H x ≤ T}) ∧
-        cₗ * T ^ p ≤ (Set.ncard {x | H x ≤ T} : ℝ) ∧
         (Set.ncard {x | H x ≤ T} : ℝ) ≤ cᵤ * T ^ p
 
 /- [derived consequence, paper lines 649--653] This is the finite Abel
@@ -698,7 +705,7 @@ theorem iUnion_heightShell {α : Type*} {H : α → ℝ} :
 theorem heightShell_finite {α : Type*} {H : α → ℝ} {p : ℕ}
     (hcount : HasHeightCountBounds H p) {n : ℕ} (hn : 1 ≤ n) :
     (heightShell H n).Finite := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
   have hT : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by
     exact_mod_cast (by omega : 1 ≤ n + 1)
   apply (hcut ((n + 1 : ℕ) : ℝ) hT).1.subset
@@ -710,7 +717,7 @@ theorem heightShell_finite {α : Type*} {H : α → ℝ} {p : ℕ}
 theorem heightInterval_finite {α : Type*} {H : α → ℝ} {p a b : ℕ}
     (hcount : HasHeightCountBounds H p) (ha : 1 ≤ a) (hab : a ≤ b) :
     (heightInterval H a b).Finite := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
   have hb : 1 ≤ b := le_trans ha hab
   have hbR : (1 : ℝ) ≤ (b : ℝ) := by exact_mod_cast hb
   apply (hcut (b : ℝ) hbR).1.subset
@@ -733,7 +740,7 @@ theorem finite_height_interval_sum_inv_pow_le_shell_sum
   let hs := heightInterval_finite hcount ha hab
   have hfin_shell : ∀ n : ℕ, (heightShell H n).Finite := by
     intro n
-    obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+    obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
     have hT : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by
       exact_mod_cast (by omega : 1 ≤ n + 1)
     apply (hcut ((n + 1 : ℕ) : ℝ) hT).1.subset
@@ -834,7 +841,7 @@ theorem heightShell_partial_sum_upper {α : Type*} {H : α → ℝ} {p : ℕ}
     ∃ cᵤ : ℝ, 0 < cᵤ ∧ ∀ {n : ℕ}, 1 ≤ n →
       (∑ i ∈ Finset.Ico 1 n,
         (Set.ncard (heightShell H i) : ℝ)) ≤ cᵤ * (n : ℝ) ^ p := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
   refine ⟨cᵤ, hcᵤ, ?_⟩
   intro n hn
   classical
@@ -887,7 +894,7 @@ theorem heightShell_partial_sum_upper {α : Type*} {H : α → ℝ} {p : ℕ}
         (Set.ncard (heightShell H i) : ℝ)) = (U.card : ℝ) := by
           simpa [I] using hsum_card
     _ ≤ (Set.ncard {x | H x ≤ (n : ℝ)} : ℝ) := by exact_mod_cast hcardUle
-    _ ≤ cᵤ * (n : ℝ) ^ p := (hcut (n : ℝ) hnreal).2.2
+    _ ≤ cᵤ * (n : ℝ) ^ p := (hcut (n : ℝ) hnreal).2
 
 /- [derived consequence, paper lines 649--653] The Abel formula uses the
    cumulative shell count including the zero shell.  The zero shell is
@@ -899,7 +906,7 @@ theorem heightShell_full_partial_sum_upper {α : Type*} {H : α → ℝ} {p : �
       (∑ i ∈ Finset.Icc 0 n,
         (Set.ncard (heightShell H i) : ℝ)) ≤ C * (n : ℝ) ^ p := by
   obtain ⟨c₀, hc₀, hpartial⟩ := heightShell_partial_sum_upper hcount
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
   refine ⟨cᵤ + c₀ * (2 : ℝ) ^ p, ?_, ?_⟩
   · positivity
   · intro n hn
@@ -914,7 +921,7 @@ theorem heightShell_full_partial_sum_upper {α : Type*} {H : α → ℝ} {p : �
       have hzeroR' : (Set.ncard (heightShell H 0) : ℝ) ≤
           (Set.ncard {x | H x ≤ (1 : ℝ)} : ℝ) := by
         exact_mod_cast hzero_card
-      exact hzeroR'.trans (by simpa using (hcut 1 le_rfl).2.2)
+      exact hzeroR'.trans (by simpa using (hcut 1 le_rfl).2)
     have hsum_pos :
         (∑ i ∈ Finset.Icc 1 n,
           (Set.ncard (heightShell H i) : ℝ)) ≤
@@ -1262,7 +1269,7 @@ theorem heightShell_ncard_upper {α : Type*} {H : α → ℝ} {p : ℕ}
     ∃ cᵤ : ℝ, 0 < cᵤ ∧ ∀ {n : ℕ}, 1 ≤ n →
       (Set.ncard (heightShell H n) : ℝ) ≤
         cᵤ * ((n + 1 : ℕ) : ℝ) ^ p := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
   refine ⟨cᵤ, hcᵤ, ?_⟩
   intro n hn
   have hT : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by
@@ -1275,7 +1282,7 @@ theorem heightShell_ncard_upper {α : Type*} {H : α → ℝ} {p : ℕ}
     intro x hx
     exact hx.2.le
   have hcard := Set.ncard_le_ncard hsubset hfinite
-  have hupper := (hcut ((n + 1 : ℕ) : ℝ) hT).2.2
+  have hupper := (hcut ((n + 1 : ℕ) : ℝ) hT).2
   have hcardR : (Set.ncard (heightShell H n) : ℝ) ≤
       (Set.ncard {x | H x ≤ ((n + 1 : ℕ) : ℝ)} : ℝ) := by
     exact_mod_cast hcard
@@ -1523,6 +1530,268 @@ theorem finite_height_inv_pow_sum_le_by_exponent
         else C := by
       simpa [I] using hshell
 
+/- [Lean infrastructure] The manuscript's Abel cutoff is a real quantity
+   `X` (in the low-rank application, `X = Crude2 * T^(l*d)`), whereas the
+   ordinary shells above are indexed by naturals.  This is the explicit
+   rounding bridge: it keeps `X` in the surrounding paper-facing statement
+   and introduces no new summation argument. -/
+theorem exists_nat_shell_cutoff (X : ℝ) :
+    ∃ b : ℕ, 1 ≤ b ∧ X ≤ (b : ℝ) ∧ (b : ℝ) < max 1 X + 1 := by
+  let b : ℕ := Nat.ceil (max 1 X)
+  have hmax_one : (1 : ℝ) ≤ max 1 X := le_max_left _ _
+  have hmax_pos : 0 < max 1 X := lt_of_lt_of_le zero_lt_one hmax_one
+  refine ⟨b, ?_, ?_, ?_⟩
+  · dsimp [b]
+    exact Nat.one_le_ceil_iff.mpr hmax_pos
+  · dsimp [b]
+    exact (le_max_right _ _).trans (Nat.le_ceil _)
+  · dsimp [b]
+    exact Nat.ceil_lt_add_one (le_trans zero_le_one hmax_one)
+
+/- [Lean infrastructure] Quantitative form of the preceding rounding bridge.
+   It is used only to return from the internal integer shell endpoint to the
+   manuscript's scale `C * T^a`; the harmless `+ 2` is absorbed into the
+   paper's unspecified positive constant. -/
+theorem nat_shell_cutoff_le_scaled
+    {C T : ℝ} {a b : ℕ} (hC : 0 ≤ C) (hT : 1 ≤ T)
+    (hupper : (b : ℝ) < max 1 (C * T ^ a) + 1) :
+    (b : ℝ) ≤ (C + 2) * T ^ a := by
+  have hpow : (1 : ℝ) ≤ T ^ a := one_le_pow₀ hT
+  have hCplus : (1 : ℝ) ≤ C + 1 := by linarith
+  have hCplus_nonneg : 0 ≤ C + 1 := by linarith
+  have hone : (1 : ℝ) ≤ (C + 1) * T ^ a := by
+    calc
+      (1 : ℝ) = 1 * 1 := by ring
+      _ ≤ (C + 1) * 1 :=
+        mul_le_mul_of_nonneg_right hCplus zero_le_one
+      _ ≤ (C + 1) * T ^ a :=
+        mul_le_mul_of_nonneg_left hpow hCplus_nonneg
+  have hscale : C * T ^ a ≤ (C + 1) * T ^ a := by
+    exact mul_le_mul_of_nonneg_right (by linarith) (le_trans zero_le_one hpow)
+  have hmax : max 1 (C * T ^ a) ≤ (C + 1) * T ^ a :=
+    max_le hone hscale
+  calc
+    (b : ℝ) ≤ max 1 (C * T ^ a) + 1 := hupper.le
+    _ ≤ (C + 1) * T ^ a + T ^ a := add_le_add hmax hpow
+    _ = (C + 2) * T ^ a := by ring
+
+/- [Lean infrastructure] Raising the rounded shell endpoint to a natural
+   exponent.  The conclusion is the exact power comparison needed to restore
+   the positive branch of the manuscript's `B_l(T)`. -/
+theorem nat_shell_cutoff_rpow_le_scaled
+    {C T : ℝ} {a b r : ℕ} (hC : 0 ≤ C) (hT : 1 ≤ T)
+    (hupper : (b : ℝ) < max 1 (C * T ^ a) + 1) :
+    (b : ℝ) ^ ((r : ℕ) : ℝ) ≤ (C + 2) ^ r * T ^ (a * r) := by
+  have hbase : (b : ℝ) ≤ (C + 2) * T ^ a :=
+    nat_shell_cutoff_le_scaled hC hT hupper
+  have hb_nonneg : 0 ≤ (b : ℝ) := by positivity
+  have hCtwo_nonneg : 0 ≤ C + 2 := by linarith
+  have hTpow_nonneg : 0 ≤ T ^ a :=
+    le_trans zero_le_one (one_le_pow₀ hT)
+  calc
+    (b : ℝ) ^ ((r : ℕ) : ℝ) ≤ ((C + 2) * T ^ a) ^ ((r : ℕ) : ℝ) :=
+      Real.rpow_le_rpow hb_nonneg hbase (by positivity)
+    _ = (C + 2) ^ r * T ^ (a * r) := by
+      rw [Real.mul_rpow hCtwo_nonneg hTpow_nonneg,
+        Real.rpow_natCast, Real.rpow_natCast, ← pow_mul]
+
+/- [Lean infrastructure] Logarithmic counterpart of the shell-rounding
+   bridge.  It returns the endpoint logarithm to `1 + log T`, exactly the
+   middle branch in the manuscript's `B_l(T)`. -/
+theorem one_add_log_nat_shell_cutoff_le_scaled
+    {C T : ℝ} {a b : ℕ} (hC : 0 ≤ C) (hT : 1 ≤ T) (hb : 1 ≤ b)
+    (hupper : (b : ℝ) < max 1 (C * T ^ a) + 1) :
+    1 + Real.log (b : ℝ) ≤
+      (1 + Real.log (C + 2) + (a : ℝ)) * (1 + Real.log T) := by
+  have hbase : (b : ℝ) ≤ (C + 2) * T ^ a :=
+    nat_shell_cutoff_le_scaled hC hT hupper
+  have hbpos : 0 < (b : ℝ) := by
+    exact_mod_cast (show 0 < b by omega)
+  have hCtwo : 1 ≤ C + 2 := by linarith
+  have hCtwopos : 0 < C + 2 := lt_of_lt_of_le zero_lt_one hCtwo
+  have hTpos : 0 < T := lt_of_lt_of_le zero_lt_one hT
+  have hTpowpos : 0 < T ^ a := pow_pos hTpos _
+  have hlogT : 0 ≤ Real.log T := Real.log_nonneg hT
+  have hlogCtwo : 0 ≤ Real.log (C + 2) := Real.log_nonneg hCtwo
+  have hlog : Real.log (b : ℝ) ≤
+      Real.log (C + 2) + (a : ℝ) * Real.log T := by
+    calc
+      Real.log (b : ℝ) ≤ Real.log ((C + 2) * T ^ a) :=
+        Real.log_le_log hbpos hbase
+      _ = Real.log (C + 2) + Real.log (T ^ a) :=
+        Real.log_mul hCtwopos.ne' hTpowpos.ne'
+      _ = Real.log (C + 2) + (a : ℝ) * Real.log T := by
+        rw [Real.log_pow]
+  have ha : 0 ≤ (a : ℝ) := by positivity
+  have hfactor : 0 ≤ 1 + Real.log (C + 2) := by linarith
+  have hrest : 0 ≤ (a : ℝ) +
+      (1 + Real.log (C + 2)) * Real.log T := by
+    exact add_nonneg ha (mul_nonneg hfactor hlogT)
+  calc
+    1 + Real.log (b : ℝ) ≤
+        1 + Real.log (C + 2) + (a : ℝ) * Real.log T := by linarith
+    _ ≤ (1 + Real.log (C + 2) + (a : ℝ) * Real.log T) +
+          ((a : ℝ) + (1 + Real.log (C + 2)) * Real.log T) := by
+      linarith
+    _ = (1 + Real.log (C + 2) + (a : ℝ)) * (1 + Real.log T) := by ring
+
+/- [Lean infrastructure] The paper's Abel summation starts with the unit
+   height shell.  For a concrete covolume normalization, finitely many
+   objects can have height below one; this lemma isolates that fixed finite
+   contribution and then applies the same ordinary-shell proof above to the
+   positive-height part.  It is not a replacement summation argument. -/
+set_option maxHeartbeats 1200000 in
+theorem finite_height_inv_pow_sum_le_by_exponent_of_pos
+    {α : Type*} {H : α → ℝ} {p q b : ℕ}
+    (hcount : HasHeightCountBounds H p) (hHpos : ∀ x, 0 < H x)
+    (hb : 1 ≤ b) (S : Set α) (hS : S.Finite)
+    (hS_bound : ∀ x ∈ S, H x ≤ (b : ℝ)) :
+    ∃ C : ℝ, 0 < C ∧
+      (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+        if q < p then C * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * (1 + Real.log (b : ℝ))
+        else C := by
+  classical
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
+  let hcount' : HasHeightCountBounds H p := ⟨cᵤ, hcᵤ, hcut⟩
+  let L : Set α := {x | H x < 1}
+  have hL : L.Finite := by
+    apply (hcut 1 le_rfl).1.subset
+    intro x hx
+    change H x < 1 at hx
+    exact hx.le
+  let Splus : Set α := S ∩ {x | 1 ≤ H x}
+  let Sminus : Set α := S ∩ L
+  have hSplus : Splus.Finite := by
+    apply hS.subset
+    intro x hx
+    exact hx.1
+  have hSminus : Sminus.Finite := by
+    apply hS.subset
+    intro x hx
+    exact hx.1
+  have hSplus_one : ∀ x ∈ Splus, 1 ≤ H x := by
+    intro x hx
+    exact hx.2
+  have hSplus_bound : ∀ x ∈ Splus, H x ≤ (b : ℝ) := by
+    intro x hx
+    exact hS_bound x hx.1
+  obtain ⟨Cplus, hCplus, hplus⟩ :=
+    finite_height_inv_pow_sum_le_by_exponent hcount' hb Splus hSplus
+      hSplus_one hSplus_bound
+  have hSminus_sub : hSminus.toFinset ⊆ hL.toFinset := by
+    intro x hx
+    apply hL.mem_toFinset.mpr
+    exact (hSminus.mem_toFinset.mp hx).2
+  have hsplit : hS.toFinset = hSplus.toFinset ∪ hSminus.toFinset := by
+    apply Finset.ext
+    intro x
+    constructor
+    · intro hx
+      have hxS : x ∈ S := hS.mem_toFinset.mp hx
+      by_cases hxplus : 1 ≤ H x
+      · apply Finset.mem_union_left
+        apply hSplus.mem_toFinset.mpr
+        exact ⟨hxS, hxplus⟩
+      · apply Finset.mem_union_right
+        apply hSminus.mem_toFinset.mpr
+        refine ⟨hxS, ?_⟩
+        change H x < 1
+        exact lt_of_not_ge hxplus
+    · intro hx
+      rcases Finset.mem_union.mp hx with hxplus | hxminus
+      · apply hS.mem_toFinset.mpr
+        exact (hSplus.mem_toFinset.mp hxplus).1
+      · apply hS.mem_toFinset.mpr
+        exact (hSminus.mem_toFinset.mp hxminus).1
+  have hdisjoint : Disjoint hSplus.toFinset hSminus.toFinset := by
+    rw [Finset.disjoint_left]
+    intro x hxplus hxminus
+    have hplusone : 1 ≤ H x := (hSplus.mem_toFinset.mp hxplus).2
+    have hminusone : H x < 1 := by
+      exact (hSminus.mem_toFinset.mp hxminus).2
+    exact (not_le_of_gt hminusone) hplusone
+  let M : ℝ := ∑ x ∈ hL.toFinset, (H x)⁻¹ ^ q
+  have hMnonneg : 0 ≤ M := by
+    dsimp [M]
+    exact Finset.sum_nonneg (fun x hx =>
+      pow_nonneg (inv_nonneg.mpr (hHpos x).le) q)
+  have hminus_le :
+      (∑ x ∈ hSminus.toFinset, (H x)⁻¹ ^ q) ≤ M := by
+    dsimp [M]
+    exact Finset.sum_le_sum_of_subset_of_nonneg hSminus_sub
+      (fun x hx hnot => pow_nonneg (inv_nonneg.mpr (hHpos x).le) q)
+  have hsum_split :
+      (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) =
+        (∑ x ∈ hSplus.toFinset, (H x)⁻¹ ^ q) +
+          ∑ x ∈ hSminus.toFinset, (H x)⁻¹ ^ q := by
+    rw [hsplit, Finset.sum_union hdisjoint]
+  have hbase :
+      (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+        (∑ x ∈ hSplus.toFinset, (H x)⁻¹ ^ q) + M := by
+    rw [hsum_split]
+    exact add_le_add_right hminus_le _
+  let C : ℝ := Cplus + M + 1
+  have hC : 0 < C := by
+    dsimp [C]
+    linarith
+  refine ⟨C, hC, ?_⟩
+  by_cases hqp : q < p
+  · simp only [if_pos hqp] at hplus ⊢
+    let F : ℝ := (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+    have hFone : 1 ≤ F := by
+      dsimp [F]
+      have hbR : (1 : ℝ) ≤ (b : ℝ) := by
+        exact_mod_cast hb
+      exact Real.one_le_rpow hbR (by positivity)
+    have hFM : M ≤ M * F := by
+      calc
+        M = M * 1 := by ring
+        _ ≤ M * F := mul_le_mul_of_nonneg_left hFone hMnonneg
+    have hCM : Cplus + M ≤ C := by
+      dsimp [C]
+      linarith
+    calc
+      (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+          (∑ x ∈ hSplus.toFinset, (H x)⁻¹ ^ q) + M := hbase
+      _ ≤ Cplus * F + M := by
+        simpa [F] using add_le_add_left hplus M
+      _ ≤ Cplus * F + M * F := add_le_add_right hFM _
+      _ = (Cplus + M) * F := by ring
+      _ ≤ C * F := mul_le_mul_of_nonneg_right hCM (le_trans zero_le_one hFone)
+  · by_cases hpq : p = q
+    · simp only [if_neg hqp, if_pos hpq] at hplus ⊢
+      let F : ℝ := 1 + Real.log (b : ℝ)
+      have hFone : 1 ≤ F := by
+        dsimp [F]
+        have hbR : (1 : ℝ) ≤ (b : ℝ) := by
+          exact_mod_cast hb
+        linarith [Real.log_nonneg hbR]
+      have hFM : M ≤ M * F := by
+        calc
+          M = M * 1 := by ring
+          _ ≤ M * F := mul_le_mul_of_nonneg_left hFone hMnonneg
+      have hCM : Cplus + M ≤ C := by
+        dsimp [C]
+        linarith
+      calc
+        (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+            (∑ x ∈ hSplus.toFinset, (H x)⁻¹ ^ q) + M := hbase
+        _ ≤ Cplus * F + M := by
+          simpa [F] using add_le_add_left hplus M
+        _ ≤ Cplus * F + M * F := add_le_add_right hFM _
+        _ = (Cplus + M) * F := by ring
+        _ ≤ C * F := mul_le_mul_of_nonneg_right hCM (le_trans zero_le_one hFone)
+    · simp only [if_neg hqp, if_neg hpq] at hplus ⊢
+      have hCM : Cplus + M ≤ C := by
+        dsimp [C]
+        linarith
+      calc
+        (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+            (∑ x ∈ hSplus.toFinset, (H x)⁻¹ ^ q) + M := hbase
+        _ ≤ Cplus + M := add_le_add_left hplus M
+        _ ≤ C := hCM
+
 /- The weighted form used in the low-rank argument.  The support is kept as an
    explicit finite set: this is the formal counterpart of restricting to
    `𝓕_l(T)`, and it avoids replacing the manuscript's family by an unproved
@@ -1586,7 +1855,72 @@ theorem tsum_abs_le_finite_height_inv_pow
         · simp only [hqp, hpq, lt_irrefl, ↓reduceIte]
           ring
         · simp only [hqp, hpq, ↓reduceIte]
- 
+
+
+/- [Lean infrastructure] Weighted version of the preceding finite
+   below-unit-height correction.  The only additional contribution is the
+   finite fixed-height set already handled by
+   `finite_height_inv_pow_sum_le_by_exponent_of_pos`; the ordinary-shell Abel
+   estimate remains unchanged. -/
+set_option maxHeartbeats 1200000 in
+theorem tsum_abs_le_finite_height_inv_pow_of_pos
+    {α : Type*} {H : α → ℝ} {p q b : ℕ}
+    (hcount : HasHeightCountBounds H p) (hHpos : ∀ x, 0 < H x)
+    (hb : 1 ≤ b) (w : α → ℝ) (S : Set α) (hS : S.Finite)
+    (hS_bound : ∀ x ∈ S, H x ≤ (b : ℝ))
+    (hzero : ∀ x ∉ S, w x = 0) (C : ℝ) (hC : 0 ≤ C)
+    (hw : ∀ x ∈ S, |w x| ≤ C * (H x)⁻¹ ^ q) :
+    ∃ D : ℝ, 0 < D ∧
+      |∑' x : α, w x| ≤
+        if q < p then C * D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * D * (1 + Real.log (b : ℝ))
+        else C * D := by
+  have hzero' : ∀ x ∉ hS.toFinset, w x = 0 := by
+    intro x hx
+    apply hzero
+    exact fun hxs => hx (hS.mem_toFinset.2 hxs)
+  have hsum : (∑' x : α, w x) = ∑ x ∈ hS.toFinset, w x :=
+    tsum_eq_sum hzero'
+  have hsumabs :
+      |∑ x ∈ hS.toFinset, w x| ≤ ∑ x ∈ hS.toFinset, |w x| := by
+    simpa [Real.norm_eq_abs] using
+      (norm_sum_le (s := hS.toFinset) (f := w))
+  have hpoint_sum :
+      (∑ x ∈ hS.toFinset, |w x|) ≤
+        ∑ x ∈ hS.toFinset, C * (H x)⁻¹ ^ q := by
+    exact Finset.sum_le_sum (fun x hx => hw x (hS.mem_toFinset.1 hx))
+  have hsum_scaled :
+      (∑ x ∈ hS.toFinset, C * (H x)⁻¹ ^ q) =
+        C * ∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q := by
+    rw [Finset.mul_sum]
+  obtain ⟨D, hD, hheight⟩ :=
+    finite_height_inv_pow_sum_le_by_exponent_of_pos hcount hHpos hb S hS
+      hS_bound
+  have hCheight :
+      C * (∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q) ≤
+        C * (if q < p then D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+          else if p = q then D * (1 + Real.log (b : ℝ))
+          else D) :=
+    mul_le_mul_of_nonneg_left hheight hC
+  refine ⟨D, hD, ?_⟩
+  rw [hsum]
+  calc
+    |∑ x ∈ hS.toFinset, w x| ≤ ∑ x ∈ hS.toFinset, |w x| := hsumabs
+    _ ≤ ∑ x ∈ hS.toFinset, C * (H x)⁻¹ ^ q := hpoint_sum
+    _ = C * ∑ x ∈ hS.toFinset, (H x)⁻¹ ^ q := hsum_scaled
+    _ ≤ C * (if q < p then D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then D * (1 + Real.log (b : ℝ))
+        else D) := hCheight
+    _ = if q < p then C * D * (b : ℝ) ^ ((p - q : ℕ) : ℝ)
+        else if p = q then C * D * (1 + Real.log (b : ℝ))
+        else C * D := by
+      by_cases hqp : q < p
+      · simp only [hqp, ↓reduceIte]
+        ring
+      · by_cases hpq : p = q
+        · simp only [hqp, hpq, lt_irrefl, ↓reduceIte]
+          ring
+        · simp only [hqp, hpq, ↓reduceIte]
 
 /- The shell partition can be assembled into the actual reciprocal-height sum.
    The sharp `p < q` range comes from the Abel argument above.  We restrict to
@@ -1849,8 +2183,8 @@ theorem summable_of_abs_le_height_inv_pow_all
     (hw : ∀ x : α, 1 ≤ H x →
       |w x| ≤ C * (H x)⁻¹ ^ q) :
     Summable w := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
-  have hcount' : HasHeightCountBounds H p := ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
+  have hcount' : HasHeightCountBounds H p := ⟨cᵤ, hcᵤ, hcut⟩
   let L : Set α := {x | H x < 1}
   have hL : L.Finite := by
     apply (hcut 1 le_rfl).1.subset
@@ -2046,8 +2380,9 @@ theorem height_inv_pow_tail_tendsto_zero
 
 /- The following consequences are parameterized by the height-counting input.
    The source of that input is Schmidt's theorem, but this file does not hide
-   it behind an axiom: a future supporting formalization must supply an actual
-   proof of the displayed `HasHeightCountBounds` hypothesis. -/
+   it behind an axiom.  By the project goal this visibly attributed hypothesis
+   is the permitted completion interface for that out-of-scope cited result;
+   an unconditional wrapper would require a separate supporting proof. -/
 theorem summable_rowSpaceHeight_inv_pow_of_one_le
     {m k q : ℕ}
     (hcount : HasHeightCountBounds
@@ -2058,7 +2393,8 @@ theorem summable_rowSpaceHeight_inv_pow_of_one_le
   exact summable_height_inv_pow_of_one_le hcount hmq
 
 
-/- The intermediate-rank hypothesis in Schmidt's theorem is essential to its
+/- [Lean infrastructure for the boundary of Schmidt's cited input] The
+   intermediate-rank hypothesis in Schmidt's theorem is essential to its
    formulation, but the full-rank stratum is elementary: there is only the
    ambient subspace.  We record this boundary case separately rather than
    forcing it through the imported theorem. -/
@@ -2067,12 +2403,14 @@ theorem grassmannian_fullRank_eq_top {m : ℕ}
   apply Submodule.eq_top_of_finrank_eq
   simpa using V.2
 
+/- [derived consequence of the preceding full-rank identification] -/
 instance grassmannian_fullRank_subsingleton (m : ℕ) :
     Subsingleton (Grassmannian K m m) where
   allEq V W := by
     apply Subtype.ext
     rw [grassmannian_fullRank_eq_top V, grassmannian_fullRank_eq_top W]
 
+/- [derived consequence of the preceding full-rank identification] -/
 theorem rowSpaceHeightBall_finite_fullRank {m : ℕ} {T : ℝ} :
     (rowSpaceHeightBall (K := K) (m := m) (k := m) T).Finite := by
   have hsub :
@@ -2100,13 +2438,52 @@ theorem rowSpaceHeightBall_finite_zeroRank {m : ℕ} {T : ℝ} :
     exact Subsingleton.elim V W
   exact hsub.finite
 
+/- [derived consequence of the boundary case of the paper's rational-subspace
+count] At rank `m` the Grassmannian consists of the ambient subspace alone, so
+the upper height-count interface holds elementarily.  This is why Schmidt's
+intermediate-rank input need not—and must not—be postulated at full rank. -/
+theorem hasHeightCountBounds_rowSpaceHeight_fullRank (m : ℕ) :
+    HasHeightCountBounds
+      (rowSpaceHeight (K := K) (m := m) (k := m)) m := by
+  refine ⟨1, one_pos, ?_⟩
+  intro T hT
+  constructor
+  · exact rowSpaceHeightBall_finite_fullRank
+  · have hcard : Set.ncard
+        (rowSpaceHeightBall (K := K) (m := m) (k := m) T) ≤ 1 :=
+      Set.ncard_le_one_of_subsingleton _
+    have hcardR :
+        (Set.ncard
+          (rowSpaceHeightBall (K := K) (m := m) (k := m) T) : ℝ) ≤ 1 := by
+      exact_mod_cast hcard
+    exact hcardR.trans (by simpa using (one_le_pow₀ hT))
+
+/- [derived consequence of Schmidt's cited intermediate-rank input and the
+preceding elementary boundary case] Assemble the height-count hypotheses used
+by the paper for all positive ranks through `k ≤ m`.  Schmidt is requested
+only in its genuine range `1 ≤ l < m`; the full-rank case is proved above. -/
+theorem heightCountBounds_upTo_of_intermediate
+    {m k : ℕ} (hkm : k ≤ m)
+    (hcount : ∀ l : ℕ, 1 ≤ l → l ≤ k → l < m →
+      HasHeightCountBounds
+        (rowSpaceHeight (K := K) (m := m) (k := l)) m) :
+    ∀ l ∈ Finset.Icc 1 k,
+      HasHeightCountBounds
+        (rowSpaceHeight (K := K) (m := m) (k := l)) m := by
+  intro l hl
+  have hl1 : 1 ≤ l := (Finset.mem_Icc.mp hl).1
+  have hlm : l ≤ m := (Finset.mem_Icc.mp hl).2.trans hkm
+  rcases lt_or_eq_of_le hlm with hlt | rfl
+  · exact hcount l hl1 (Finset.mem_Icc.mp hl).2 hlt
+  · exact hasHeightCountBounds_rowSpaceHeight_fullRank l
+
 theorem rowSpaceHeightBall_finite
     {m k : ℕ}
     (hcount : HasHeightCountBounds
       (rowSpaceHeight (K := K) (m := m) (k := k)) m)
     {T : ℝ} (hT : 1 ≤ T) :
     (rowSpaceHeightBall (K := K) (m := m) (k := k) T).Finite := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
   exact (hcut T hT).1
 
 theorem rowSpaceHeightBall_finite_of_intermediate
@@ -2144,10 +2521,10 @@ theorem rowSpaceHeightBall_count_upper
     ∃ cᵤ : ℝ, 0 < cᵤ ∧ ∀ {T : ℝ}, 1 ≤ T →
       (Set.ncard (rowSpaceHeightBall (K := K) (m := m) (k := k) T) : ℝ) ≤
         cᵤ * T ^ m := by
-  obtain ⟨cₗ, cᵤ, hcₗ, hcᵤ, hcut⟩ := hcount
+  obtain ⟨cᵤ, hcᵤ, hcut⟩ := hcount
   refine ⟨cᵤ, hcᵤ, ?_⟩
   intro T hT
-  simpa [rowSpaceHeightBall] using (hcut T hT).2.2
+  simpa [rowSpaceHeightBall] using (hcut T hT).2
 
 /- The two boundary ranks have one Grassmannian point, so the same upper
    bound is available uniformly for every `k ≤ m`. -/

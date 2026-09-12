@@ -74,6 +74,29 @@ noncomputable def Admissible.submoduleRiemannControl
     rw [← euclideanIntegral_eq_integral]
     exact hbound V hV ε hε hεone
 
+/- [derived consequence of paper `re:help`, lines 550--562, conditional on
+   `AdmissibleErrorControlUpTo`] Restrict the paper's updated ambient error
+   control to a nonzero real subspace.  The ambient `E_f` is retained, and
+   the hypothesis remains uniform in the subspace as required by the paper. -/
+noncomputable def Admissible.submoduleRiemannControlUpTo
+    {f : X → ℝ} {εMax : ℝ} (h_f : Admissible f)
+    (hUpdate : AdmissibleErrorControlUpTo f εMax)
+    (V : Submodule ℝ X) (hV : V ≠ ⊥) :
+    RiemannControl (fun x : V => f x) εMax := by
+  refine (h_f.submoduleRiemannControl V hV).withUpdatedRange ?_ ?_
+  · intro ε hε hεMax
+    change Integrable (fun x : V => errorFunction f (x : X) ε)
+      (μHE[Module.finrank ℝ V] : Measure V)
+    exact (euclideanIntegrable_iff _).mp
+      (hUpdate.error_integrable V hV ε hε hεMax)
+  · obtain ⟨C, hC, hbound⟩ := hUpdate.error_bound
+    refine ⟨C, hC, ?_⟩
+    intro ε hε hεMax
+    change ∫ x : V, errorFunction f (x : X) ε
+      ∂(μHE[Module.finrank ℝ V] : Measure V) ≤ C * ε
+    rw [← euclideanIntegral_eq_integral]
+    exact hbound V hV ε hε hεMax
+
 /-- Lemma `le:Riemann_estimate` applied to an arbitrary full lattice in a
 nonzero real subspace. -/
 theorem Admissible.submodule_latticeRiemann_estimate
