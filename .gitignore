@@ -11,6 +11,9 @@
 *.dylib
 *.dll
 
+# Palomar verifier caches
+/.cache/
+
 # Root-level Lean scratch files
 /Check*.lean
 

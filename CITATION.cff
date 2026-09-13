@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite the accompanying preprint and this repository."
+title: "Integral Matrices of Fixed Rank over Number Fields: Lean formalization"
+type: software
+authors:
+  - family-names: Gargava
+    given-names: Nihar
+version: "0.1.0"
+date-released: 2026-09-13
+repository-code: "https://github.com/nihargargava/IntegralMatrices"
+url: "https://arxiv.org/abs/2510.11673"
+license: GPL-3.0-only
+keywords:
+  - Lean
+  - Mathlib
+  - number fields
+  - geometry of numbers
+  - integral matrices
+  - formalized mathematics
+abstract: >-
+  Lean formalization of the fixed-rank asymptotic count for integral matrices
+  over number fields and the convergence of moments of lifts of algebraic
+  codes, following arXiv:2510.11673.

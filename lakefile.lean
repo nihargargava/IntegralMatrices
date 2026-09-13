@@ -43,4 +43,5 @@ require mathlib from git
       `Katznelson.Counting.UniformLowerRankLiteral,
       `Katznelson.Counting.Schmidt,
       `Katznelson.Counting.LiftAverage,
-      `Katznelson.MainTheorems, `Katznelson.FinalAssembly, `main]
+      `Katznelson.MainTheorems, `Katznelson.FinalAssembly, `main, `Challenge,
+      `Solution]

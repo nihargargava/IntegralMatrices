@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Integral Matrices of Fixed Rank over Number Fields: Lean formalization"
+  description: >-
+    A Lean formalization of the fixed-rank asymptotic count for integral
+    matrices over a number field and the convergence of moments of lifts of
+    algebraic codes. The public results preserve the manuscript's main scale,
+    error terms, echelon-integral limit, and denominator normalization. The
+    intermediate-rank height-counting input attributed to Schmidt is an
+    explicit hypothesis; it is not silently assumed as an axiom.
+  authors:
+    - "Nihar Gargava"
+  license: "GPL-3.0-only"
+  responsible_maintainers:
+    - "Nihar Gargava"
+
+classification:
+  arxiv: ["math.NT"]
+  msc2020: ["11R04", "11H06"]
+
+sources:
+  - title: "Integral matrices of fixed rank over number fields"
+    authors:
+      - "Nihar Gargava"
+      - "Vlad Serban"
+      - "Maryna Viazovska"
+      - "Ilaria Viglino"
+    id: "arXiv:2510.11673"
+    type: "paper"
+    location: "https://arxiv.org/abs/2510.11673"
+    relationship: "formalizes"
+    license: "unknown"
+  - title: "On Heights of Algebraic Subspaces and Diophantine Approximations"
+    authors:
+      - "Wolfgang M. Schmidt"
+    id: "doi:10.2307/1970360"
+    type: "paper"
+    location: "Annals of Mathematics 85 (1967), 430--472"
+    relationship: "background"
+    note: >-
+      Schmidt's height-counting result is represented by the explicit
+      HasHeightCountBounds hypothesis used for intermediate ranks.
+  - title: "Short Bases of Lattices over Number Fields"
+    authors:
+      - "Claus Fieker"
+      - "Damien Stehlé"
+    id: "papers/Fieker-Stehle-ShortBases-2010.pdf"
+    type: "paper"
+    relationship: "background"
+    note: "Source of the cited number-field successive-minima argument."
+
+related_formalizations:
+  - id: "https://github.com/nihargargava/MeanValueIdealLattices"
+    relationship: "builds-on"
+    note: >-
+      Reuses and ports GPL-3.0 metric and covolume formalization ideas from
+      the author's earlier formalization, with attribution in
+      notes/source-attribution.md and the affected Lean files.
+
+status:
+  scope: >-
+    The formalization proves the two main theorem paths in the checked-in
+    manuscript: the fixed-rank count and the higher-moment convergence for
+    lifts of codes. Schmidt's intermediate-rank height count remains an
+    explicit hypothesis. The admissibility/Riemann subsystem uses the
+    author-approved raw Euclidean mixed-space convention, while exact
+    coefficient measures and covolume normalizations are bridged to the
+    manuscript. The exceptional critical-radius and large-radius Riemann
+    branches are documented local adaptations. The manuscript source is
+    author-owned and is not modified by this repository's formalization.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["GPT-5 / Codex"]
+      framework: "Lean 4 and Mathlib"
+      tool_setup: "AI-assisted formalization with author-directed mathematical review"
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local machine"
+      prompting_notes: >-
+        The development was produced through iterative proof, audit, and
+        manuscript-fidelity prompts, with explicit review of mathematical
+        issues and provenance.
+  notes: >-
+    The author directed the formalization and reviewed the statement
+    correspondence, adaptations, citations, and final trust audit.
+
+fidelity:
+  divergences: >-
+    The public theorem path is conditional on the explicit Schmidt
+    height-count interface. The admissibility/Riemann implementation uses
+    Mathlib's raw Euclidean mixed-space metric rather than making the
+    manuscript's discriminant-scaled trace metric a global typeclass; exact
+    main-term normalization is proved separately. The approved critical
+    radius and large-radius Riemann adaptations are recorded in the README
+    and notes/formalization-issues.md. Known manuscript corrections are
+    recorded in notes/paper-issues.md.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "none"
+  notes: >-
+    The source was audited against the checked-in TeX, public theorem paths
+    were built with the pinned toolchain, and the final declarations were
+    checked for project-specific axioms, sorryAx, and other hidden proof
+    placeholders.
+
+alignment:
+  namespace: "Katznelson.Palomar"
+  statements:
+    - source: "Theorem th:main"
+      lean: "Katznelson.Palomar.fixed_rank_count"
+      module: "Challenge"
+      status: "proved"
+      note: >-
+        The Solution declaration has exactly the Challenge type and calls
+        Katznelson.fixed_rank_count; the Schmidt input remains explicit.
+    - source: "Theorem th:higher_moments"
+      lean: "Katznelson.Palomar.lifts_of_codes_convergence"
+      module: "Challenge"
+      status: "proved"
+      note: >-
+        The Solution declaration has exactly the Challenge type and calls
+        Katznelson.lifts_of_codes_convergence.
+
+acknowledgements: >-
+  Mathlib, the Lean community infrastructure, and Nihar Gargava's earlier
+  MeanValueIdealLattices formalization, used under its GPL-3.0 license.

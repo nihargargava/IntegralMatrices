@@ -1,0 +1,26 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "Katznelson.Palomar.fixed_rank_count",
+    "Katznelson.Palomar.lifts_of_codes_convergence"
+  ],
+  "definition_names": [
+    "Katznelson.Palomar.M",
+    "Katznelson.Palomar.KReal",
+    "Katznelson.Palomar.degree",
+    "Katznelson.Palomar.Admissible",
+    "Katznelson.Palomar.HasHeightCountBounds",
+    "Katznelson.Palomar.RowSpace",
+    "Katznelson.Palomar.rowSpaceHeight",
+    "Katznelson.Palomar.fixedRankSum",
+    "Katznelson.Palomar.mainConstant",
+    "Katznelson.Palomar.PrimeIdeal",
+    "Katznelson.Palomar.liftScale",
+    "Katznelson.Palomar.manuscriptLiftsMoment",
+    "Katznelson.Palomar.manuscriptEchelonIntegralLimit",
+    "Katznelson.Palomar.tendsToAtNorm"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+  "enable_nanoda": true
+}

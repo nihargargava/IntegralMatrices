@@ -99,6 +99,13 @@ normalization bridge are new Lean formalization of the paper's objects; they
 are marked in the source as paper steps, derived consequences, or Lean
 infrastructure.  No external covolume identity is exposed as an axiom.
 
+The optional `scripts/verify-comparator.sh` and
+`scripts/landrun-wrapper.sh` are adapted from
+`PalomarRegistry/PalomarTemplate` at commit
+`128a6c5ce5f48622e69927ccd639cbff401022e8`.  They are verification
+infrastructure rather than mathematical content; the adaptation keeps the
+verifier revisions explicit and rejects sandbox-disabling Landrun options.
+
 ## Fieker--Stehlé and successive minima
 
 `papers/Fieker-Stehle-ShortBases-2010.pdf` is Claus Fieker and Damien Stehlé,
