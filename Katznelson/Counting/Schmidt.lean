@@ -17,8 +17,8 @@ for the same count.  Thunder is recorded here as a refinement, not as a
 second attribution of Schmidt’s original argument.
 
    The row-space and covolume definitions used in the statement are new Lean
-   infrastructure corresponding to Definition `de:height_definition` and the
-   row-space discussion in lines 758--815 of `papers/katznelson.tex`.  The
+   infrastructure corresponding to Definition 7 (submission PDF p. 6) and the
+   row-space discussion in PDF p. 11 of `authoritative submission PDF`.  The
    current Lean row representation uses an equivalent finite-dimensional norm;
    for fixed `K`, norm equivalence changes only the constants in the count,
    not the exponent `m`.
@@ -46,7 +46,7 @@ def rowSpaceHeightBall {m k : ℕ} (T : ℝ) : Set (Grassmannian K m k) :=
   {V | rowSpaceHeight V ≤ T}
 
 /- This is the height-cutoff family corresponding to the manuscript's crude
-   estimate `H(D) ≤ C T^(k d)` (lines 1091--1100).  The identification of the
+   estimate `H(D) ≤ C T^(k d)` (PDF p. 15).  The identification of the
    norm-bounded support family with this height cutoff is a separate geometry-
    of-numbers step; this definition keeps that step explicit. -/
 /- [Lean infrastructure] Grassmannian form of the height cutoff appearing
@@ -67,7 +67,7 @@ def HasHeightCountBounds {α : Type*} (H : α → ℝ) (p : ℕ) : Prop :=
       (Set.Finite {x | H x ≤ T}) ∧
         (Set.ncard {x | H x ≤ T} : ℝ) ≤ cᵤ * T ^ p
 
-/- [derived consequence, paper lines 649--653] This is the finite Abel
+/- [derived consequence, paper PDF p. 10] This is the finite Abel
    summation identity used below.  It is recorded separately so the later
    estimate can be checked against the manuscript's summation-by-parts step. -/
 theorem sum_Ico_inv_pow_by_parts
@@ -82,7 +82,7 @@ theorem sum_Ico_inv_pow_by_parts
     (Finset.sum_Ico_by_parts
       (f := fun n : ℕ => ((n : ℝ)⁻¹ ^ q)) (g := φ) hab)
 
-/- [derived consequence, paper lines 649--653] A quantitative ordinary-shell
+/- [derived consequence, paper PDF p. 10] A quantitative ordinary-shell
    estimate in the endpoint convention used by Mathlib's Abel formula.  The
    cumulative bound is explicit: it is the formal counterpart of the paper's
    bound on `Phi`.  The integral is written with ordinary inverse powers; on
@@ -286,7 +286,7 @@ theorem sum_Ioc_inv_pow_le_of_partial_sum
             (∫ t in (a : ℝ)..(b : ℝ), t ^ p * (t⁻¹ ^ (q + 1))) := by
       gcongr
 
-/- [derived consequence, paper lines 649--653] On a positive interval the
+/- [derived consequence, paper PDF p. 10] On a positive interval the
    ordinary-shell integrand has the expected elementary antiderivative.  This
    identity is used below to keep the three possible signs of `p - q`
    separate; in particular, it does not silently turn a bounded negative-
@@ -334,7 +334,7 @@ theorem intervalIntegral_nat_power_inv_power
       exact hpeq (by exact_mod_cast hpqR)
     · exact notMem_uIcc_of_lt (by positivity) (by positivity)
 
-/- [derived consequence, paper lines 649--653] The borderline case is the
+/- [derived consequence, paper PDF p. 10] The borderline case is the
    logarithmic integral in the manuscript's summation-by-parts estimate. -/
 theorem intervalIntegral_nat_power_inv_power_eq_log
     {p N : ℕ} (hN : 1 ≤ N) :
@@ -359,7 +359,7 @@ theorem intervalIntegral_nat_power_inv_power_eq_log
   rw [intervalIntegral.integral_congr hpow]
   simpa using (integral_inv_of_pos (a := (1 : ℝ)) (b := (N : ℝ))
     (by positivity) (by positivity))
-/- [derived consequence, paper lines 649--653] The improper integral which
+/- [derived consequence, paper PDF p. 10] The improper integral which
    occurs in the Abel estimate has the expected power-law bound.  Keeping
    this as a separate lemma makes the passage from finite summation by parts
    to a quantitative tail explicit; no dyadic decomposition is involved. -/
@@ -443,7 +443,7 @@ theorem intervalIntegral_height_power_le
     _ = ((a : ℝ) ^ (-((q - p : ℕ) : ℝ))) /
           ((q : ℝ) - (p : ℝ)) := hpower
 
-/- [derived consequence, paper lines 649--653 and corollary `co:tail`]
+/- [derived consequence, paper PDF p. 10 and corollary Corollary 34 (submission PDF p. 16)]
    Uniform finite-tail form of the preceding Abel estimate.  The endpoint
    term is controlled by the same cumulative count as the integral term, so
    the exponent remains `p - q` even in the borderline case `q = p + 1`. -/
@@ -510,7 +510,7 @@ theorem sum_Ioc_inv_pow_tail_le_of_partial_sum
           ((N : ℝ) ^ (-((q - p : ℕ) : ℝ))) := by
       field_simp [ne_of_gt hqmpR]
 
-/- [derived consequence, paper lines 649--653 and corollary `co:tail`]
+/- [derived consequence, paper PDF p. 10 and corollary Corollary 34 (submission PDF p. 16)]
    The preceding finite estimate gives the corresponding infinite ordinary-
    shell tail.  The proof uses the finite-subset characterization of a
    nonnegative real tsum; the only summation decomposition is the paper's
@@ -645,7 +645,7 @@ def heightShell {α : Type*} (H : α → ℝ) (n : ℕ) : Set α :=
   {x | (n : ℝ) ≤ H x ∧ H x < ((n + 1 : ℕ) : ℝ)}
 
 /- [Lean infrastructure] The height interval occurring on the left side of
-   the manuscript's first shell estimate (lines 640--647). -/
+   the manuscript's first shell estimate (PDF p. 10). -/
 def heightInterval {α : Type*} (H : α → ℝ) (a b : ℕ) : Set α :=
   {x | (a : ℝ) ≤ H x ∧ H x < (b : ℝ)}
 
@@ -712,7 +712,7 @@ theorem heightShell_finite {α : Type*} {H : α → ℝ} {p : ℕ}
   intro x hx
   exact hx.2.le
 
-/- [derived consequence, paper lines 640--647] A bounded height interval is
+/- [derived consequence, paper PDF p. 10] A bounded height interval is
    finite under the height-count input. -/
 theorem heightInterval_finite {α : Type*} {H : α → ℝ} {p a b : ℕ}
     (hcount : HasHeightCountBounds H p) (ha : 1 ≤ a) (hab : a ≤ b) :
@@ -724,7 +724,7 @@ theorem heightInterval_finite {α : Type*} {H : α → ℝ} {p a b : ℕ}
   intro x hx
   exact hx.2.le
 
-/- [derived consequence, paper lines 640--647] This is the paper's first
+/- [derived consequence, paper PDF p. 10] This is the paper's first
    ordinary-shell comparison: each point in the height interval is assigned
    to its unit shell, and its reciprocal height is bounded by the reciprocal
    of the shell index.  The finite-set formulation makes the finiteness
@@ -834,7 +834,7 @@ theorem finite_height_interval_sum_inv_pow_le_shell_sum
       simpa using hsum
 
 
-/- [derived consequence, paper lines 642--653] The cumulative cardinality of
+/- [derived consequence, paper PDF p. 10] The cumulative cardinality of
    the ordinary shells is bounded by the height counting function. -/
 theorem heightShell_partial_sum_upper {α : Type*} {H : α → ℝ} {p : ℕ}
     (hcount : HasHeightCountBounds H p) :
@@ -896,7 +896,7 @@ theorem heightShell_partial_sum_upper {α : Type*} {H : α → ℝ} {p : ℕ}
     _ ≤ (Set.ncard {x | H x ≤ (n : ℝ)} : ℝ) := by exact_mod_cast hcardUle
     _ ≤ cᵤ * (n : ℝ) ^ p := (hcut (n : ℝ) hnreal).2
 
-/- [derived consequence, paper lines 649--653] The Abel formula uses the
+/- [derived consequence, paper PDF p. 10] The Abel formula uses the
    cumulative shell count including the zero shell.  The zero shell is
    harmless but is recorded here explicitly rather than silently discarding
    it. -/
@@ -966,7 +966,7 @@ theorem heightShell_full_partial_sum_upper {α : Type*} {H : α → ℝ} {p : �
         simpa using (mul_le_mul_of_nonneg_left hnpow hcᵤ.le)
       _ = (cᵤ + c₀ * (2 : ℝ) ^ p) * (n : ℝ) ^ p := by ring
 
-/- [derived consequence, paper lines 649--653 and corollary `co:tail`]
+/- [derived consequence, paper PDF p. 10 and corollary Corollary 34 (submission PDF p. 16)]
    Quantitative tail for the actual unit-height shell series.  This is the
    height-counting part of the manuscript's tail argument; the matrix weight
    and echelon normalization are intentionally not folded into this lemma. -/
@@ -994,7 +994,7 @@ theorem heightShell_tsum_indicator_Ici_inv_pow_le
     · intro n hn
       exact hpartial hn
 
-/- [derived consequence, paper lines 649--653] Applying the quantitative Abel
+/- [derived consequence, paper PDF p. 10] Applying the quantitative Abel
    estimate to the height shells gives a height-count version ready for the
    tail arguments.  Its `Ioc` endpoint convention is the one used by the
    imported Abel identity; the preceding finite comparison handles the
@@ -1018,7 +1018,7 @@ theorem heightShell_sum_Ioc_inv_pow_le
   · intro n hn
     exact hpartial hn
 
-/- [derived consequence, paper lines 649--653] A finite ordinary-shell sum
+/- [derived consequence, paper PDF p. 10] A finite ordinary-shell sum
    therefore has the three sign-dependent sizes dictated by the exponent
    `p - q`: power growth, logarithmic growth, or a bounded contribution.  The
    last branch is deliberately bounded rather than assigned a negative power
@@ -1205,7 +1205,7 @@ theorem heightShell_sum_Ioc_one_le_by_exponent
           exact add_le_add hfirst hsecond
         _ = C * (1 + (q : ℝ) / ((q : ℝ) - p)) := by ring
 
-/- [derived consequence, paper lines 642--653] Abel summation upgrades the
+/- [derived consequence, paper PDF p. 10] Abel summation upgrades the
    shellwise estimate to the sharp threshold `p < q`.  The imported Mathlib
    lemma used here is itself the finite/infinite Abel argument; the ordinary
    unit-shell indexing remains the one displayed in the manuscript. -/
@@ -2009,7 +2009,7 @@ theorem summable_height_inv_pow_of_one_le
         _ = a j := rfl
     exact hinner
 
-/- [derived consequence, paper lines 837--858 and corollary `co:tail`]
+/- [derived consequence, paper PDF p. 11 and corollary Corollary 34 (submission PDF p. 16)]
    Quantitative reciprocal-height tail for points themselves.  The height
    count supplies the ordinary-shell bound; the remaining argument is only
    the proved partition of the positive-height stratum into unit shells. -/
@@ -2146,8 +2146,8 @@ theorem height_tsum_tail_inv_pow_le
         (Set.ncard (heightShell H n) : ℝ) * ((n : ℝ)⁻¹ ^ q) else 0 := hseries_eq
     _ ≤ C * ((N : ℝ) ^ (-((q - p : ℕ) : ℝ))) := htail hN
 
-/- [derived consequence, paper lines 837--858 and equation
-   `eq:summable_matrices`] A summand dominated by a reciprocal height power is
+/- [derived consequence, paper PDF p. 11 and equation
+   Equation (14) (submission PDF p. 12)] A summand dominated by a reciprocal height power is
    absolutely summable once the height-counting input is available.  The
    domination is kept as an explicit hypothesis: proving the paper's
    covolume/Jacobian estimate is a separate normalization step. -/
@@ -2172,7 +2172,7 @@ theorem summable_of_abs_le_height_inv_pow
       (hheight.mul_left C)
   exact Summable.of_norm (by simpa [Real.norm_eq_abs] using habs)
 
-/- [derived consequence, paper lines 837--858] The paper's height is expected
+/- [derived consequence, paper PDF p. 11] The paper's height is expected
    to be at least one, but the present covolume realization records only
    positivity.  The count bound still makes the sublevel set `H < 1` finite,
    so arbitrary summands on that finite exceptional set can be included. -/
@@ -2211,7 +2211,7 @@ theorem summable_of_abs_le_height_inv_pow_all
   rw [hdecomp]
   exact hwL.add hwS'
 
-/- [derived consequence, paper lines 837--858 and corollary `co:tail`]
+/- [derived consequence, paper PDF p. 11 and corollary Corollary 34 (submission PDF p. 16)]
    Quantitative version of the reciprocal-height domination argument.  This is
    the point-counting tail estimate before the paper-specific covolume and
    echelon-weight estimates are substituted. -/
@@ -2262,7 +2262,7 @@ theorem weighted_height_tsum_tail_inv_pow_le
       exact mul_le_mul_of_nonneg_left (htail hN) hC.le
     _ = (C * C₀) * ((N : ℝ) ^ (-((q - p : ℕ) : ℝ))) := by ring
 
-/- [derived consequence, paper lines 837--858 and corollary `co:tail`]
+/- [derived consequence, paper PDF p. 11 and corollary Corollary 34 (submission PDF p. 16)]
    Signed form of the preceding estimate.  Absolute summability is retained
    in the proof so that the displayed tsum is an ordinary convergent series. -/
 set_option maxHeartbeats 1200000 in
@@ -2303,7 +2303,7 @@ theorem weighted_height_tsum_tail_abs_le
       simp only [Real.norm_eq_abs]
     _ ≤ Ctail * ((N : ℝ) ^ (-((q - p : ℕ) : ℝ))) := htail hN
 
-/- [derived consequence, paper corollary `co:tail`] The same argument applies
+/- [derived consequence, paper corollary Corollary 34 (submission PDF p. 16)] The same argument applies
    to the paper's actual summand once its reciprocal-height domination has been
    proved.  This is the interface used by the matrix-counting layer. -/
 theorem weighted_height_tail_tendsto_zero
@@ -2338,7 +2338,7 @@ theorem weighted_height_tail_tendsto_zero
   simpa [g] using
     (tendsto_tsum_of_dominated_convergence hbound_sum hpoint hbound)
 
-/- [derived consequence, paper corollary `co:tail`] Even before the sharper
+/- [derived consequence, paper corollary Corollary 34 (submission PDF p. 16)] Even before the sharper
    quantitative tail exponent is assembled, the reciprocal-height majorant
    gives the qualitative fact that its contribution above a moving height
    cutoff tends to zero.  The cutoff is written as an indicator on the fixed

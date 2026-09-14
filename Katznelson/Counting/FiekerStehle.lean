@@ -363,7 +363,7 @@ theorem rowEuclideanMinkowski_covolume_eq_height (hk : 0 < k) :
 /- [derived consequence] Combining the preceding Fieker--Stehlé selection
    argument with the locally proved Euclidean Minkowski-II estimate yields the
    uniform-in-lattice raw-Euclidean product estimate corresponding to part 1
-   of `le:props_of_minima` (papers/katznelson.tex, lines 924--934).  This is a
+   of Lemma 27 (submission PDF pp. 12--13) (authoritative submission PDF, PDF p. 13).  This is a
    proved supporting derivation of the cited input, not an additional
    assumption; the separately recorded metric-normalization bridge is not
    claimed here. -/

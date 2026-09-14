@@ -6,8 +6,8 @@ import Katznelson.Counting.FiekerStehle
 # The noncritical successive-minima sum
 
 This module formalizes the ordinary nested norm-sum argument in the
-noncritical branch of the proof of `th:main`.  In particular, it retains the
-unit-shell/Abel-summation route of `le:domain_dimension_bound` rather than
+noncritical branch of the proof of Theorem 2 (submission PDF p. 2; proof pp. 20--22).  In particular, it retains the
+unit-shell/Abel-summation route of Lemma 19 (submission PDF p. 9) rather than
 introducing a different decomposition.
 -/
 
@@ -28,8 +28,8 @@ noncomputable local instance ambientRowMeasurableSpace (m : ℕ) :
 local instance ambientRowBorelSpace (m : ℕ) :
     BorelSpace (RowVector K m) := ⟨rfl⟩
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   618--653] The fixed ambient lattice of algebraic-integer rows has the
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 10] The fixed ambient lattice of algebraic-integer rows has the
    polynomial ball-count hypothesis required by the paper's ordinary-shell
    estimate.  This is obtained from the already proved lattice fundamental
    domain count, with its fixed radius absorbed into the constant for
@@ -85,8 +85,8 @@ theorem ambientIntegralRowModule_norm_ball_count
         rw [mul_pow]
         ring
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   618--653] Group the ambient algebraic-integer rows into the paper's
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 10] Group the ambient algebraic-integer rows into the paper's
    ordinary unit norm shells.  Their cumulative cardinality has the required
    degree-`m d` polynomial bound.  This is the exact partial-sum input to the
    Abel estimate below; no dyadic partition is used. -/
@@ -178,7 +178,7 @@ theorem ambientIntegralRowModule_norm_shell_partial_sum
       rw [mul_pow]
       ring
 
-/- [paper, proof of `le:lower_bound_not_in_F`, lines 1142--1143] The
+/- [paper, proof of Lemma 33 (submission PDF p. 15), PDF p. 16] The
    manuscript's constant `c^{minnorm}` is the norm of a shortest nonzero
    vector of the fixed ambient lattice `\mathcal O_K^m`.  It gives the stated
    positive lower bound for every nonzero integral row, independently of a
@@ -202,8 +202,8 @@ theorem exists_ambientIntegralRowModule_norm_lower_bound
   intro v hv
   exact hvmin v hv
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1745--1750] The ordinary unit-shell Abel estimate applied to the ambient
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] The ordinary unit-shell Abel estimate applied to the ambient
    algebraic-integer row lattice.  This is the quantitative form of the
    paper's innermost tail input: its exponent is the ambient dimension
    `m * d`, and the hypothesis is exactly that the reciprocal-norm exponent
@@ -241,8 +241,8 @@ theorem ambientIntegralRowModule_norm_shell_tsum_tail
         (fun i => by positivity)
         (fun {i} hi => by simpa [p] using hpartial hi))
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1745--1750] Finite endpoint form of the ambient ordinary-shell tail.  The
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] Finite endpoint form of the ambient ordinary-shell tail.  The
    manuscript first bounds a finite innermost sum and then lets its upper
    cutoff be harmless; this declaration is that finite form, with both shell
    endpoints retained. -/
@@ -348,8 +348,8 @@ theorem ambientIntegralRowModule_norm_shell_sum_Icc_tail
       _ = Ctail * ((N : ℝ) ^ (-((q - m * degree K : ℕ) : ℝ))) := by
             simp [Ctail, p]
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1745--1750] A finite family of ambient integral rows above an integral
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] A finite family of ambient integral rows above an integral
    norm threshold obeys the same ordinary-shell tail bound.  This is the
    finite nested-sum form needed for the paper's displayed sum over
    `\mathcal B_k(T)`: the proof partitions only the given finite family into
@@ -481,8 +481,8 @@ theorem ambientIntegralRowModule_finite_norm_tail_at_nat
     simp only [Finset.sum_empty]
     exact mul_nonneg hC.le (Real.rpow_nonneg (by positivity) _)
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1745--1750] The same finite ambient-row tail with the paper's actual real
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] The same finite ambient-row tail with the paper's actual real
    lower cutoff, provided that cutoff is at least one.  Passing from a real
    cutoff to its floor changes only the fixed constant; the proof retains the
    ordinary unit shells and does not introduce a different decomposition. -/
@@ -561,8 +561,8 @@ theorem ambientIntegralRowModule_finite_norm_tail_of_one_le
         simp [Ctail, d, p]
         ring
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1745--1750, together with `c^{minnorm}` at lines 1142--1143] The ambient
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21, together with `c^{minnorm}` at PDF p. 16] The ambient
    integral-row tail at every positive real lower cutoff.  The finitely many
    rows of norm below one are controlled using the paper's fixed positive
    minimum norm; above one this is exactly the preceding ordinary-shell
@@ -696,7 +696,7 @@ theorem ambientIntegralRowModule_finite_norm_tail
       _ ≤ Ctail * (r ^ (-((q - m * degree K : ℕ) : ℝ))) := by
         exact mul_le_mul_of_nonneg_left hpower hCtail.le
 
-/- [Lean infrastructure for paper lines 1743--1753] The nested finite sum
+/- [Lean infrastructure for paper PDF p. 21] The nested finite sum
    written in the order used by the manuscript: there are `j` preceding rows
    of reciprocal exponent `a`, followed by the final row of exponent `q`.
    The real argument is the lower norm cutoff on the first row. -/
@@ -706,13 +706,13 @@ noncomputable def orderedNormNestedSum {α : Type*}
   | j + 1, r => ∑ v ∈ S.filter (fun v => r ≤ H v),
       (H v)⁻¹ ^ a * orderedNormNestedSum S H a q j (H v)
 
-/- [Lean infrastructure for paper lines 1745--1753] The exponent remaining
+/- [Lean infrastructure for paper PDF p. 21] The exponent remaining
    after each application of the manuscript's innermost tail estimate. -/
 def orderedNormNestedTailExponent (p a q : ℕ) : ℕ → ℕ
   | 0 => q - p
   | j + 1 => a + orderedNormNestedTailExponent p a q j - p
 
-/- [Lean infrastructure for paper lines 1741--1753] The literal weight of an
+/- [Lean infrastructure for paper PDF p. 21] The literal weight of an
 ordered tuple in the relaxed sum: all but its final row have exponent `a`,
 and its final row has exponent `q`.  The recursive presentation matches the
 nesting order of `orderedNormNestedSum`. -/
@@ -723,7 +723,7 @@ noncomputable def orderedNormTupleWeight {α : Type*}
   | j + 1, l => (H (l 0))⁻¹ ^ a *
       orderedNormTupleWeight H a q (Fin.tail l)
 
-/- [Lean infrastructure for paper lines 1741--1753] Reindexing the rows of
+/- [Lean infrastructure for paper PDF p. 21] Reindexing the rows of
 an ordered tuple through an embedding commutes with its recursive weight. -/
 theorem orderedNormTupleWeight_map
     {α β : Type*} (H : β → ℝ) (f : α → β) (a q : ℕ) :
@@ -745,7 +745,7 @@ theorem orderedNormTupleWeight_map
         fun i => f ((Fin.tail l) i) by rfl]
       rw [ih]
 
-/- [Lean infrastructure for paper lines 1741--1753] Membership in the
+/- [Lean infrastructure for paper PDF p. 21] Membership in the
 finite ordered tuple family used after the manuscript drops the projection
 conditions: every coordinate belongs to the finite row family, the first
 norm is at least `r`, and consecutive norms are nondecreasing. -/
@@ -755,8 +755,8 @@ def orderedNormTupleCondition {α : Type*}
   (∀ i, l i ∈ S) ∧ r ≤ H (l 0) ∧
     ∀ i : Fin j, H (l i.castSucc) ≤ H (l i.succ)
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1741--1753] A finite family of the manuscript's ordered tuples is bounded
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] A finite family of the manuscript's ordered tuples is bounded
 by the recursively written nested sum.  This is the explicit bridge from the
 displayed tuple sum to `orderedNormNestedSum`; it introduces no replacement
 summation argument. -/
@@ -878,8 +878,8 @@ theorem sum_orderedNormTupleWeight_le_orderedNormNestedSum
               exact hinner x hx
         _ = orderedNormNestedSum S H a q (j + 1) r := by rfl
 
-/- [Lean infrastructure for paper equation `eq:just_as_before`, lines
-   1731--1743] Algebraic bridge from the manuscript's product weight to the
+/- [Lean infrastructure for paper equation (24) (submission PDF p. 21),
+   PDF p. 21] Algebraic bridge from the manuscript's product weight to the
 recursive ordered-tuple weight.  The nonzero hypothesis is precisely the
 domain condition needed for the displayed reciprocal factors. -/
 theorem product_inv_pow_mul_last_eq_orderedNormTupleWeight
@@ -932,8 +932,8 @@ theorem product_inv_pow_mul_last_eq_orderedNormTupleWeight
               orderedNormTupleWeight H (n * d) (n * d - 1) (Fin.tail l) := by
               rw [htailQ]
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1745--1753] Iterating the paper's innermost norm tail in the displayed
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] Iterating the paper's innermost norm tail in the displayed
    order.  Each iteration raises the preceding reciprocal exponent by the
    already obtained tail exponent, exactly as in the manuscript's phrase
    “the rest of the nested sums inductively.” -/
@@ -1055,8 +1055,8 @@ theorem ambientIntegralRowModule_orderedNormNestedSum_tail
               simp [orderedNormNestedTailExponent, e, qnext]
               ring
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1741--1753] Uniform finite-family form of the noncritical ordered-tuple
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] Uniform finite-family form of the noncritical ordered-tuple
 sum.  The constant is quantified before the finite row family, so it is
 genuinely independent of the manuscript cutoff `T`; the fixed positive
 lower norm cutoff is supplied by `c^{minnorm}`. -/
@@ -1100,8 +1100,8 @@ theorem ambientIntegralRowModule_orderedNormTupleWeight_sum_le
           (m * degree K) a q j : ℕ) : ℝ)) := htailδ
       _ = C := by rfl
 
-/- [derived consequence of paper `le:domain_dimension_bound`, lines
-   1741--1753] Transfer the uniform ordered-tuple bound from the fixed
+/- [derived consequence of paper Lemma 19 (submission PDF p. 9),
+   PDF p. 21] Transfer the uniform ordered-tuple bound from the fixed
 ambient lattice to algebraic-integer rows.  The finite family is mapped by
 the manuscript's Minkowski embedding, and its image supplies exactly the
 finite row set used by the nested tail estimate. -/
@@ -1191,8 +1191,8 @@ theorem integralRow_orderedNormTupleWeight_sum_le
           exact hweight l
     _ ≤ C := hambient
 
-/- [Lean infrastructure for paper `le:injective_minima`, lines 1205--1208,
-   and `eq:just_as_before`, lines 1731--1748] Finite representation of the
+/- [Lean infrastructure for paper Lemma 36 (submission PDF pp. 16--17), PDF p. 17,
+   and Equation (24) (submission PDF p. 21), PDF p. 21] Finite representation of the
 intended nonzero part of `𝓑_k(T)`.  The separate name retains the literal
 definition while making the reciprocal product mathematically defined; the
    corresponding domain clarification is reflected in this declaration. -/
@@ -1202,7 +1202,7 @@ noncomputable def possibleSuccessiveMinimaNonzeroFinset
     (C := C) (T := T)).toFinset).filter (fun l => ∀ i, l i ≠ 0)
 
 /- [derived consequence of the noncritical branch of
-   `le:domain_dimension_bound`, lines 1724--1753] The strict noncritical
+   Lemma 19 (submission PDF p. 9), PDF p. 21] The strict noncritical
 condition gives exactly the two ambient summability gaps required by the
 manuscript's final-row exponent `n d - 1` and the preceding-row exponent
 `n d`. -/
@@ -1222,8 +1222,8 @@ theorem noncritical_ambient_exponent_gaps
       _ = m * degree K + (n - m) * degree K := by rw [Nat.add_mul]
   constructor <;> rw [hmul] <;> omega
 
-/- [derived consequence of paper `eq:just_as_before` and
-   `le:domain_dimension_bound`, lines 1731--1753] The paper's relaxed
+/- [derived consequence of paper Equation (24) (submission PDF p. 21) and
+   Lemma 19 (submission PDF p. 9), PDF p. 21] The paper's relaxed
 noncritical reciprocal-minima sum is uniformly bounded on the explicitly
 nonzero version of `𝓑_{j+1}(T)`.  This is the literal ordinary-shell nested
 summation argument, with `c^{minnorm}` supplying the lower cutoff. -/
@@ -1323,10 +1323,10 @@ theorem possibleSuccessiveMinima_nonzero_product_weight_sum_le
               exact hweight l hl
     _ ≤ M := hsum
 
-/- [Lean infrastructure for paper equation `eq:just_as_before`, lines
-   1731--1743] Under Lean's totalized inversion convention, a tuple with a
-zero row has zero radius weight.  This proves the bridge from the literal
-finite set in the cited manuscript to its explicitly nonzero intended
+/- [Lean infrastructure for paper equation (24) (submission PDF p. 21),
+   PDF p. 21] Under Lean's totalized inversion convention, a tuple with a
+   zero row has zero radius weight.  This proves the bridge from the literal
+   finite set in the submission PDF to its explicitly nonzero intended
 reciprocal-sum domain. -/
 theorem possibleSuccessiveMinimaRadiusWeight_eq_zero_of_some_zero
     {m k n : ℕ} (hk : 0 < k) (hn : 0 < n)
@@ -1340,8 +1340,8 @@ theorem possibleSuccessiveMinimaRadiusWeight_eq_zero_of_some_zero
     simp [hi, zero_pow (Nat.ne_of_gt hd)]
   rw [hprod, inv_zero, zero_pow (Nat.ne_of_gt hn), zero_mul]
 
-/- [Lean infrastructure for paper equation `eq:just_as_before`, lines
-   1731--1743] Exact finite-sum bridge between the current literal Lean
+/- [Lean infrastructure for paper equation (24) (submission PDF p. 21),
+   PDF p. 21] Exact finite-sum bridge between the current literal Lean
 encoding of `𝓑_{j+1}(T)` and the nonzero ordered reciprocal product.  It is
 not presented as a substitute for the manuscript notation: the zero-domain
 clarification is reflected in the explicit nonzero-domain statement above. -/
@@ -1403,8 +1403,8 @@ theorem sum_possibleSuccessiveMinimaRadiusWeight_eq_nonzero_product_weight
               intro l hl
               exact hweight l hl
 
-/- [derived consequence of paper equation `eq:just_as_before`, lines
-   1731--1753] This returns the ordinary-shell bound to the literal
+/- [derived consequence of paper equation (24) (submission PDF p. 21),
+   PDF p. 21] This returns the ordinary-shell bound to the literal
 `possibleSuccessiveMinimaRadiusWeight` occurring in the finite injection from
 `𝓕_{j+1}(T)`.  The preceding exact bridge is retained so that this is a bound
 in the manuscript's notation, rather than a notation-changing replacement. -/
@@ -1430,8 +1430,8 @@ theorem possibleSuccessiveMinimaRadiusWeight_sum_le_of_noncritical
     (K := K) (m := m) (n := n) (j := j) (Nat.succ_pos j) hn C T]
   exact hbound C T
 
-/- [derived consequence of paper equation `eq:just_as_before`, lines
-   1724--1753] This is the stated uniform bound for the finite manuscript
+/- [derived consequence of paper equation (24) (submission PDF p. 21),
+   PDF p. 21] This is the stated uniform bound for the finite manuscript
 family `𝓕_{j+1}(T)` in the noncritical branch.  The displayed product
 comparison is the same Fieker--Stehlé input used in
 `sum_calF_coveringRadius_div_height_pow_le_possibleMinimaWeight`; it remains
@@ -1509,8 +1509,8 @@ theorem exists_uniform_calF_coveringRadius_sum_bound_of_noncritical
         dsimp [Cfinite]
         linarith [mul_nonneg hfactor hM.le]
 
-/- [derived consequence, paper equation `eq:just_as_before`, lines
-   1731--1753] This specializes the noncritical `𝓕_{j+1}(T)` radius sum to
+/- [derived consequence, paper equation (24) (submission PDF p. 21),
+   PDF p. 21] This specializes the noncritical `𝓕_{j+1}(T)` radius sum to
    the proved Fieker--Stehlé/Minkowski-II product derivation in
    `FiekerStehle.lean`.  It supplies the manuscript's one constant
    `C^{okhadamard}` uniformly over the echelon family. -/

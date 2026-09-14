@@ -3,7 +3,7 @@ import Katznelson.Counting.RowLatticeRiemann
 /-!
 # Uniform bounds for the manuscript's subspace integrals
 
-The tail estimate in `co:tail` uses that the integral of an admissible
+The tail estimate in Corollary 34 (submission PDF p. 16) uses that the integral of an admissible
 function over every row-matrix subspace is bounded by one constant depending
 only on the fixed ambient data and the function.  This module derives that
 bound from compact support and boundedness, while retaining the exact
@@ -18,9 +18,9 @@ open scoped Classical MeasureTheory NumberField
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [derived consequence of paper Hypothesis `hy:admissible`, lines 532--548,
-   used in Lemma `le:schmidt_makes_c1_finite`, lines 837--858, and Corollary
-   `co:tail`, lines 1156--1170] Compact support and boundedness give one
+/- [derived consequence of paper Hypothesis 16 (submission PDF p. 8), PDF p. 8,
+   used in Lemma 24 (submission PDF pp. 11--12), PDF p. 11, and Corollary
+   Corollary 34 (submission PDF p. 16), PDF p. 16] Compact support and boundedness give one
    bound for the manuscript's integrals over all rank-`k` row-matrix
    subspaces.  Their common real dimension is `n * k * degree K`, so the
    enclosing-ball volume is independent of the row space. -/

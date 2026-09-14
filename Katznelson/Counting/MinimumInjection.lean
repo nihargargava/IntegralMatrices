@@ -6,7 +6,7 @@ import Katznelson.Counting.MinimumBound
 /-!
 # The minima tuple attached to a bounded echelon family
 
-This module isolates the paper's `le:injective_minima` step from the large
+This module isolates the paper's Lemma 36 (submission PDF pp. 16--17) step from the large
 theorem file.  The statements retain the manuscript's `𝓕_k(T)` and
 `𝓑_k^(C)(T)` notation as represented in `Echelon` and `SuccessiveMinima`.
 -/
@@ -22,7 +22,7 @@ attribute [local instance] Matrix.frobeniusNormedSpace
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [paper, proof of `le:injective_minima`, lines 1221--1225] Membership in
+/- [paper, proof of Lemma 36 (submission PDF pp. 16--17), PDF p. 17] Membership in
    `𝓕_k(T)` supplies a matrix whose rows span the row space and whose
    Frobenius norm is at most `C^{sup} T`.  The matrix-level bridge in
    `MinimumBound` therefore bounds the last successive minimum by the same
@@ -44,7 +44,7 @@ theorem echelon_successiveMinimum_last_norm_le_of_mem_calF
     (echelonRowSpace D) A hk
     hArank hAnorm
 
-/- [paper, both parts of `le:injective_minima`, lines 1199--1234] The
+/- [paper, both parts of Lemma 36 (submission PDF pp. 16--17), PDF p. 17] The
    manuscript-facing correspondence is now available in one statement: the
    minima rows of every member of `𝓕_k(T)` lie in the exact set
    `𝓑_k^(C)(T)` when `C` dominates the projection constant, and the
@@ -76,8 +76,8 @@ theorem echelon_successiveMinimumIntegralRow_mem_possible_and_injective
       integralVectorEmbedding_rowSuccessiveMinimumIntegralRow] at hi
     exact hi
 
-/- [Lean infrastructure for paper equation `eq:just_as_before`, lines
-   1730--1738] This names the reciprocal-minima weight on the manuscript's
+/- [Lean infrastructure for paper equation (24) (submission PDF p. 21),
+   PDF p. 21] This names the reciprocal-minima weight on the manuscript's
    tuple space `𝓑_k(T)`.  Lean totalizes inversion at zero so the function is
    defined on the full displayed set; the proved bridge below shows that on
    the actual image of `𝓕_k(T)` it is exactly the paper's reciprocal product,
@@ -90,8 +90,8 @@ noncomputable def possibleSuccessiveMinimaRadiusWeight
       ‖integralVectorEmbedding (K := K) m
         (l ⟨k - 1, Nat.pred_lt hk.ne'⟩)‖
 
-/- [Lean infrastructure for paper equation `eq:just_as_before`, lines
-   1730--1738] The internal totalized tuple weight agrees, on a selected
+/- [Lean infrastructure for paper equation (24) (submission PDF p. 21),
+   PDF p. 21] The internal totalized tuple weight agrees, on a selected
    minima tuple, with the literal product of the paper's nonzero minima. -/
 theorem possibleSuccessiveMinimaRadiusWeight_selected
     {m k : ℕ} (V : Grassmannian K m k) (n : ℕ) (hk : 0 < k) :
@@ -106,8 +106,8 @@ theorem possibleSuccessiveMinimaRadiusWeight_selected
   simp_rw [integralVectorEmbedding_rowSuccessiveMinimumIntegralRow]
   rfl
 
-/- [Lean infrastructure for paper equation `eq:just_as_before`, lines
-   1730--1738] The totalized tuple weight is nonnegative, which is the sole
+/- [Lean infrastructure for paper equation (24) (submission PDF p. 21),
+   PDF p. 21] The totalized tuple weight is nonnegative, which is the sole
    order property needed to apply the finite injection comparison. -/
 theorem possibleSuccessiveMinimaRadiusWeight_nonneg
     {m k : ℕ} (n : ℕ) (hk : 0 < k)
@@ -120,7 +120,7 @@ theorem possibleSuccessiveMinimaRadiusWeight_nonneg
         pow_nonneg (norm_nonneg _) _)) _
   · exact norm_nonneg _
 
-/- [derived consequence of paper `le:injective_minima`, lines 1199--1234]
+/- [derived consequence of paper Lemma 36 (submission PDF pp. 16--17), PDF p. 17]
    The two asserted parts of the manuscript correspondence imply that its
    exact source family `𝓕_k(T)` is finite: it embeds in the already finite
    tuple family `𝓑_k^(C)(T)`.  This is a second, paper-local finiteness proof
@@ -146,8 +146,8 @@ theorem finite_calF_of_possibleSuccessiveMinima
   apply hinj
   exact hDE
 
-/- [derived consequence of paper equation (22), lines 1730--1738, and
-   `le:injective_minima`, lines 1199--1234] This is the finite-sum form of
+/- [derived consequence of paper equation (22), PDF p. 21, and
+   Lemma 36 (submission PDF pp. 16--17), PDF p. 17] This is the finite-sum form of
    the manuscript's injection from `𝓕_k(T)` to `𝓑_k^(C)(T)`: any nonnegative
    weight of the selected minima may be summed over the latter family.  It
    retains both manuscript sets and does not replace their indexing with an
@@ -185,8 +185,8 @@ theorem sum_calF_le_sum_possibleSuccessiveMinima
     (by intro D hD; rfl)
     (by intro l hl hnot; exact hg l)
 
-/- [derived consequence of paper equation `eq:just_as_before`, lines
-   1730--1738] This is the exact finite-family radius sum from the main
+/- [derived consequence of paper equation (24) (submission PDF p. 21),
+   PDF p. 21] This is the exact finite-family radius sum from the main
    counting proof.  The source remains `𝓕_k(T)`, the target remains
    `𝓑_k^(C)(T)`, and the product estimate is kept as the visibly cited
    Fieker--Stehlé input used by the manuscript. -/

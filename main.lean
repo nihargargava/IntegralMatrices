@@ -5,8 +5,8 @@ import Mathlib.Analysis.Matrix.Normed
 # Katznelson formalization
 
 This project formalizes the preprint *Integral matrices of fixed rank over
-number fields* (arXiv:2510.11673).  The arXiv manuscript is the cited source
-of the notation and statements.
+number fields* (arXiv:2510.11673).  The author-supplied submission PDF is the
+cited source of the notation and statements.
 -/
 
 namespace Katznelson
@@ -22,7 +22,7 @@ attribute [local instance] Matrix.frobeniusNormedSpace
 /-!
 ## Main counting theorem
 
-This is Theorem `th:main` of the cited manuscript: for an admissible
+This is Theorem 2 (submission PDF p. 2; proof pp. 20--22) of the cited submission PDF: for an admissible
 function on `M_{n × m}(K_ℝ)`, the rank-k integral-matrix sum has order
 `T^(k*n*d)`, with normalized additive error bounded by `T⁻¹ log T`.
 Unless `d = k = 1` and `m = n - 1`, the logarithm can be dropped.
@@ -32,12 +32,12 @@ The explicit `hcount` argument is the [cited input] from Schmidt,
 attributed in `Katznelson.Counting.Schmidt`; it is not a local axiom.
 -/
 /- [derived consequence; author-approved local metric adaptation of paper
-   Theorem `th:main`, lines 157--203 and proof lines 1641--1800]
-   the exceptional branch at lines 1716--1724 uses the author's explicitly
+   Theorem 2 (submission PDF p. 2; proof pp. 20--22)]
+   the exceptional branch at PDF p. 21 uses the author's explicitly
    permitted critical-radius adaptation.  The `Admissible` implementation
    uses the separately documented, author-approved raw-Euclidean convention
    only in the admissibility/Riemann subsystem; the exact displayed main
-   constant uses the manuscript-normalized Haar measure. -/
+   constant uses the submission-PDF-normalized Haar measure. -/
 theorem fixed_rank_count
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (h_dimensions : n > m ∧ m ≥ k ∧ k ≥ 1)
@@ -57,9 +57,9 @@ theorem fixed_rank_count
   exact fixed_rank_count_from_assembled_estimates
     h_dimensions f h_f hcount
 
-/- [derived consequence of paper Theorem `th:main`] The first consequence
+/- [derived consequence of paper Theorem 2 (submission PDF p. 2; proof pp. 20--22)] The first consequence
    needed in the lifts argument is the genuine limit
-   form of `th:main`.  The paper states an explicit `T⁻¹ log T` error; this
+   form of Theorem 2 (submission PDF p. 2; proof pp. 20--22).  The submission PDF states an explicit `T⁻¹ log T` error; this
    lemma packages that estimate as convergence along the real scale. -/
 theorem fixedRankSum_normalized_tendsto
     {K : Type*} [Field K] [NumberField K]
@@ -91,8 +91,8 @@ theorem fixedRankSum_normalized_tendsto
     simpa [hcMain, Real.norm_eq_abs] using hestimate T hT
   · exact herror
 
-/- [derived consequence of paper Theorem `th:main` and equation
-   `eq:def_of_L`] Composing the fixed-rank limit with the scale gives the
+/- [derived consequence of paper Theorem 2 (submission PDF p. 2; proof pp. 20--22) and equation
+   Equation (26) (submission PDF p. 22)] Composing the fixed-rank limit with the scale gives the
    form used term-by-term in the lifts proof. -/
 theorem fixedRankSum_normalized_liftScale_tendsto
     {K : Type*} [Field K] [NumberField K]
@@ -114,14 +114,14 @@ theorem fixedRankSum_normalized_liftScale_tendsto
 /-!
 ## Main lifts-of-codes theorem
 
-This is Theorem `th:higher_moments`: for the permitted `s`, the m-th moment
+This is Theorem 42 (submission PDF p. 24; proof pp. 24--25): for the permitted `s`, the m-th moment
 over `𝓛(𝓟,s)` converges as `𝓝(𝓟) → ∞` to the echelon-matrix integral sum.
 -/
 /- [derived consequence; author-approved local metric adaptation of paper
-   Theorem `th:higher_moments`] The fixed-rank input is `th:main`, with
+   Theorem 42 (submission PDF p. 24; proof pp. 24--25)] The fixed-rank input is Theorem 2 (submission PDF p. 2; proof pp. 20--22), with
    Schmidt's Theorem 3 exposed through `hcount`; the same narrowly scoped
    raw-Euclidean `Admissible` convention is used, while the limiting echelon
-   integrals have the proved manuscript Haar normalization. -/
+   integrals have the proved submission-PDF Haar normalization. -/
 theorem lifts_of_codes_convergence
     {K : Type*} [Field K] [NumberField K]
     {n m s : ℕ} (h_n : 2 ≤ n) (h_m : 1 ≤ m ∧ m < n)

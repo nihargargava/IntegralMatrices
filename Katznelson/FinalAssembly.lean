@@ -27,7 +27,7 @@ open scoped Classical NumberField
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [Lean infrastructure for paper `co:covering_bound`, lines 1239--1248]
+/- [Lean infrastructure for paper Corollary 37 (submission PDF p. 17), PDF p. 17]
 One fixed auxiliary cutoff dominates the support constant, the coefficient
 projection constant, and `1`.  It is selected before the scale `T`, as the
 manuscript requires. -/
@@ -57,7 +57,7 @@ theorem fixedRankAuxiliaryBound_projection_le
       fixedRankAuxiliaryBound K m Csup := by
   exact (le_max_right _ _).trans (le_max_right _ _)
 
-/- [Lean infrastructure for paper Theorem `th:main`, lines 1641--1800]
+/- [Lean infrastructure for paper Theorem 2 (submission PDF p. 2; proof pp. 20--22), PDF p. 22]
 The radius estimate has exactly two dimension regimes: the strictly
 convergent case, or `degree K = 1` and `n = m + 1`. -/
 theorem fixedRank_radius_gap_or_critical
@@ -78,9 +78,9 @@ theorem fixedRank_radius_gap_or_critical
     have hdtwo : 2 ≤ d := by omega
     nlinarith
 
-/- [Lean infrastructure for paper Theorem `th:main`, lines 1716--1800]
+/- [Lean infrastructure for paper Theorem 2 (submission PDF p. 2; proof pp. 20--22), PDF p. 22]
 Inside the critical radius regime, the manuscript separates rank one from
-the higher-rank argument beginning with equation `eq:two_terms`. -/
+the higher-rank argument beginning with equation (25) (submission PDF p. 22). -/
 theorem fixedRank_critical_rank_cases {k : ℕ} (hk : 1 ≤ k) :
     k = 1 ∨ 2 ≤ k := by
   omega
@@ -107,7 +107,7 @@ theorem fixedRank_exceptional_of_not_nonexceptional
   omega
 
 /- [derived consequence of the preceding arithmetic split] Away from the
-exception displayed in `th:main`, the exponent controlling the assembled
+exception displayed in Theorem 2 (submission PDF p. 2; proof pp. 20--22), the exponent controlling the assembled
 error terms is strictly larger than one. -/
 theorem fixedRank_nonexceptional_exponent
     {n m k d : ℕ} (hnm : m < n) (hk : 1 ≤ k) (hd : 1 ≤ d)
@@ -116,8 +116,8 @@ theorem fixedRank_nonexceptional_exponent
   by_contra h
   exact hnot (fixedRank_exceptional_of_not_nonexceptional hnm hk hd h)
 
-/- [derived consequence of paper equation `eq:just_as_before`, lines
-   1724--1800] Outside the stated degree-one/rank-one/codimension-one
+/- [derived consequence of paper equation (24) (submission PDF p. 21),
+   PDF pp. 21--22] Outside the stated degree-one/rank-one/codimension-one
    exception, the exact bounded-row-space family has a radius sum bounded by
    one constant selected before `T`.  The proof follows the manuscript's two
    cases: the convergent minimum sum, or its critical higher-rank argument. -/
@@ -169,7 +169,7 @@ theorem exists_fixedRank_nonexceptional_latticeVoronoi_radius_sum_bound
             exact hbound hCproj hCsup hT
 
 /- [derived consequence; author-approved adaptation around paper subsection
-   `ss:log_term`, lines 324--358, and its use at lines 1716--1724] In the
+   Section 1.3 (submission PDF pp. 5--6), PDF p. 6, and its use at PDF p. 21] In the
    unique exceptional dimensions, prove the logarithmic radius sum on the
    exact bounded-row-space family.  The manuscript discusses the unit-ball
    case; the author has permitted this replacement for arbitrary admissible
@@ -210,7 +210,7 @@ theorem one_add_log_div_le_three_inv_mul_log
   simpa [div_eq_mul_inv, zpow_neg_one] using
     one_add_log_mul_zpow_neg_one_le_three_inv_mul_log hT
 
-/- [derived consequence of paper lines 1641--1724] Arithmetic wrapper for
+/- [derived consequence of paper PDF p. 21] Arithmetic wrapper for
 the finite-family estimate in the exceptional degree-one, rank-one,
 codimension-one case.  The first term is exactly the logarithmic radius sum;
 the remaining two are the displayed lower-rank and height-tail errors. -/
@@ -249,8 +249,8 @@ theorem fixedRankError_le_inv_log_of_critical_rank_one_bounds
     (by simpa using hsplit) hradius (by norm_num) le_rfl le_rfl
   simpa using hmain
 
-/- [Lean infrastructure for paper Lemma `le:low_rank_terms`, lines
-1495--1501] The manuscript's termwise-absolute lower-rank sum dominates the
+/- [Lean infrastructure for paper Lemma 39 (submission PDF pp. 18--20),
+PDF p. 19] The manuscript's termwise-absolute lower-rank sum dominates the
 absolute value of each inner lower-rank sum.  This is the sole bridge needed
 to feed the stronger literal lemma into the finite-family error assembly. -/
 theorem finite_lowerRank_sum_abs_le_termwiseAbs
@@ -273,8 +273,8 @@ theorem finite_lowerRank_sum_abs_le_termwiseAbs
       Subtype.val_injective
   simpa only [Real.norm_eq_abs] using norm_tsum_le_tsum_norm hs.norm
 
-/- [derived consequence of paper Theorem `th:main`, proof lines
-   1641--1800] Assemble the manuscript's exact finite family, its pointwise
+/- [derived consequence of paper Theorem 2 (submission PDF p. 2; proof pp. 20--22), proof printed pages
+   PDF pp. 20--22] Assemble the manuscript's exact finite family, its pointwise
    Voronoi estimate, the literal lower-rank contribution, the height tail,
    and the two non-exceptional radius arguments.  All constants are chosen
    before `T`; Schmidt's cited height count remains the explicit hypothesis
@@ -409,7 +409,7 @@ theorem exists_fixedRank_nonexceptional_normalized_error_bound
       simpa [C_error, div_eq_mul_inv] using hfinite_inv
 
 /- [derived consequence; author-approved adaptation around paper Theorem
-   `th:main`, exceptional case at lines 1716--1724] Assemble the same exact
+   Theorem 2 (submission PDF p. 2; proof pp. 20--22), exceptional case at PDF p. 21] Assemble the same exact
    finite-family decomposition in degree one, rank one, and codimension one,
    using the proved critical logarithmic radius sum.  The author has permitted
    this replacement argument only for this exceptional branch. -/
@@ -538,7 +538,7 @@ theorem exists_fixedRank_exceptional_normalized_error_bound
     _ ≤ C_error * T⁻¹ * Real.log T := by
       simpa [C_error, mul_assoc] using hfinite_log
 
-/- [derived consequence; paper Theorem `th:main` plus the author-approved
+/- [derived consequence; paper Theorem 2 (submission PDF p. 2; proof pp. 20--22) plus the author-approved
    exceptional-case adaptation above] Final quantified assembly.  The main
    constant and both error regimes retain the manuscript's notation and
    normalization `T^(k*n*degree K)`.  The only external arithmetic input is

@@ -13,15 +13,15 @@ import Katznelson.Counting.UniformIntegral
 # Exact normalization of the echelon main term
 
 This file supplies the missing manuscript-facing bridge between the
-echelon-coordinate expression in `papers/katznelson.tex`, equation
-`eq:value_of_c`, lines 197--202, and the Grassmannian definition
+echelon-coordinate expression in `authoritative submission PDF`, equation
+Equation (5) (submission PDF p. 3), PDF p. 2, and the Grassmannian definition
 `Katznelson.mainConstant`.  The measure calculation formalizes precisely the
 change of variables and lattice normalization asserted in
-`eq:summable_matrices` and `eq:d_D_defined`, lines 837--858.
+Equation (14) (submission PDF p. 12) and Equation (15) (submission PDF p. 12), PDF p. 11.
 
 ## Provenance
 
-* **paper:** `papers/katznelson.tex`, lines 192--202 and 837--858.
+* **paper:** `authoritative submission PDF`, PDF p. 2.
 * **proof provenance (not a logical input):** Gargava--Serban--Viazovska,
   *Moments of the number of points in a bounded set for number field
   lattices*, arXiv:2308.15275, Lemma 11 and Appendix A.  The normalization and
@@ -109,7 +109,7 @@ noncomputable local instance mainTermMatrixInnerProductSpace
   · intro x y c
     simpa only [map_smul] using inner_smul_left (e x) (e y) c
 
-/- [Lean infrastructure, paper lines 837--854] The literal matrix product
+/- [Lean infrastructure, paper PDF p. 11] The literal matrix product
 `xD`, with the entries of `D` embedded in `K_ℝ`. -/
 def echelonCoordinateProduct {n k m : ℕ} (D : EchelonMatrix K k m)
     (x : M n k (K_ℝ[K])) : M n m (K_ℝ[K]) :=
@@ -122,9 +122,9 @@ theorem echelonCoordinateProduct_apply {n k m : ℕ}
     echelonCoordinateProduct D x i j =
       ∑ q : Fin k, x i q * numberEmbedding K ((D.1 : M k m K) q j) := rfl
 
-/- [Lean infrastructure, paper lines 837--854] Real linearity of `x ↦ xD`.
+/- [Lean infrastructure, paper PDF p. 11] Real linearity of `x ↦ xD`.
 This is the scalar extension of `echelonRowCombinationLinearMap`; the formula
-is kept literal because it is the integrand in `eq:value_of_c`. -/
+is kept literal because it is the integrand in Equation (5) (submission PDF p. 3). -/
 def echelonCoordinateLinearMap {n k m : ℕ} (D : EchelonMatrix K k m) :
     M n k (K_ℝ[K]) →ₗ[ℝ] M n m (K_ℝ[K]) where
   toFun := echelonCoordinateProduct D
@@ -154,7 +154,7 @@ theorem echelonCoordinateLinearMap_apply {n k m : ℕ}
     (D : EchelonMatrix K k m) (x : M n k (K_ℝ[K])) :
     echelonCoordinateLinearMap D x = echelonCoordinateProduct D x := rfl
 
-/- [derived consequence, paper lines 844--848] Full row rank of a reduced
+/- [derived consequence, paper PDF p. 11] Full row rank of a reduced
 echelon matrix makes the literal coordinate map injective over `K_ℝ`.  The
 proof reads coefficients in the pivot columns, so it does not use a field
 structure on the product algebra `K_ℝ`. -/
@@ -181,7 +181,7 @@ theorem echelonCoordinateLinearMap_injective {n k m : ℕ}
   rw [hsum x, hsum y] at hp
   exact hp
 
-/- [derived consequence, paper lines 844--854] The image of `x ↦ xD` lies
+/- [derived consequence, paper PDF p. 11] The image of `x ↦ xD` lies
 in the real row-matrix space attached to the rational row space of `D`. -/
 theorem echelonCoordinateProduct_mem_rowMatrixRealSpan {n k m : ℕ}
     (D : EchelonMatrix K k m) (x : M n k (K_ℝ[K])) :
@@ -219,7 +219,7 @@ theorem echelonCoordinateProduct_mem_rowMatrixRealSpan {n k m : ℕ}
   intro j
   simp [echelonCoordinateProduct, smul_eq_mul]
 
-/- [Lean infrastructure, paper lines 844--854] The coordinate map with its
+/- [Lean infrastructure, paper PDF p. 11] The coordinate map with its
 codomain restricted to the manuscript's subspace `M_{n×k}(K_ℝ)·D`. -/
 def echelonCoordinateToRowSpan {n k m : ℕ} (D : EchelonMatrix K k m) :
     M n k (K_ℝ[K]) →ₗ[ℝ]
@@ -235,7 +235,7 @@ theorem echelonCoordinateToRowSpan_injective {n k m : ℕ}
   apply echelonCoordinateLinearMap_injective D
   exact congrArg Subtype.val hxy
 
-/- [derived consequence, paper lines 844--854] The literal coordinate map is
+/- [derived consequence, paper PDF p. 11] The literal coordinate map is
 onto the full real subspace `M_{n×k}(K_ℝ)·D`. -/
 theorem echelonCoordinateToRowSpan_surjective {n k m : ℕ}
     (D : EchelonMatrix K k m) :
@@ -250,7 +250,7 @@ theorem echelonCoordinateToRowSpan_surjective {n k m : ℕ}
   simp [NumberField.mixedEmbedding.euclidean.finrank, degree,
     mul_assoc, mul_left_comm, mul_comm]
 
-/- [Lean infrastructure, paper lines 844--854] The exact real-linear
+/- [Lean infrastructure, paper PDF p. 11] The exact real-linear
 equivalence represented by `x ↦ xD`. -/
 def echelonCoordinateEquiv {n k m : ℕ} (D : EchelonMatrix K k m) :
     M n k (K_ℝ[K]) ≃ₗ[ℝ]
@@ -274,17 +274,17 @@ def echelonCoordinateContinuousEquiv {n k m : ℕ}
       rowMatrixRealSpan (echelonRowSpace D) n :=
   (echelonCoordinateEquiv D).toContinuousLinearEquiv
 
-/- [Lean infrastructure, paper equation `eq:d_D_defined`, lines 847--853]
+/- [Lean infrastructure, paper equation (15) (submission PDF p. 12), PDF p. 11]
 The measure on the image of `x ↦ xD` obtained by transporting the literal
 coordinate measure.  This is the measure-theoretic realization of the
-Jacobian in manuscript line 844; defining it as a push-forward keeps the
+Jacobian in manuscript PDF p. 11; defining it as a push-forward keeps the
 normalization exact. -/
 noncomputable def echelonPushforwardMeasure {n k m : ℕ}
     (D : EchelonMatrix K k m) (mu : Measure (M n k (K_ℝ[K]))) :
     Measure (rowMatrixRealSpan (echelonRowSpace D) n) :=
   mu.map (echelonCoordinateContinuousEquiv D)
 
-/- [derived consequence, paper equation `eq:d_D_defined`, lines 847--853]
+/- [derived consequence, paper equation (15) (submission PDF p. 12), PDF p. 11]
 Transport by the coordinate equivalence preserves the additive-Haar
 property.  This is Mathlib's standard push-forward theorem for continuous
 linear equivalences, not an additional mathematical input. -/
@@ -295,7 +295,7 @@ theorem echelonPushforwardMeasure_isAddHaarMeasure {n k m : ℕ}
   unfold echelonPushforwardMeasure
   exact (echelonCoordinateContinuousEquiv D).isAddHaarMeasure_map mu
 
-/- [derived consequence, paper equation `eq:d_D_defined`, lines 847--853]
+/- [derived consequence, paper equation (15) (submission PDF p. 12), PDF p. 11]
 Exact change of variables for the literal integrand `f (xD)`.  Since the
 target measure is defined by push-forward, no determinant, norm-equivalence
 constant, or integrability hypothesis is needed for this identity. -/
@@ -319,8 +319,8 @@ theorem integral_echelonPushforwardMeasure {n k m : ℕ}
       (μ := mu) (fun A : rowMatrixRealSpan (echelonRowSpace D) n =>
         f (A : M n m (K_ℝ[K])))
 
-/- [Lean infrastructure, paper equations `de:denonimator` and
-`eq:d_D_defined`, lines 192--195 and 844--853] The literal coefficient
+/- [Lean infrastructure, paper equations Equation (4) (submission PDF p. 2) and
+Equation (15) (submission PDF p. 12), PDF p. 2] The literal coefficient
 lattice
 `{x : M_{n×k}(K_ℝ) | xD ∈ M_{n×m}(O_K)}`.  It is defined as the pullback of
 `M_n(Λ_D)` under the proved coordinate equivalence, so its carrier retains
@@ -338,7 +338,7 @@ theorem mem_echelonCoefficientZLattice_iff {n k m : ℕ}
         rowMatrixZLattice (echelonRowSpace D) n := by
   rfl
 
-/- [derived consequence, paper definition `de:denonimator`, lines 192--195]
+/- [derived consequence, paper definition Equation (4) (submission PDF p. 2), PDF p. 2]
 The pullback lattice is exactly the mixed-embedding image of the manuscript's
 rowwise denominator module.  Thus the analytic pullback above and the
 arithmetic module whose index is computed by
@@ -429,7 +429,7 @@ theorem mem_echelonCoefficientZLattice_iff_exists_denominatorMatrix
           intro q hq
           exact map_mul (numberEmbeddingRingHom K) _ _
 
-/- [Lean infrastructure, paper definition `de:denonimator`, lines 192--195]
+/- [Lean infrastructure, paper definition Equation (4) (submission PDF p. 2), PDF p. 2]
 The mixed-embedding realizations of the full coefficient module
 `M_{n×k}(O_K)` and of its rowwise denominator submodule. -/
 noncomputable def embeddedIntegralCoefficientLattice (n k : ℕ) :
@@ -437,7 +437,7 @@ noncomputable def embeddedIntegralCoefficientLattice (n k : ℕ) :
   ((⊤ : Submodule (𝓞 K) (IntegralMatrix K n k)).restrictScalars ℤ).map
     (integralMatrixEmbedding (K := K) n k)
 
-/- [derived consequence, paper lines 661--674 and 844--848] Membership in
+/- [derived consequence, paper PDF p. 10] Membership in
 the full coefficient lattice is coordinatewise membership in the
 mixed-embedded integer lattice.  This is the literal matrix-product form of
 `O_K` under the manuscript embedding. -/
@@ -469,7 +469,7 @@ theorem mem_embeddedIntegralCoefficientLattice_iff
     ext i q
     exact hC i q
 
-/- [Lean infrastructure, paper lines 661--674] The full coefficient module
+/- [Lean infrastructure, paper PDF p. 10] The full coefficient module
 is discrete because it embeds continuously and injectively into the finite
 product of copies of the mixed integer lattice. -/
 noncomputable instance embeddedIntegralCoefficientLattice.discreteTopology
@@ -496,7 +496,7 @@ noncomputable instance embeddedIntegralCoefficientLattice.discreteTopology
     ext i q
     exact congrArg Subtype.val (congrFun (congrFun hxy i) q)
 
-/- [derived consequence, paper lines 661--674] The product integer module
+/- [derived consequence, paper PDF p. 10] The product integer module
 spans the complete coefficient matrix space. -/
 theorem embeddedIntegralCoefficientLattice_span_top (n k : ℕ) :
     Submodule.span ℝ
@@ -568,7 +568,7 @@ noncomputable instance embeddedIntegralCoefficientLattice.isZLattice
     (embeddedIntegralCoefficientLattice.discreteTopology n k)
     (embeddedIntegralCoefficientLattice_span_top n k)
 
-/- [Lean infrastructure, paper equation `eq:norm`, lines 661--674]
+/- [Lean infrastructure, paper equation (11) (submission PDF p. 10), PDF p. 10]
 The Euclidean Hausdorff measure for the Frobenius realization of the
 coefficient matrix space, with its measurable-space arguments fixed
 explicitly as in `rowMatrixEuclideanMeasure`. -/
@@ -604,8 +604,8 @@ theorem embeddedIntegralCoefficientLattice_covolume_euclidean_pos
     (coefficientMatrixEuclideanMeasure (K := K) n k)
     (coefficientMatrixEuclideanMeasure_isAddHaarMeasure (K := K) n k)
 
-/- [Lean infrastructure, paper equation `eq:norm`, lines 661--674, and
-`eq:value_of_c`, lines 197--202] The manuscript's Lebesgue measure on the
+/- [Lean infrastructure, paper equation (11) (submission PDF p. 10), PDF p. 10, and
+Equation (5) (submission PDF p. 3), PDF p. 2] The manuscript's Lebesgue measure on the
 orthogonal product `M_{n×k}(K_ℝ)`, characterized exactly by requiring the
 full coefficient lattice `M_{n×k}(O_K)` to have covolume one.  The paper's
 discriminant-scaled metric has this normalization; in Lean we realize the
@@ -636,7 +636,7 @@ noncomputable def paperMatrixMeasure (n k : ℕ) :
   paperMatrixMeasureScale (K := K) n k •
     coefficientMatrixEuclideanMeasure (K := K) n k
 
-/- [derived consequence, paper equation `eq:norm`, lines 661--674]
+/- [derived consequence, paper equation (11) (submission PDF p. 10), PDF p. 10]
 The manuscript product measure is additive Haar measure. -/
 theorem paperMatrixMeasure_isAddHaarMeasure (n k : ℕ) :
     Measure.IsAddHaarMeasure (paperMatrixMeasure (K := K) n k) := by
@@ -648,7 +648,7 @@ theorem paperMatrixMeasure_isAddHaarMeasure (n k : ℕ) :
     (coefficientMatrixEuclideanMeasure (K := K) n k)
     (paperMatrixMeasureScale_pos (K := K) n k).ne'
 
-/- [paper, equation `eq:norm`, lines 661--674] The full product lattice of
+/- [paper, equation (11) (submission PDF p. 10), PDF p. 10] The full product lattice of
 algebraic-integer coefficients has covolume one in the manuscript's product
 Euclidean measure. -/
 theorem embeddedIntegralCoefficientLattice_covolume_paperMatrixMeasure
@@ -690,7 +690,7 @@ theorem embeddedIntegralCoefficientLattice_covolume_paperMatrixMeasure
     (embeddedIntegralCoefficientLattice_covolume_euclidean_pos
       (K := K) n k).ne'
 
-/- [derived consequence, paper equation `eq:norm`, lines 661--674]
+/- [derived consequence, paper equation (11) (submission PDF p. 10), PDF p. 10]
 The preceding covolume-one condition uniquely characterizes the manuscript
 matrix measure among additive Haar measures.  This is the explicit bridge
 ensuring that the normalized realization is not a measure substitution. -/
@@ -719,7 +719,7 @@ noncomputable def embeddedEchelonDenominatorLattice {n k m : ℕ}
   ((echelonDenominatorMatrixModule (n := n) D).restrictScalars ℤ).map
     (integralMatrixEmbedding (K := K) n k)
 
-/- [derived consequence, paper definition `de:denonimator`, lines 192--195]
+/- [derived consequence, paper definition Equation (4) (submission PDF p. 2), PDF p. 2]
 The arithmetic mixed-embedding model of the denominator module is exactly
 the analytic pullback lattice. -/
 theorem embeddedEchelonDenominatorLattice_eq_coefficientZLattice
@@ -734,7 +734,7 @@ theorem embeddedEchelonDenominatorLattice_eq_coefficientZLattice
   · rintro ⟨C, hC, hCx⟩
     exact ⟨C, hC, hCx⟩
 
-/- [derived consequence, paper definition `de:denonimator`, lines 192--195]
+/- [derived consequence, paper definition Equation (4) (submission PDF p. 2), PDF p. 2]
 The denominator lattice is a sublattice of the full integral coefficient
 lattice. -/
 theorem embeddedEchelonDenominatorLattice_le_integralCoefficientLattice
@@ -745,10 +745,10 @@ theorem embeddedEchelonDenominatorLattice_le_integralCoefficientLattice
   obtain ⟨C, hC, rfl⟩ := hx
   exact ⟨C, trivial, rfl⟩
 
-/- [derived consequence, paper definition `de:denonimator`, lines 192--195]
+/- [derived consequence, paper definition Equation (4) (submission PDF p. 2), PDF p. 2]
 The product denominator formula already proved in `Echelon.lean` survives
 the injective mixed embedding.  This is the exact arithmetic index appearing
-in manuscript line 845. -/
+in manuscript PDF p. 11. -/
 theorem embeddedEchelonDenominatorLattice_relIndex
     {n k m : ℕ} (D : EchelonMatrix K k m) :
     (embeddedEchelonDenominatorLattice (n := n) D).toAddSubgroup.relIndex
@@ -768,8 +768,8 @@ theorem embeddedEchelonDenominatorLattice_relIndex
     exact echelonDenominatorMatrixModule_index D
   · exact integralMatrixEmbedding_injective (K := K) n k
 
-/- [derived consequence, paper definition `de:denonimator`, lines 192--195,
-and equation `eq:d_D_defined`, lines 844--854] The exact index calculation,
+/- [derived consequence, paper definition Equation (4) (submission PDF p. 2), PDF p. 2,
+and equation (15) (submission PDF p. 12), PDF p. 11] The exact index calculation,
 together with the manuscript normalization of product Euclidean measure,
 computes the covolume of the literal coefficient pullback lattice. -/
 theorem echelonCoefficientZLattice_covolume_paperMatrixMeasure
@@ -869,7 +869,7 @@ theorem echelonCoefficientZLattice_covolume_paperMatrixMeasure
   change ZLattice.covolume L₁ mu / ZLattice.covolume L₂ mu = _
   rw [hratio, hindex, Nat.cast_pow]
 
-/- [derived consequence, paper line 844] The Jacobian is absorbed exactly
+/- [derived consequence, paper PDF p. 11] The Jacobian is absorbed exactly
 by transporting the measure: the coefficient lattice and its image lattice
 have equal covolume.  This is `ZLattice.covolume_comap` applied to the
 measure-preserving coordinate equivalence. -/
@@ -909,7 +909,7 @@ theorem echelonCoefficientZLattice_covolume_eq_image {n k m : ℕ}
     (echelonCoordinateContinuousEquiv D)
     ⟨(echelonCoordinateContinuousEquiv D).continuous.measurable, rfl⟩
 
-/- [derived consequence, paper equation `eq:d_D_defined`, lines 847--854]
+/- [derived consequence, paper equation (15) (submission PDF p. 12), PDF p. 11]
 The coordinate integral, divided by the covolume of the integral image
 lattice in the transported measure, is exactly the existing row-space
 summand.  This proves the full measure/Jacobian part of the normalization;
@@ -931,8 +931,8 @@ theorem echelon_normalized_coordinate_integral_eq_mainSummand {n k m : ℕ}
   exact rowMatrixNormalizedIntegralWithMeasure_eq_mainSummand
     (echelonRowSpace D) (echelonPushforwardMeasure D mu) f
 
-/- [derived consequence, paper equations `de:denonimator` and
-`eq:d_D_defined`, lines 192--195 and 844--854] Once the exact covolume/index
+/- [derived consequence, paper equations Equation (4) (submission PDF p. 2) and
+Equation (15) (submission PDF p. 12), PDF p. 2] Once the exact covolume/index
 identity is supplied, the preceding measure bridge becomes the manuscript's
 literal factor `𝔇(D)⁻ⁿ`.  The hypothesis is deliberately an ordinary theorem
 argument: it isolates the lattice-normalization obligation without hiding it
@@ -955,8 +955,8 @@ theorem echelon_denominator_integral_eq_mainSummand_of_covolume_eq
   rw [hcov] at h
   simpa only [inv_pow] using h
 
-/- [derived consequence, paper equations `de:denonimator` and
-`eq:d_D_defined`, lines 192--195 and 844--854] Equivalent source-lattice
+/- [derived consequence, paper equations Equation (4) (submission PDF p. 2) and
+Equation (15) (submission PDF p. 12), PDF p. 2] Equivalent source-lattice
 form of the denominator bridge.  After the pullback identification above,
 the remaining arithmetic assertion is precisely that the coefficient
 lattice has covolume `𝔇(D)^n` in the manuscript-normalized coordinate
@@ -976,7 +976,7 @@ theorem echelon_denominator_integral_eq_mainSummand_of_coefficient_covolume
   rw [← echelonCoefficientZLattice_covolume_eq_image D mu]
   exact hcov
 
-/- [derived consequence, paper equation `eq:value_of_c`, lines 197--202]
+/- [derived consequence, paper equation (5) (submission PDF p. 3), PDF p. 2]
 The exact normalized coordinate summands reindex to `mainConstant` through
 the manuscript's echelon/row-space trijection.  This proves the reindexing
 part independently of the denominator computation. -/
@@ -1016,7 +1016,7 @@ theorem tsum_echelon_normalized_coordinate_integral_eq_mainConstant
       rw [hrow]
     _ = mainConstant n m k f := rfl
 
-/- [derived consequence, paper equation `eq:value_of_c`, lines 197--202]
+/- [derived consequence, paper equation (5) (submission PDF p. 3), PDF p. 2]
 Literal denominator form of the preceding reindexing theorem, conditional
 only on the displayed covolume identity for each echelon representative.
 This interface makes the denominator/index bridge auditable; the identity is
@@ -1049,10 +1049,10 @@ theorem tsum_echelon_denominator_integral_eq_mainConstant_of_covolume_eq
     _ = mainConstant n m k f :=
       tsum_echelon_normalized_coordinate_integral_eq_mainConstant mu f
 
-/- [paper, equation `eq:value_of_c`, lines 197--202] Exact manuscript
+/- [paper, equation (5) (submission PDF p. 3), PDF p. 2] Exact manuscript
 formula for the main constant.  The coordinate measure is the product Haar
 measure normalized so that `M_{n×k}(𝓞_K)` has covolume one, as required by
-equation `eq:norm`; the proved denominator-module index supplies the factor
+equation (11) (submission PDF p. 10); the proved denominator-module index supplies the factor
 `𝔇(D)⁻ⁿ`, and `echelonRowSpaceEquiv` performs the manuscript's echelon
 reindexing. -/
 theorem tsum_echelon_denominator_integral_eq_mainConstant
@@ -1072,7 +1072,7 @@ theorem tsum_echelon_denominator_integral_eq_mainConstant
     (paperMatrixMeasure (K := K) n k)]
   exact echelonCoefficientZLattice_covolume_paperMatrixMeasure D
 
-/- [paper, Lemma `le:schmidt_makes_c1_finite`, lines 832--859] The
+/- [paper, Lemma 24 (submission PDF pp. 11--12), PDF p. 12] The
 manuscript's literal echelon-indexed series is absolutely summable when
 `n > m`.  Schmidt's height count is exposed as the attributed
 `HasHeightCountBounds` hypothesis; the bound on subspace integrals and the
@@ -1107,8 +1107,8 @@ theorem summable_echelon_denominator_integral_of_height_count
   have heD : e D = echelonRowSpace D := rfl
   simpa only [Function.comp_apply, heD] using hterm.symm
 
-/- [paper, Theorem `th:higher_moments`, equation
-`eq:right_side_converge`, lines 1947--1964] The manuscript's limiting
+/- [paper, Theorem 42 (submission PDF p. 24; proof pp. 24--25), equation
+Theorem 42 limit expression (submission PDF p. 24), PDF p. 24] The manuscript's limiting
 echelon-integral sum, with its unique rank-zero contribution evaluated as
 `f 0` and ranks `1, …, m` indexed by `Fin m`.  This retains the literal
 denominator and coordinate integral for every positive-rank echelon matrix. -/
@@ -1121,8 +1121,8 @@ noncomputable def manuscriptEchelonIntegralLimit
           f (echelonCoordinateProduct D x)
             ∂paperMatrixMeasure (K := K) n (k.1 + 1))
 
-/- [derived consequence of paper equation `eq:value_of_c`, lines 197--202,
-and Theorem `th:higher_moments`, lines 1947--1964] The row-space limit used
+/- [derived consequence of paper equation (5) (submission PDF p. 3), PDF p. 2,
+and Theorem 42 (submission PDF p. 24; proof pp. 24--25), PDF p. 24] The row-space limit used
 internally is exactly the manuscript's echelon-integral expression. -/
 theorem manuscriptEchelonIntegralLimit_eq_echelonIntegralLimit
     (n m s : ℕ) (f : M n m (K_ℝ[K]) → ℝ) :

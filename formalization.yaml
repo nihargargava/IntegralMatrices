@@ -6,7 +6,7 @@ project:
   description: >-
     A Lean formalization of the fixed-rank asymptotic count for integral
     matrices over a number field and the convergence of moments of lifts of
-    algebraic codes. The public results preserve the manuscript's main scale,
+    algebraic codes. The public results preserve the submission PDF's main scale,
     error terms, echelon-integral limit, and denominator normalization. The
     intermediate-rank height-counting input attributed to Schmidt is an
     explicit hypothesis; it is not silently assumed as an axiom.
@@ -63,7 +63,7 @@ sources:
     relationship: "adapts"
     note: >-
       Source of the original fixed-rank integral-matrix and Abel-summation
-      strategy generalized in the manuscript and Lean development.
+      strategy generalized in the submission PDF and Lean development.
   - title: "An Asymptotic Estimate for Heights of Algebraic Subspaces"
     authors:
       - "Jeffrey Lin Thunder"
@@ -98,15 +98,16 @@ related_formalizations:
 status:
   scope: >-
     The formalization proves the two main theorem paths in the cited
-    manuscript: the fixed-rank count and the higher-moment convergence for
+    submission PDF: the fixed-rank count and the higher-moment convergence for
     lifts of codes. Schmidt's intermediate-rank height count remains an
     explicit hypothesis. The admissibility/Riemann subsystem uses the
     author-approved raw Euclidean mixed-space convention, while exact
     coefficient measures and covolume normalizations are bridged to the
-    manuscript. The exceptional critical-radius and large-radius Riemann
+    submission PDF. The exceptional critical-radius and large-radius Riemann
     branches are documented local adaptations in this metadata and committed
-    Lean comments. The author-provided manuscript is cited as the primary
-    source but is not included in this repository snapshot.
+    Lean comments. The author-supplied submission PDF is the primary statement
+    source; it is identified by its fingerprint in notes/source-attribution.md
+    and is not included in this repository snapshot.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
@@ -123,7 +124,7 @@ automation:
         hardware: "local machine"
       prompting_notes: >-
         The development was produced through iterative proof, audit, and
-        manuscript-fidelity prompts, with explicit review of mathematical
+        submission-PDF-fidelity prompts, with explicit review of mathematical
         issues and provenance.
   notes: >-
     The author directed the formalization and reviewed the statement
@@ -134,7 +135,7 @@ fidelity:
     The public theorem path is conditional on the explicit Schmidt
     height-count interface. The admissibility/Riemann implementation uses
     Mathlib's raw Euclidean mixed-space metric rather than making the
-    manuscript's discriminant-scaled trace metric a global typeclass; exact
+    submission PDF's discriminant-scaled trace metric a global typeclass; exact
     main-term normalization is proved separately. The approved critical
     radius and large-radius Riemann adaptations are recorded in the committed
     Lean comments and this metadata.
@@ -144,7 +145,7 @@ review:
   reviewers:
     - "none"
   notes: >-
-    The formal statements were audited against the cited manuscript, public
+    The formal statements were audited against the cited submission PDF, public
     theorem paths were built with the pinned toolchain, and the final
     declarations were checked for project-specific axioms, sorryAx, and
     other hidden proof placeholders.
@@ -152,14 +153,14 @@ review:
 alignment:
   namespace: "Katznelson.Palomar"
   statements:
-    - source: "Theorem th:main"
+    - source: "Theorem 2 (submission PDF, p. 2; proof pp. 20--22)"
       lean: "Katznelson.Palomar.fixed_rank_count"
       module: "Challenge"
       status: "proved"
       note: >-
         The Solution declaration has exactly the Challenge type and calls
         Katznelson.fixed_rank_count; the Schmidt input remains explicit.
-    - source: "Theorem th:higher_moments"
+    - source: "Theorem 42 (submission PDF, p. 24; proof pp. 24--25)"
       lean: "Katznelson.Palomar.lifts_of_codes_convergence"
       module: "Challenge"
       status: "proved"

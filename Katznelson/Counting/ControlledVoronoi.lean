@@ -6,7 +6,7 @@ import Katznelson.Counting.ControlledRiemann
 This module supplies the manuscript-facing Voronoi-cell version of the
 controlled Riemann-sum argument.  In particular, a restriction of an
 admissible ambient function keeps its ambient error function, as required by
-`hy:admissible`; it is not replaced by a new subspace supremum.
+Hypothesis 16 (submission PDF p. 8); it is not replaced by a new subspace supremum.
 -/
 
 namespace Katznelson
@@ -20,7 +20,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] [Nontrivial E]
 variable (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
 
-/- [derived consequence, paper `le:Riemann_estimate`, lines 582--607] The
+/- [derived consequence, paper Lemma 18 (submission PDF p. 9), PDF p. 9] The
    cellwise estimate for an arbitrary bounded fundamental domain, retaining
    the ambient oscillation supplied by `RiemannControl`. -/
 theorem controlled_cell_integral_error_bound_fundamentalDomain
@@ -52,7 +52,7 @@ theorem controlled_cell_integral_error_bound_fundamentalDomain
   exact h.abs_sub_le
     (dist_scaled_add_fundamentalDomain_le L F R hFbound hT v hx)
 
-/- [derived consequence, paper `le:Riemann_estimate`, lines 582--607] Sum
+/- [derived consequence, paper Lemma 18 (submission PDF p. 9), PDF p. 9] Sum
    the controlled cellwise errors over a fundamental-domain tiling. -/
 theorem controlled_tsum_cell_integral_error_bound_fundamentalDomain
     (F : Set E) (R : ℝ) (hF : MeasurableSet F)
@@ -117,7 +117,7 @@ theorem controlled_tsum_cell_integral_error_bound_fundamentalDomain
     _ ≤ ∑' v, b v := haNorm.tsum_le_tsum hba hb
     _ = ∫ x : E, g x ∂mu := hb_tsum
 
-/- [derived consequence, paper `le:Riemann_estimate`, lines 582--607] The
+/- [derived consequence, paper Lemma 18 (submission PDF p. 9), PDF p. 9] The
    summed cell error is the covolume-weighted lattice sum minus the scaled
    integral, with the same ambient oscillation control. -/
 theorem controlled_covolume_mul_latticeSum_sub_integral_le_fundamentalDomain
@@ -205,7 +205,7 @@ theorem controlled_covolume_mul_latticeSum_sub_integral_le_fundamentalDomain
   exact controlled_tsum_cell_integral_error_bound_fundamentalDomain
     L F R hF hfund hFbound hRpos f h hT hRadius
 
-/- [derived consequence, paper `le:Riemann_estimate`, lines 574--607] The
+/- [derived consequence, paper Lemma 18 (submission PDF p. 9), PDF p. 9] The
    normalized Riemann estimate for a controlled function and any bounded
    fundamental domain. -/
 theorem controlled_latticeRiemann_estimate_of_fundamentalDomain
@@ -286,8 +286,8 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   [MeasurableSpace E] [BorelSpace E] [Nontrivial E]
 variable (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
 
-/- [derived consequence of paper `le:Riemann_estimate`, lines 574--607, and
-   `re:help`, lines 550--562] The manuscript-facing Riemann estimate for a
+/- [derived consequence of paper Lemma 18 (submission PDF p. 9), PDF p. 9, and
+   Remark 17 (submission PDF p. 8), PDF p. 8] The manuscript-facing Riemann estimate for a
    supplied error control valid through `εMax`: the Voronoi fundamental domain
    gives the intrinsic covering radius `ρ`, while `RiemannControl` preserves
    the ambient error function.  The default `εMax = 1` is the original

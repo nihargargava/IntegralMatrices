@@ -6,11 +6,11 @@ import Mathlib.Topology.MetricSpace.Bounded
 /-!
 # Admissible test functions
 
-This file encodes Hypothesis `hy:admissible` in `papers/katznelson.tex` using
+This file encodes Hypothesis 16 (submission PDF p. 8) in `authoritative submission PDF` using
 the ambient Euclidean structure supplied by Lean.  For number-field spaces,
 the author has approved this as a local metric adaptation in the
 admissibility/Riemann subsystem: it is not definitionally the
-discriminant-scaled trace metric of `eq:norm`.  The exact manuscript Haar
+discriminant-scaled trace metric of Equation (11) (submission PDF p. 10).  The exact manuscript Haar
 normalization used in the main term is proved separately in
 `Counting/MainTermNormalization.lean`.  No norm-equivalence assertion is
 silently used to identify exact constants.
@@ -26,24 +26,24 @@ section
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
   [FiniteDimensional ℝ X]
 
-/- [Lean infrastructure for paper hypothesis `hy:admissible`, lines 532--548]
+/- [Lean infrastructure for paper hypothesis Hypothesis 16 (submission PDF p. 8), PDF p. 8]
 Borel measurability for the norm topology, independent of any ambient
    `MeasurableSpace` instance selected elsewhere in the development. -/
 noncomputable def IsBorelMeasurable (f : X → ℝ) : Prop :=
   let _ : MeasurableSpace X := borel X
   Measurable f
 
-/- [Lean infrastructure for paper hypothesis `hy:admissible`, lines 532--548]
+/- [Lean infrastructure for paper hypothesis Hypothesis 16 (submission PDF p. 8), PDF p. 8]
 Euclidean Hausdorff volume in the dimension of a real normed space. -/
 noncomputable def euclideanIntegral (g : X → ℝ) : ℝ :=
   let _ : MeasurableSpace X := borel X
   let _ : BorelSpace X := ⟨rfl⟩
   ∫ x, g x ∂(μHE[Module.finrank ℝ X] : Measure X)
 
-/- [Lean infrastructure for paper hypothesis `hy:admissible`, lines 532--548]
+/- [Lean infrastructure for paper hypothesis Hypothesis 16 (submission PDF p. 8), PDF p. 8]
 Integrability for the same canonical Euclidean measure.  Keeping this
    separate prevents the convention `integral = 0` for nonmeasurable
-   functions from weakening Hypothesis `hy:admissible`. -/
+   functions from weakening Hypothesis 16 (submission PDF p. 8). -/
 noncomputable def EuclideanIntegrable (g : X → ℝ) : Prop :=
   let _ : MeasurableSpace X := borel X
   let _ : BorelSpace X := ⟨rfl⟩
@@ -81,12 +81,12 @@ theorem euclideanIntegrable_iff
   cases hmeas
   rfl
 
-/- [paper, hypothesis `hy:admissible`, lines 532--548] The paper's
+/- [paper, hypothesis Hypothesis 16 (submission PDF p. 8), PDF p. 8] The paper's
 `E_f(x, ε) = sup_{‖x-y‖ ≤ ε} |f(x)-f(y)|`. -/
 noncomputable def errorFunction (f : X → ℝ) (x : X) (ε : ℝ) : ℝ :=
   sSup {r : ℝ | ∃ y : X, dist x y ≤ ε ∧ r = |f x - f y|}
 
-/- [paper, hypothesis `hy:admissible`, lines 532--548] An admissible function
+/- [paper, hypothesis Hypothesis 16 (submission PDF p. 8), PDF p. 8] An admissible function
 is compactly supported, bounded, measurable, and has the uniform
 subspace-integral estimate required there.  Integrability is recorded
 explicitly because Lean's integral is otherwise defined to be zero for a
@@ -103,10 +103,10 @@ structure Admissible (f : X → ℝ) : Prop where
     ∀ (V : Submodule ℝ X), V ≠ ⊥ → ∀ ε : ℝ, 0 < ε → ε ≤ 1 →
       euclideanIntegral (fun x : V => errorFunction f (x : X) ε) ≤ C * ε
 
-/- [Lean infrastructure for paper `re:help`, lines 550--562] This is the
+/- [Lean infrastructure for paper Remark 17 (submission PDF p. 8), PDF p. 8] This is the
    analytic assertion obtained after replacing the original range
    `0 < ε ≤ 1` by `0 < ε ≤ εMax`.  Its constant is still uniform in the
-   nonzero subspace, exactly as in `hy:admissible`.  The paper's remark says
+   nonzero subspace, exactly as in Hypothesis 16 (submission PDF p. 8).  The paper's remark says
    this follows after updating the constant; the bridge is kept as a named
    target rather than silently assumed. -/
 structure AdmissibleErrorControlUpTo (f : X → ℝ) (εMax : ℝ) : Prop where
@@ -117,7 +117,7 @@ structure AdmissibleErrorControlUpTo (f : X → ℝ) (εMax : ℝ) : Prop where
     ∀ (V : Submodule ℝ X), V ≠ ⊥ → ∀ ε : ℝ, 0 < ε → ε ≤ εMax →
       euclideanIntegral (fun x : V => errorFunction f (x : X) ε) ≤ C * ε
 
-/- [derived consequence of paper `hy:admissible`, lines 532--549] The
+/- [derived consequence of paper Hypothesis 16 (submission PDF p. 8), PDF p. 8] The
    original admissibility hypothesis is exactly the updated control through
    the manuscript's base threshold `1`. -/
 theorem Admissible.errorControlUpTo_one {f : X → ℝ} (h_f : Admissible f) :
@@ -139,11 +139,11 @@ theorem AdmissibleErrorControlUpTo.mono {f : X → ℝ} {εMax εMax' : ℝ}
     intro V hV ε hεpos hεle
     exact hbound V hV ε hεpos (hεle.trans hε)
 
-/- [derived consequence of hypothesis `hy:admissible`,
-   `papers/katznelson.tex`, lines 541--548] The defining error estimate
+/- [derived consequence of hypothesis Hypothesis 16 (submission PDF p. 8),
+   `authoritative submission PDF`, PDF p. 8] The defining error estimate
    already proves every smaller positive cutoff.  The separate extension to
    a cutoff greater than one is the content of the manuscript's remark
-   `re:help`, not an implicit consequence used here. -/
+   Remark 17 (submission PDF p. 8), not an implicit consequence used here. -/
 theorem Admissible.errorControlUpTo_of_le_one {f : X → ℝ} (h_f : Admissible f)
     {εMax : ℝ} (hε : εMax ≤ 1) :
     AdmissibleErrorControlUpTo f εMax := by

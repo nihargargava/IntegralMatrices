@@ -55,7 +55,7 @@ local instance matrixBorelSpace
     {m n R : Type*} [TopologicalSpace (Matrix m n R)] :
     BorelSpace (Matrix m n R) := ⟨rfl⟩
 
-/- [Lean infrastructure for paper Theorem `th:main`, lines 157--203] The
+/- [Lean infrastructure for paper Theorem 2 (submission PDF p. 2; proof pp. 20--22), PDF p. 2] The
 summand in the theorem, with the rank condition made explicit. -/
 noncomputable def fixedRankTerm
     {K : Type*} [Field K] [NumberField K]
@@ -65,7 +65,7 @@ noncomputable def fixedRankTerm
     f (T⁻¹ • embedMatrix A)
   else 0
 
-/- [paper, Theorem `th:main`, lines 157--203] The sum over all integral
+/- [paper, Theorem 2 (submission PDF p. 2; proof pp. 20--22), PDF p. 2] The sum over all integral
 matrices of rank `k`. -/
 noncomputable def fixedRankSum
     {K : Type*} [Field K] [NumberField K]
@@ -328,7 +328,7 @@ theorem exists_liftsMoment_eq_sum_fixedRankScaleWeighted
       intro k hk
       rw [liftScale_pow_eq_idealNorm_pow P hsn hn]
 
-/- Equations `eq:bijection` and `le:new_bijection`: split the rank-`k`
+/- Equations Equation (3) (submission PDF p. 2) and Lemma 30 (submission PDF p. 14): split the rank-`k`
    sum by its rational row space. -/
 theorem fixedRankSum_eq_tsum_rowSpaces
     {K : Type*} [Field K] [NumberField K]
@@ -743,7 +743,7 @@ theorem rowSpaceLowerSum_eq_sum_contained_rowMatrixZLattices
   exact (tsum_rowMatrixZLattice_rank_eq_integralRowMatrices W.1 f T).symm
 
 /- A finite-family Fubini/reindexing lemma for the overcount in the paper's
-   proof of `le:low_rank_terms` (around lines 1518--1534).  The finite
+   proof of Lemma 39 (submission PDF pp. 18--20) (around PDF p. 19).  The finite
    support hypothesis is the condition that permits the two summation orders
    to be exchanged without importing an analytic estimate. -/
 private theorem sum_indicator_eq_ncard_mul
@@ -823,14 +823,14 @@ def lowRankHeightExponent (n m k l : ℕ) : ℤ :=
 def lowRankScaleExponent (n m k l : ℕ) : ℤ :=
   ((k : ℤ) - l) * ((m : ℤ) - l) + (n : ℤ) * ((l : ℤ) - k)
 
-/- [paper, lines 1612--1618] The manuscript's `α_l` is the exponent of
+/- [paper, PDF p. 19] The manuscript's `α_l` is the exponent of
    `T` coming from the fixed lower-rank lattice estimate.  It is distinct
    from the height exponent `m + k - l - n` and from the quantity `B_l(T)`
    below. -/
 def alpha_l (n m k l d : ℕ) : ℤ :=
   (d : ℤ) * lowRankScaleExponent n m k l
 
-/- [paper, lines 1602--1612] The manuscript's `B_l(T)` denotes the entire
+/- [paper, PDF p. 19] The manuscript's `B_l(T)` denotes the entire
    piecewise height-sum bound, including its constant; it is not an exponent.
    The internal `lowRankHeightExponent` is used only to express the three
    cases without natural-number subtraction. -/
@@ -842,7 +842,7 @@ noncomputable def B_l (n m k l d : ℕ) (Ccrudenew T : ℝ) : ℝ :=
       1 + Real.log T
     else 1
 
-/- [derived consequence, paper `eq:inequality_semifinal`, lines 1602--1612]
+/- [derived consequence, paper Equation (22) (submission PDF p. 19), PDF p. 19]
    The manuscript's unspecified multiplicative constant in `B_l(T)` is
    monotone.  This elementary fact is used only to make the finite-in-`l`
    uniformization of those constants explicit. -/
@@ -860,7 +860,7 @@ theorem B_l_mono
     · rw [if_neg hpos, if_neg hzero]
       simpa using hC
 
-/- [derived consequence, paper `eq:inequality_semifinal`, lines 1602--1612]
+/- [derived consequence, paper Equation (22) (submission PDF p. 19), PDF p. 19]
    Each branch of `B_l(T)` is nonnegative for the manuscript's range
    `T ≥ 1` and a nonnegative implicit constant. -/
 theorem B_l_nonneg
@@ -1435,7 +1435,7 @@ theorem rowSpaceExtensionCount_nonneg
   dsimp [rowSpaceExtensionCount]
   exact_mod_cast Nat.zero_le (B ∩ {V | W.1 ≤ V.1}).ncard
 
-/- [paper, `le:low_rank_induction`, lines 1431--1450]
+/- [paper, Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The paper's extension count is written in the original echelon notation:
    it counts `D ∈ 𝓕_k(T)` for which `Λ_{D'} ⊆ Λ_D`.  The row-space count
    below is a separate reindexing interface, not a replacement of this
@@ -1446,7 +1446,7 @@ noncomputable def echelonExtensionCount
     (D' : EchelonMatrix K l m) : ℝ :=
   ((B ∩ {D | echelonLambda D' ≤ echelonLambda D}).ncard : ℝ)
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1450]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Transfer the preceding paper-facing count through the proved echelon--row
    space bijection.  The lattice inclusion is converted using the proved
    primitive-lattice/rational-row-space equivalence. -/
@@ -1473,7 +1473,7 @@ theorem echelonExtensionCount_eq_rowSpaceExtensionCount_image
     (echelonRowSpace_injective (K := K) (l := k) (m := m))]
   rw [hset]
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1471--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The paper overcounts extensions by choosing `k - l` vectors, one at a
    time, after projection modulo `Λ_{D'}`.  This is the exact finite
    combinatorial statement behind that overcount.  The choice map is kept as
@@ -1535,8 +1535,8 @@ local instance projectedRowBorelSpace
     {m l : ℕ} (V : Grassmannian K m l) :
     BorelSpace ((rowRealSpan V)ᗮ) := ⟨rfl⟩
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1475--1480]
-   The manuscript applies `le:ballvol` to the projection of the ambient
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+   The manuscript applies Lemma 12 (submission PDF p. 7) to the projection of the ambient
    algebraic-integer row lattice.  Its exact covolume `H(D')⁻¹` and the
    radius comparison are kept explicit here; discreteness and fullness of the
    projected module are proved in `RowLattice.lean`.  The theorem is therefore
@@ -1592,7 +1592,7 @@ theorem projectedAmbientRowModule_ball_count_of_geometry
           rowSpaceHeight V := by
       rw [hdim, hcov, inv_inv]
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1475--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The same bridge using the manuscript's intrinsic covering-radius input.
    The exact projected covolume remains an explicit hypothesis, while the
    radius comparison, discreteness, and fullness are proved by
@@ -1640,7 +1640,7 @@ theorem projectedAmbientRowModule_ball_count_of_covering
           rowSpaceHeight V := by
       rw [hdim, hcov, inv_inv]
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1475--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    This is the coarse raw-Euclidean version of the projected-lattice ball
    bound.  The raw primitive-projection formula from `RowLattice.lean`
    replaces the normalization-sensitive hypothesis above: the covolume of
@@ -1710,7 +1710,7 @@ theorem projectedAmbientRowModule_ball_count_of_raw_covering
       rw [hdim, hinv]
       ring
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1475--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Uniform raw-Euclidean version of the preceding projected ball count.  The
    Euclidean unit-ball volume depends only on the fixed complementary
    dimension `d * (m - l)`, and the ambient covolume depends only on `K,m`.
@@ -1801,7 +1801,7 @@ theorem projectedAmbientRowModule_ball_count_of_raw_covering_uniform
       rw [hunit, hdim, hinv]
       ring
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Join the paper-facing finite choice overcount to the projected ball count.
    The codomain of `choice` is exactly the projected ambient module in the
    paper's construction, and the injectivity hypothesis is the formal version
@@ -1868,7 +1868,7 @@ theorem echelonExtensionCount_le_of_projected_ball
           rowSpaceHeight (echelonRowSpace D')) ^ (k - l) :=
       pow_le_pow_left₀ hbase hball' _
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Normalize the preceding `(T + R)` estimate to the exact polynomial scale
    displayed by the manuscript.  The constant absorbs only the fixed radius
    bound and the unit-ball constant; it is independent of `T` and `D'`. -/
@@ -1991,7 +1991,7 @@ theorem echelonExtensionCount_le_of_projected_geometry
     _ = C₁ * T ^ (degree K * (k - l) * (m - l)) *
           rowSpaceHeight (echelonRowSpace D') ^ (k - l) := hrewrite
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The extension overcount with the manuscript's covering-radius input. -/
 set_option maxHeartbeats 800000 in
 theorem echelonExtensionCount_le_of_projected_covering
@@ -2053,7 +2053,7 @@ theorem echelonExtensionCount_le_of_projected_covering
           rowSpaceHeight (echelonRowSpace D')) ^ (k - l) :=
       pow_le_pow_left₀ hbase hball' _
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Raw-Euclidean counterpart of the preceding extension bound.  It uses the
    proved raw primitive-projection covolume formula, with the covolume of the
    fixed ambient row lattice absorbed into the implicit constant.  It does
@@ -2113,7 +2113,7 @@ theorem echelonExtensionCount_le_of_raw_projected_covering
           rowSpaceHeight (echelonRowSpace D')) ^ (k - l) :=
       pow_le_pow_left₀ hbase hball' _
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Raw-Euclidean extension count with its ball-volume constant retained
    explicitly.  Unlike the existential convenience form above, this statement
    preserves the fact that the constant depends only on the fixed field and
@@ -2179,7 +2179,7 @@ theorem echelonExtensionCount_le_of_raw_projected_covering_uniform
             rowSpaceHeight (echelonRowSpace D')) ^ (k - l) :=
       pow_le_pow_left₀ hbase hball' _
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Normalize the covering-radius extension estimate to the exact scale in
    the lemma statement. -/
 set_option maxHeartbeats 800000 in
@@ -2299,7 +2299,7 @@ theorem echelonExtensionCount_le_of_projected_covering_geometry
     _ = C₁ * T ^ (degree K * (k - l) * (m - l)) *
           rowSpaceHeight (echelonRowSpace D') ^ (k - l) := hrewrite
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The paper's fixed-radius version: instantiate the projected covering
    bound with the intrinsic radius of the ambient integral row module. -/
 set_option maxHeartbeats 800000 in
@@ -2325,7 +2325,7 @@ theorem echelonExtensionCount_le_of_ambient_row_covering
     (projectedAmbientRowModule_isLatticeCovering_of_ambientRadius
       (echelonRowSpace D')) hcov choice hchoice
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The raw-metric fixed-radius extension estimate.  This is the direct
    manuscript-shaped `(Csup * T + rho)` stage before the elementary
    normalization of the radius term; the ambient covolume is already absorbed
@@ -2361,7 +2361,7 @@ noncomputable def rowSpaceRankSum
       rowsInIntegralRowModule W A ∧ integralMatrixRank A = l},
     f (T⁻¹ • embedMatrix A.1)
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Transfer the row-matrix ball-count estimate to the manuscript's
    integral-matrix notation.  The absolute value of the rank-filtered sum is
    bounded by the sum of absolute values before the proved row-lattice
@@ -2406,7 +2406,7 @@ theorem Admissible.rowSpaceRankSum_abs_le_of_radius
     _ ≤ C₂ * (rowSpaceHeight W)⁻¹ ^ n *
           T ^ (n * (l * degree K)) := hbound
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Fixed-coefficient row-space form of the inner rank-`l` sum.  The explicit
    support and value bounds are passed through the already-proved
    row-matrix/integral-matrix reindexing; no finite-family choice is made in
@@ -2459,7 +2459,7 @@ theorem Admissible.rowSpaceRankSum_abs_le_of_radius_uniform_of_bounds
           (R + 1 + C_R) ^ (n * (l * degree K)) *
           (rowSpaceHeight W)⁻¹ ^ n * T ^ (n * (l * degree K)) := hmatrix
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    The same row-space inner-sum estimate in the manuscript's intrinsic
    `sqrt n * rho(Λ_D)` notation.  This is a reindexing of the proved
    row-matrix estimate; the support and value constants are unchanged. -/
@@ -2512,7 +2512,7 @@ theorem Admissible.rowSpaceRankSum_abs_le_of_latticeVoronoi_radius_uniform_of_bo
           (R + 1 + C_R) ^ (n * (l * degree K)) *
           (rowSpaceHeight W)⁻¹ ^ n * T ^ (n * (l * degree K)) := hmatrix
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    The ball-count constant for one lower row space can be made uniform over
    the finite family that occurs in the manuscript's height sum.  This is
    only finite-family bookkeeping: it retains the same radius hypothesis and
@@ -2577,7 +2577,7 @@ theorem Admissible.exists_uniform_rowSpaceRankSum_abs_le_of_radius
     _ = C₂ * (rowSpaceHeight W)⁻¹ ^ n *
           T ^ (n * (l * degree K)) := by ring
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Global uniformization of the inner rank-`l` sum.  Unlike the preceding
    finite-family convenience lemma, `R`, the bound for `f`, and hence `C₂`
    are chosen from admissibility before `T` and the row space range over the
@@ -2646,7 +2646,7 @@ theorem Admissible.exists_uniform_rowSpaceRankSum_abs_le_of_radius_global
           T ^ (n * (l * degree K)) := by
       dsimp [C₂]
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Global uniformization of the intrinsic-radius lower-rank inner sum.  The
    constants are selected before both `T` and `W`, while the radius hypothesis
    is exactly the manuscript's `sqrt n * rho(Λ_D)` condition. -/
@@ -2771,7 +2771,7 @@ theorem rowSpaceLowerStratumTerm_zero_eq
     exact integralRowMatrices_rank_zero_sum W₀ f T
   rw [rowSpaceLowerStratumTerm, htsum, hcount, hinner]
 
-/- The normalized rank-zero contribution in lines 1529--1537 of the
+/- The normalized rank-zero contribution in PDF p. 19 of the
    manuscript.  The cardinality estimate for the rank-`k` family is exposed
    as `hB`; the remaining power calculation is proved here. -/
 theorem rowSpaceLowerStratumTerm_zero_normalized_le
@@ -2841,7 +2841,7 @@ theorem finite_rowSpaceLowerSum_eq_zero_add_positive_terms
     exact rowSpaceLowerStratumTerm_zero_eq B f T
   rw [hu0]
 
-/- [derived consequence, paper `eq:inequality_semifinal`, lines 1602--1612]
+/- [derived consequence, paper Equation (22) (submission PDF p. 19), PDF p. 19]
    This elementary identity keeps the manuscript's signed height exponent
    connected to the nonnegative rank difference used by the ordinary-shell
    estimate. -/
@@ -2855,7 +2855,7 @@ theorem lowRankHeightExponent_eq_sub_rank
   push_cast
   ring
 
-/- [derived consequence, paper `eq:inequality_semifinal`, lines 1602--1612]
+/- [derived consequence, paper Equation (22) (submission PDF p. 19), PDF p. 19]
    In the positive branch, the signed exponent is literally the natural
    difference that occurs in the shell bound. -/
 theorem lowRankHeightExponent_eq_natCast_sub_of_lt
@@ -2937,8 +2937,8 @@ theorem lowRankHeightExponent_neg_iff
     have h' : (m : ℤ) < (n + l - k : ℕ) := by omega
     exact_mod_cast h'
 
-/- [derived consequence, paper `eq:ineqluaty_abel` and
-   `eq:inequality_semifinal`, lines 1579--1612] This is the explicit bridge
+/- [derived consequence, paper Equation (20) (submission PDF p. 19) and
+   Equation (22) (submission PDF p. 19), PDF p. 19] This is the explicit bridge
    from the internally rounded ordinary-shell endpoint back to the paper's
    `B_l(T)`.  The real cutoff remains `C * T^(l*d)`; the extra fixed factors
    from rounding are absorbed into the unspecified constant `Ccrudenew`. -/
@@ -3037,7 +3037,7 @@ theorem exists_B_l_bound_of_nat_shell_cutoff
       rw [B_l, if_neg hnotpos, if_neg hnotzero]
       simpa using (le_refl D)
 
-/- [paper, lines 1612--1626] Notation bridge for the exponent calculation
+/- [paper, PDF p. 19] Notation bridge for the exponent calculation
    that applies to the power term in `B_l(T)` when its positive-height
    branch is selected. -/
 theorem alpha_l_add_heightExponent_eq
@@ -3200,7 +3200,7 @@ theorem alpha_l_le_corrected
         (lowRankScaleExponent_le_corrected hnm hl hlk) hdnonneg
     _ = -(d : ℤ) * ((n - m + k - 1 : ℕ) : ℤ) := by ring
 
-/- [paper, lines 1612--1631] The three branches of the manuscript's
+/- [paper, PDF p. 19] The three branches of the manuscript's
    `B_l(T)` estimate have a common, valid decay bound.  This theorem keeps
    `alpha_l` and `B_l(T)` visible, so the arithmetic does not get hidden in a
    replacement notation. -/
@@ -3301,7 +3301,7 @@ theorem alpha_l_mul_B_l_le_corrected
                 mul_le_mul_of_nonneg_left hfactor hC
           exact mul_le_mul_of_nonneg_right hCfactor htarget_nonneg
 
-/- [paper, lines 1617--1631] The pointwise branch estimate can now be summed
+/- [paper, PDF p. 19] The pointwise branch estimate can now be summed
    over the manuscript's range `1 ≤ l < k`.  The finite cardinality is left
    explicit here; for fixed `k` it is absorbed into the constant exactly as
    in the paper. -/
@@ -3883,7 +3883,7 @@ theorem finite_rowSpaceLowerSum_normalized_abs_le
       · exact hzero'
       · simpa using hpositive
 
-/- [paper, `le:low_rank_terms`, lines 1495--1499] Assemble the rank-zero
+/- [paper, Lemma 39 (submission PDF pp. 18--20), PDF p. 19] Assemble the rank-zero
    contribution and the positive lower-rank strata into the corrected scalar
    bound.  The exponent `n - m + k - 1` is the one obtained from the three
    height cases; this theorem keeps the paper's `alpha_l` and `B_l` inputs
@@ -3989,7 +3989,7 @@ theorem finite_rowSpaceLowerSum_normalized_abs_le_corrected
           T ^ (-(d : ℤ) * ((n - m + k - 1 : ℕ) : ℤ)) := by ring
 
 /- The fixed-row-space estimate after restoring the rank condition.  This is
-   the exact local form of the comparison in the proof of `th:main`; the
+   the exact local form of the comparison in the proof of Theorem 2 (submission PDF p. 2; proof pp. 20--22); the
    lower-rank sum is left visible for the induction argument. -/
 theorem Admissible.rowMatrix_rank_lattice_estimate_with_lower
     {K : Type*} [Field K] [NumberField K]
@@ -4047,10 +4047,10 @@ theorem Admissible.rowMatrix_rank_lattice_estimate_with_lower
       rw [abs_div, abs_of_pos hq]
       exact add_le_add hmain' le_rfl
 
-/- [paper, `le:without_rank_cond` and equations (19)--(21), lines
-   1038--1061 and 1671--1679] This is the same rank-restoration comparison
+/- [paper, Lemma 29 (submission PDF p. 14) and equations (19)--(21),
+   PDF p. 14 and PDF p. 20] This is the same rank-restoration comparison
    with the manuscript's intrinsic covering radius.  The factor `sqrt n`
-   comes from the product-row lattice estimate at lines 428--431. -/
+   comes from the product-row lattice estimate at PDF p. 7. -/
 theorem Admissible.rowMatrix_rank_latticeVoronoi_estimate_with_lower
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (V : Grassmannian K m k)
@@ -4107,8 +4107,8 @@ theorem Admissible.rowMatrix_rank_latticeVoronoi_estimate_with_lower
       rw [abs_div, abs_of_pos hq]
       exact add_le_add hmain' le_rfl
 
-/- [derived consequence, paper `le:without_rank_cond` and equations
-   (19)--(21), lines 1038--1061 and 1671--1679] The local Riemann constants
+/- [derived consequence, paper Lemma 29 (submission PDF p. 14) and equations
+   (19)--(21), PDF p. 14] The local Riemann constants
    supplied for individual row spaces can be made uniform on the finite
    family by summing them and adding one.  This is finite-family bookkeeping;
    it does not assert the paper's later uniform radius or height estimates. -/
@@ -4192,8 +4192,8 @@ theorem exists_finite_rowMatrix_rank_lattice_estimate_with_lower
           T ^ (n * (k * degree K)) := by
       exact add_le_add hterm le_rfl
 
-/- [paper, `le:without_rank_cond` and equations (19)--(21), lines
-   1038--1061 and 1671--1679] Finite-family uniformization of the
+/- [paper, Lemma 29 (submission PDF p. 14) and equations (19)--(21),
+   PDF p. 14 and PDF p. 20] Finite-family uniformization of the
    manuscript-facing intrinsic-radius estimate.  The displayed
    `sqrt n * rho(Λ_D)` is retained instead of the auxiliary fundamental
    parallelepiped radius used by the older bookkeeping lemma above. -/
@@ -4281,7 +4281,7 @@ theorem exists_finite_rowMatrix_rank_latticeVoronoi_estimate_with_lower
       exact add_le_add hterm le_rfl
 
 /- This is the finite-family summation step in equations (20)--(21) of the
-   manuscript (lines 1671--1679).  It keeps the rank-restricted row-lattice
+   manuscript (PDF p. 20).  It keeps the rank-restricted row-lattice
    term, the unrestricted Riemann-sum error, and the lower-rank correction
    visible.  The only input is the pointwise estimate; no uniformity is
    smuggled in by reindexing an infinite sum. -/
@@ -4423,7 +4423,7 @@ theorem finite_rowMatrix_rank_error_with_lower_of_sum_abs_bound
           (rowMatrixLatticeCovolume V.1 n * T))
       simpa [add_comm] using h'
 
-/- [paper, lines 1687--1694] Sum the row-space Riemann errors after the
+/- [paper, PDF p. 20] Sum the row-space Riemann errors after the
    lower-rank term has been isolated.  The paper supplies the corresponding
    radius/height estimate later; here it remains an explicit hypothesis. -/
 theorem finite_rowMatrix_radius_error_sum_le
@@ -4469,7 +4469,7 @@ theorem finite_rowMatrix_radius_error_sum_le
     _ = Cₐ * C_R / T := by
       ring
 
-/- [paper, lines 1671--1694] Combine the finite-family Riemann estimate, the
+/- [paper, PDF p. 20] Combine the finite-family Riemann estimate, the
    scalar lower-rank error, and the radius/covolume sum.  This is the exact
    global error shape needed before the remaining paper-specific bounds are
    supplied. -/
@@ -4550,7 +4550,7 @@ theorem finite_sum_abs_sub_le_sum
     _ ≤ ∑ x : α, e x :=
       Finset.sum_le_sum (fun x hx => hpoint x)
 
-/- [paper, equations (19)--(21), lines 1671--1679] Sum the fixed-row-space
+/- [paper, equations (19)--(21), PDF p. 20] Sum the fixed-row-space
    errors with the manuscript's intrinsic covering radius
    `sqrt n * rho(Λ_D)`.  The lower-rank term remains visible for the
    rank-induction estimate. -/
@@ -4606,7 +4606,7 @@ theorem finite_rowMatrix_rank_latticeVoronoi_error_with_lower
   simpa [r, mainTerm, e] using
     (finite_sum_abs_sub_le_sum r mainTerm e hpoint')
 
-/- [paper, equations (19)--(21), lines 1671--1679] Insert the finite
+/- [paper, equations (19)--(21), PDF p. 20] Insert the finite
    lower-rank absolute-sum bound into the intrinsic-radius finite-family
    estimate. -/
 set_option maxHeartbeats 3000000 in
@@ -4679,7 +4679,7 @@ theorem finite_rowMatrix_rank_latticeVoronoi_error_with_lower_of_sum_abs_bound
             (rowMatrixLatticeCovolume V.1 n * T))
       simpa [add_comm] using h'
 
-/- [paper, lines 1687--1694] Bound the sum of the manuscript's intrinsic
+/- [paper, PDF p. 20] Bound the sum of the manuscript's intrinsic
    row-space Riemann errors by a stated radius/covolume estimate. -/
 theorem finite_rowMatrix_latticeVoronoi_radius_error_sum_le
     {K : Type*} [Field K] [NumberField K]
@@ -4724,7 +4724,7 @@ theorem finite_rowMatrix_latticeVoronoi_radius_error_sum_le
     _ = Cₐ * C_R / T := by
       ring
 
-/- [paper, lines 1671--1694] Combine the finite-family intrinsic-radius
+/- [paper, PDF p. 20] Combine the finite-family intrinsic-radius
    Riemann estimate, the scalar lower-rank error, and the intrinsic
    radius/covolume sum. -/
 theorem finite_rowMatrix_rank_error_with_latticeVoronoi_radius_sum_bound
@@ -4821,7 +4821,7 @@ theorem exists_scaledSupport_integralMatrix_norm_bound
     exact hnorm.trans (mul_le_mul_of_nonneg_right
       (le_max_left R 0 |>.trans (by linarith)) hT.le)
 
-/- [derived consequence, paper `eq:defi_of_calF`, lines 784--803]
+/- [derived consequence, paper Equation (16) (submission PDF p. 14), PDF p. 11]
    A fixed support bound gives the inclusion in the manuscript's exact
    echelon family at any rank.  Keeping the bound as an input makes clear
    that one and the same `Csup` can be used for every `𝓕_l(T)` in the
@@ -4850,7 +4850,7 @@ theorem activeRowSpaces_subset_echelon_calF_image_of_support_bound
   refine ⟨⟨A, hrowsD⟩, hArank, ?_⟩
   exact hbound A hnonzero
 
-/- [derived consequence, paper `eq:defi_of_calF`, lines 784--803]
+/- [derived consequence, paper Equation (16) (submission PDF p. 14), PDF p. 11]
    A rank-`l` inner sum can be nonzero only at an active row space.  This is
    the termwise support observation used when the paper enlarges the active
    family to `𝓕_l(T)`; it does not replace that family by a different index. -/
@@ -4870,8 +4870,8 @@ theorem rowSpaceRankSum_eq_zero_of_not_mem_activeRowSpaces
   apply hW
   exact ⟨A.1, A.2.1, A.2.2, hA⟩
 
-/- [derived consequence, paper `eq:defi_of_calF`, lines 784--803 and
-   `le:new_bijection`, lines 1051--1061] The exact support-sensitive family
+/- [derived consequence, paper Equation (16) (submission PDF p. 14), PDF p. 11 and
+   Lemma 30 (submission PDF p. 14), PDF p. 14] The exact support-sensitive family
    expressed in echelon notation is carried to `activeRowSpaces`.  This
    separates the paper's norm-bounded family `𝓕_l(T)` from the later support
    observation that only its nonzero summands matter. -/
@@ -4882,8 +4882,8 @@ noncomputable def echelonActiveFamily
   {D | ∃ A : echelonIntegralMatrices (n := n) D,
     integralMatrixRank A.1 = k ∧ f (T⁻¹ • embedMatrix A.1) ≠ 0}
 
-/- [derived consequence, paper `eq:defi_of_calF`, lines 784--803 and
-   `le:new_bijection`, lines 1051--1061] Exact equality of the two support
+/- [derived consequence, paper Equation (16) (submission PDF p. 14), PDF p. 11 and
+   Lemma 30 (submission PDF p. 14), PDF p. 14] Exact equality of the two support
    families, using the proved direct-module/echelon and row-space bridges. -/
 theorem echelonActiveFamily_image_eq_activeRowSpaces
     {K : Type*} [Field K] [NumberField K]
@@ -4909,7 +4909,7 @@ theorem echelonActiveFamily_image_eq_activeRowSpaces
       exact hrows
     refine ⟨D, ⟨⟨A, hrowsD⟩, hArank, hnonzero⟩, hDV⟩
 
-/- [derived consequence, paper `eq:defi_of_calF`, lines 784--803]
+/- [derived consequence, paper Equation (16) (submission PDF p. 14), PDF p. 11]
    The compact-support choice of `Csup` puts every genuinely contributing
    row space into the manuscript's exact echelon family.  The direct
    `M_n(Λ_D)` form is used here and then converted to `calF` by the proved
@@ -4936,7 +4936,7 @@ def boundedRowSpaces
     rowsInIntegralRowModule V A ∧ integralMatrixRank A = k ∧
       ‖embedMatrix A‖ ≤ Csup * T}
 
-/- [paper, proof of `le:lower_bound_not_in_F`, lines 1138--1142]
+/- [paper, proof of Lemma 33 (submission PDF p. 15), PDF p. 16]
    The first `k` successive minima are assembled as the rows of an integral
    `n × m` matrix, with zero rows appended.  The rank and row identities are
    proved here because the later support-family argument needs this exact
@@ -5056,7 +5056,7 @@ theorem exists_integralMatrix_of_successiveMinima
     have hnot : ¬ i.val < k := by omega
     simp [A, embedMatrix, hnot]
 
-/- [paper, proof of `le:lower_bound_not_in_F`, lines 1138--1142]
+/- [paper, proof of Lemma 33 (submission PDF p. 15), PDF p. 16]
    The matrix assembled from the minima has Frobenius norm at most
    `sqrt(k) * ||l_k||`: the first `k` row norms are bounded by the last
    minimum and the remaining rows vanish. -/
@@ -5167,7 +5167,7 @@ theorem exists_integralMatrix_of_successiveMinima_norm_le
       rw [Real.sqrt_mul (by positivity), Real.sqrt_sq_eq_abs, abs_of_nonneg]
       exact norm_nonneg _
 
-/- [paper, proof of `le:lower_bound_not_in_F`, lines 1134--1142]
+/- [paper, proof of Lemma 33 (submission PDF p. 15), PDF p. 16]
    This is the manuscript-facing support implication.  The displayed cutoff
    uses the paper's `k^(-1/2) C^{sup} T`; the preceding witness theorem proves
    the matrix estimate needed to turn a small last minimum into membership in
@@ -5204,7 +5204,7 @@ theorem echelon_mem_calF_of_last_successiveMinimum_norm_le
   rw [← calFDirect_eq_calF]
   exact ⟨⟨A, hArows⟩, hArank, hnorm'⟩
 
-/- [paper, proof of `le:lower_bound_not_in_F`, lines 1142--1143]
+/- [paper, proof of Lemma 33 (submission PDF p. 15), PDF p. 16]
    The paper's uniform constant `c^{minnorm}` is obtained by viewing every
    integral row in the fixed ambient lattice `𝓞_K^m`.  This theorem makes that
    fixed-lattice comparison explicit and proves positivity from discreteness. -/
@@ -5271,8 +5271,8 @@ theorem exists_uniform_integral_row_minimum_lower_bound
     ‖(v₀ : rowRealSpan Vfull)‖ ≤ ‖(y : rowRealSpan Vfull)‖ := hvmin y hyne
     _ = ‖(x : rowRealSpan V)‖ := by rfl
 
-/- [derived consequence of paper `le:lower_bound_not_in_F`, lines
-   1142--1143] The preceding theorem is pointwise in `V`; this strengthened
+/- [derived consequence of paper Lemma 33 (submission PDF p. 15),
+   PDF p. 16] The preceding theorem is pointwise in `V`; this strengthened
    form exposes the uniformity actually used by the manuscript.  The same
    shortest nonzero vector in the fixed ambient lattice `𝓞_K^m` is compared
    with every positive-rank row lattice in that ambient space. -/
@@ -5341,8 +5341,8 @@ theorem exists_uniform_integral_row_minimum_lower_bound_all
     ‖(v₀ : rowRealSpan Vfull)‖ ≤ ‖(y : rowRealSpan Vfull)‖ := hvmin y hyne
     _ = ‖(x : rowRealSpan V)‖ := by rfl
 
-/- [derived consequence of paper `le:lower_bound_not_in_F`, lines
-   1130--1154] Combining the manuscript's support exclusion with the
+/- [derived consequence of paper Lemma 33 (submission PDF p. 15),
+   PDF p. 16] Combining the manuscript's support exclusion with the
    fixed-lattice lower bound and the product estimate gives the lower-height
    bound used for the tail.  The product estimate remains an explicit input:
    it is the cited geometry-of-numbers ingredient, not an unproved local
@@ -5405,8 +5405,8 @@ theorem exists_echelon_height_lower_bound_of_not_mem_calF
     rowSpaceHeight V
   exact hbound
 
-/- [derived consequence of paper `le:lower_bound_not_in_F`, lines
-   1130--1154] Uniform version of the lower-height estimate.  This is the
+/- [derived consequence of paper Lemma 33 (submission PDF p. 15),
+   PDF p. 16] Uniform version of the lower-height estimate.  This is the
    interface needed to turn the complement of the manuscript's finite
    support family into one height tail.  The product estimate is deliberately
    quantified over all echelon matrices as an explicit cited input. -/
@@ -5507,7 +5507,7 @@ theorem echelon_calF_subset_boundedRowSpaces
   rw [← hBA']
   exact hAnorm
 
-/- [derived consequence of paper `eq:defi_of_calF`, lines 784--803] The
+/- [derived consequence of paper Equation (16) (submission PDF p. 14), PDF p. 11] The
 echelon presentation of `𝓕_l(T)` and the row-space presentation used by the
 finite Riemann sum are exactly the same family.  This is an equality, not a
 support enlargement: the reverse inclusion chooses the proved unique echelon
@@ -5535,10 +5535,10 @@ theorem echelon_calF_image_eq_boundedRowSpaces
       exact hArows
     exact ⟨⟨A, hArowsD⟩, hArank, hAnorm⟩
 
-/- [paper, `co:covering_bound`, lines 1239--1248] For an echelon matrix in
+/- [paper, Corollary 37 (submission PDF p. 17), PDF p. 17] For an echelon matrix in
    the manuscript's exact family `𝓕_k(T)`, the rank-`k` witness in
    `M_n(Λ_D)` supplies `k` independent bounded rows.  Applying the selected
-   successive-minimum construction and Part 2 of `le:props_of_minima` gives
+   successive-minimum construction and Part 2 of Lemma 27 (submission PDF pp. 12--13) gives
    the displayed covering-radius bound.  The explicit fixed coefficient
    below realizes the paper's `C^{covering} C^{minima}` without changing the
    family or its norm. -/
@@ -5587,13 +5587,13 @@ theorem echelon_calF_coveringRadius_le
           rowScalarActionBoundSum (K := K) (m := m) * (Csup * T) :=
       mul_le_mul_of_nonneg_left hlast hconst
 
-/- [derived consequence of paper `co:covering_bound`, lines 1239--1248, and
-   `le:without_rank_cond`, lines 1028--1045] Dividing the exact covering
+/- [derived consequence of paper Corollary 37 (submission PDF p. 17), PDF p. 17, and
+   Lemma 29 (submission PDF p. 14), PDF p. 14] Dividing the exact covering
    bound for `𝓕_k(T)` by `T` gives the fixed manuscript-scale quantity used
    in the Riemann estimate.  The right-hand side is deliberately left as an
    arbitrary fixed threshold rather than specialized to `1`: this is the
-   constant denoted `C^{arbit1}` when `co:covering_bound` is applied after
-   `le:Riemann_estimate`. -/
+   constant denoted `C^{arbit1}` when Corollary 37 (submission PDF p. 17) is applied after
+   Lemma 18 (submission PDF p. 9). -/
 theorem echelon_calF_matrixCoveringRadius_div_le
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (D : EchelonMatrix K k m) (hk : 0 < k)
@@ -5619,7 +5619,7 @@ theorem echelon_calF_matrixCoveringRadius_div_le
           rowScalarActionBoundSum (K := K) (m := m) * Csup := by
       field_simp
 
-/- [derived consequence of paper `co:covering_bound`, lines 1239--1248]
+/- [derived consequence of paper Corollary 37 (submission PDF p. 17), PDF p. 17]
    This is the preceding intrinsic covering-radius estimate expressed on the
    manuscript's row-space family `echelonRowSpace '' 𝓕_k(T)`.  It is only the
    exact echelon/row-space reindexing, so the radius remains
@@ -5638,7 +5638,7 @@ theorem echelon_calF_image_matrixCoveringRadius_div_le
   rcases hW with ⟨D, hD, rfl⟩
   exact echelon_calF_matrixCoveringRadius_div_le D hk hT hD
 
-/- [Lean infrastructure for paper `eq:defi_of_calF`, lines 784--803]
+/- [Lean infrastructure for paper Equation (16) (submission PDF p. 14), PDF p. 11]
    Restrict the proved echelon/row-space trijection to the exact finite
    family `𝓕_l(T)`.  The target is the manuscript's row-space family used in
    the Riemann sum, and the membership proof is the preceding equality; this
@@ -5685,8 +5685,8 @@ noncomputable def calFEquivBoundedRowSpaces
     change e (e.symm V.1) = V.1
     exact e.apply_symm_apply V.1
 
-/- [derived consequence of paper `eq:defi_of_calF` and
-   `eq:just_as_before`, lines 784--803 and 1724--1753] Reindex the finite
+/- [derived consequence of paper Equation (16) (submission PDF p. 14) and
+   Equation (24) (submission PDF p. 21), PDF p. 11] Reindex the finite
    radius sum between the manuscript's echelon family `𝓕_k(T)` and its exact
    row-space family.  This is only the proved trijection restricted to the
    displayed family, so the sum retains the paper's normalization. -/
@@ -5741,8 +5741,8 @@ theorem sum_boundedRowSpaces_coveringRadius_div_height_pow_eq_sum_calF
           (rowSpaceHeight (echelonRowSpace D)) ^ n := by
       rfl
 
-/- [derived consequence of paper equation `eq:just_as_before`, lines
-   1724--1753] Transfer the noncritical uniform `𝓕_k(T)` radius bound to
+/- [derived consequence of paper equation (24) (submission PDF p. 21),
+   PDF p. 21] Transfer the noncritical uniform `𝓕_k(T)` radius bound to
    the exactly equal row-space family used in the finite Riemann sum.  Its
    product comparison remains explicit here because this is the generic
    assembly theorem; the specialized wrapper below supplies it from the
@@ -5791,8 +5791,8 @@ theorem echelon_calFDirect_subset_boundedRowSpaces
   rw [calFDirect_eq_calF]
   exact echelon_calF_subset_boundedRowSpaces
 
-/- [derived consequence of paper `le:lower_bound_not_in_F` and `co:tail`,
-   lines 1130--1169] Transfer the uniform echelon height bound to the
+/- [derived consequence of paper Lemma 33 (submission PDF p. 15) and Corollary 34 (submission PDF p. 16),
+   PDF p. 16] Transfer the uniform echelon height bound to the
    complement of the norm-bounded row-space family.  The cutoff is stated in
    the integer form consumed by the Abel/Schmidt tail theorem; its only
    additional requirement is `N ≤ C_lower T^d`. -/
@@ -5838,8 +5838,8 @@ theorem exists_boundedRowSpaces_complement_height_cutoff
   rw [hDV] at hheightN
   exact hheightN
 
-/- Manuscript-facing form of Lemma `le:without_rank_cond` (lines
-   1038--1061).  The direct `M_n(Λ_D)` sum is reindexed by the proved
+/- Manuscript-facing form of Lemma 29 (submission PDF p. 14) (printed pages
+   PDF p. 14).  The direct `M_n(Λ_D)` sum is reindexed by the proved
    echelon-to-row-lattice equivalence, and the exponent is rewritten using
    the established real-span dimension formula. -/
 theorem Admissible.echelon_latticeRiemann_estimate
@@ -5865,7 +5865,7 @@ theorem Admissible.echelon_latticeRiemann_estimate
   simpa [rowMatrixRealSpan_finrank,
     rowMatrixLatticeCovolume_eq_rowSpaceHeight_pow] using hestimate T hT hRadius
 
-/- [paper, `le:without_rank_cond`, lines 1038--1061] The same direct
+/- [paper, Lemma 29 (submission PDF p. 14), PDF p. 14] The same direct
    `M_n(Λ_D)` statement in the manuscript's intrinsic Voronoi notation.
    This is a proved reindexing of the row-lattice estimate: the displayed
    `sqrt n * rho(Λ_D)` is not replaced by an auxiliary fundamental-domain
@@ -5894,8 +5894,8 @@ theorem Admissible.echelon_latticeVoronoiRiemann_estimate
   simpa [rowMatrixLatticeCovolume_eq_rowSpaceHeight_pow] using
     hestimate T hT hRadius
 
-/- [derived consequence of paper `le:without_rank_cond`, lines 1038--1061,
-   and `re:help`, lines 550--562, conditional on
+/- [derived consequence of paper Lemma 29 (submission PDF p. 14), PDF p. 14,
+   and Remark 17 (submission PDF p. 8), PDF p. 8, conditional on
    `AdmissibleErrorControlUpTo`] This is the same direct `M_n(Λ_D)` estimate
    with the manuscript's arbitrary fixed threshold in place of the base
    threshold `1`.  The family, height, and intrinsic radius are unchanged. -/
@@ -5924,13 +5924,13 @@ theorem Admissible.echelon_latticeVoronoiRiemann_estimate_of_errorControlUpTo
   simpa [rowMatrixLatticeCovolume_eq_rowSpaceHeight_pow] using
     hestimate T hT hRadius
 
-/- [derived consequence of paper `co:covering_bound`, lines 1239--1248,
-   `le:without_rank_cond`, lines 1028--1045, and the application at lines
-   1665--1694, conditional on `AdmissibleErrorControlUpTo`] This is the
+/- [derived consequence of paper Corollary 37 (submission PDF p. 17), PDF p. 17,
+   Lemma 29 (submission PDF p. 14), PDF p. 14, and the application at printed pages
+   PDF p. 20, conditional on `AdmissibleErrorControlUpTo`] This is the
    paper's choice of the arbitrary Riemann threshold for one exact member of
    `𝓕_k(T)`.  The explicit threshold below is the `C^{arbit1}` used in the
-   proof of `le:Riemann_estimate`; the factor `sqrt n` is retained as in
-   `le:without_rank_cond`. -/
+   proof of Lemma 18 (submission PDF p. 9); the factor `sqrt n` is retained as in
+   Lemma 29 (submission PDF p. 14). -/
 theorem echelon_calF_latticeVoronoiRiemann_estimate_of_updated_control
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (D : EchelonMatrix K k m) (hk : 0 < k) (hn : 0 < n)
@@ -5979,7 +5979,7 @@ theorem finite_boundedRowSpaces
   · apply Subtype.ext
     exact rowSpace_eq_of_rowsIn_of_rank V A hrows hrank
 
-/- [derived consequence, paper `eq:defi_of_calF`, lines 784--803]
+/- [derived consequence, paper Equation (16) (submission PDF p. 14), PDF p. 11]
    The norm-bounded echelon family is finite.  Its row-space image is a
    subset of the finite family `boundedRowSpaces`; injectivity of the proved
    echelon representative map then transfers finiteness back to `calF`. -/
@@ -5993,7 +5993,7 @@ theorem finite_calF
       (echelon_calF_subset_boundedRowSpaces (K := K) (l := l) (m := m) (n := n))
   · exact (echelonRowSpace_injective (K := K) (l := l) (m := m)).injOn
 
-/- [derived consequence of paper `le:low_rank_induction`, lines 1447--1449]
+/- [derived consequence of paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The paper's set
      `S = {v ∈ M_{1×m}(𝓞_K) | ‖v‖ ≤ Csup*T}`
    contains a K-spanning family for every row space represented by an element
@@ -6070,7 +6070,7 @@ theorem echelon_boundedIntegralRowVectors_span
   · rw [← hrows_subtype]
     exact hrow_le_S
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1444--1455]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The paper's assertion that a spanning bounded set supplies `k-l`
    complement vectors is now discharged by the quotient-basis lemma.  The set
    `S` is deliberately left as a paper-facing input here: the separate claim
@@ -6102,7 +6102,7 @@ theorem exists_echelon_complement_from_spanningSet
   obtain ⟨v, hv⟩ := exists_fin_basis_extension_from_spanningSet U S hspan hquot
   exact ⟨v, hv⟩
 
-/- [derived consequence of paper `le:low_rank_induction`, lines 1452--1455]
+/- [derived consequence of paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Uniformly choose the paper's integral vectors `l_j^(i)` for every upper
    echelon matrix.  On the relevant family, the bounded-spanning theorem and
    the quotient-basis selection lemma supply the complement; the subtype
@@ -6167,7 +6167,7 @@ theorem exists_echelon_complement_lifts_of_calF
   simpa [lift, hD'] using
     (Classical.choose_spec (hlocal D hD'))
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1452--1455]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Paper-facing form of the quotient-span criterion.  The sets `S₁` and `S₂`
    represent the K-row vectors selected for two possible upper-rank matrices;
    the theorem records exactly the paper's conclusion that equality of their
@@ -6199,7 +6199,7 @@ theorem echelonRowSpace_eq_of_quotient_map_eq
       (echelonRowSpace D₂).1 S₁ S₂ hD₁' hD₂' hV₁ hV₂ hquot
   exact Subtype.ext hrows
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1444--1455]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The paper-facing tuple-injectivity argument.  `hchoice` says that the
    projected choices are projections of integral K-row vectors, while the
    proved row-space bridge converts membership in the real lower span back to
@@ -6294,7 +6294,7 @@ theorem echelonProjectedChoice_inj_of_real_quotient_bridge
       (hcomp D hD) (hcomp E hE) hquot
   exact (echelonRowSpace_injective (K := K) (l := k) (m := m)) hrows
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Manuscript-facing specialization of the projected overcount.  The source
    chooses vectors from the ball of radius `Csup * T`; this radius is kept in
    the choice type rather than silently normalized to `T`. -/
@@ -6337,7 +6337,7 @@ theorem echelonCalFExtensionCount_le_of_ambient_row_covering
   refine ⟨C, hC, ?_⟩
   exact hcount
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Raw-metric specialization of the preceding paper-facing extension count.
    The family `𝓕_k(T)`, the projected choice type, and the radius
    `Csup * T` are unchanged; only the unproved paper-metric covolume premise
@@ -6371,7 +6371,7 @@ theorem echelonCalFExtensionCount_le_of_raw_ambient_row_covering
     (B := calF (K := K) (l := k) (m := m) (n := n) Csup T)
     D' hscale choice hchoice
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1447--1481]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Construct the paper's projected choices from integral lifts.  The original
    norm bound on the lifts is transferred to the projected norm by the
    contraction lemma.  The complement bridge remains explicit; the
@@ -6436,7 +6436,7 @@ theorem echelonCalFExtensionCount_le_of_ambient_row_covering_of_lifts
   exact echelonCalFExtensionCount_le_of_ambient_row_covering
     hCsup hT D' hD' μ hcov choice hchoice
 
-/- [derived consequence of paper `le:low_rank_induction`, lines 1431--1481]
+/- [derived consequence of paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The manuscript-facing estimate with the choices `l_j^(i)` constructed from
    the bounded set `S`.  The projected covolume hypothesis remains explicit
    because its exact number-field normalization is still the geometric input
@@ -6502,7 +6502,7 @@ theorem echelonCalFExtensionCount_le_of_constructed_complement
   exact echelonCalFExtensionCount_le_of_ambient_row_covering
     hCsup hT D' hD' μ hcov choice hchoice
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1481]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The same manuscript-facing complement construction in the raw Euclidean
    metric.  The lifts `l_j^(i)`, their projection, and the injectivity
    argument are precisely those of the paper; only the raw covolume bridge is
@@ -6563,7 +6563,7 @@ theorem echelonCalFExtensionCount_le_of_raw_constructed_complement
   exact echelonCalFExtensionCount_le_of_raw_ambient_row_covering
     hCsup hT D' hD' choice hchoice
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1481]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The same complement-lift construction with the raw ball-volume coefficient
    retained explicitly.  This is the paper's choice of the vectors
    `l_j^(i)` and its projection/injectivity argument; spelling out the
@@ -6633,7 +6633,7 @@ theorem echelonCalFExtensionCount_le_of_raw_constructed_complement_uniform
     (projectedAmbientRowModule_isLatticeCovering_of_ambientRadius
       (echelonRowSpace D')) choice hchoice
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Normalize the preceding manuscript-facing estimate.  The only scale
    change is the elementary fixed-constant bound
    `Csup * T + rho ≤ (Csup + rho) * T` for `T ≥ 1`; the exponent and height
@@ -6754,7 +6754,7 @@ theorem echelonCalFExtensionCount_le_of_ambient_row_covering_geometry
     _ = C₁ * T ^ (degree K * (k - l) * (m - l)) *
           rowSpaceHeight (echelonRowSpace D') ^ (k - l) := hrewrite
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Normalize the projected-ball estimate independently of how the projected
    choices were obtained.  This is the elementary passage from the
    manuscript's `(T + O(1))` bound to its displayed `T`-power bound. -/
@@ -6861,7 +6861,7 @@ theorem normalize_echelonExtensionCount_bound
     _ = C₁ * T ^ (degree K * (k - l) * (m - l)) *
           rowSpaceHeight (echelonRowSpace D') ^ (k - l) := hrewrite
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1475--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Deterministic form of the preceding elementary normalization.  Keeping
    `C₀` in the conclusion records that the resulting coefficient is fixed
    before the lower row space or the scale `T` is chosen. -/
@@ -6965,7 +6965,7 @@ theorem normalize_echelonExtensionCount_bound_uniform
             rowSpaceHeight (echelonRowSpace D') ^ (k - l) := by
       simpa [C₁, q] using hrewrite
 
-/- [paper, `le:low_rank_induction`, lines 1431--1480] The complete
+/- [paper, Lemma 38 (submission PDF pp. 17--18), PDF p. 18] The complete
    manuscript-facing extension-count estimate.  The projected lattice's
    covolume identity is retained as an explicit hypothesis because the exact
    number-field height normalization is recorded as Lean infrastructure work
@@ -6995,7 +6995,7 @@ theorem echelonCalFExtensionCount_le_of_low_rank_induction
     (latticeCoveringRadius_nonneg
       (ambientIntegralRowModule (K := K) m)) hbound
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Raw-Euclidean complete extension estimate.  This follows the same
    complement-lift construction and the paper's elementary radius
    normalization, while keeping its raw-height status visible in the theorem
@@ -7019,7 +7019,7 @@ theorem echelonCalFExtensionCount_le_of_raw_low_rank_induction
     (latticeCoveringRadius_nonneg
       (ambientIntegralRowModule (K := K) m)) hbound
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1481]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Uniform raw-Euclidean complete extension estimate.  The coefficient is
    displayed rather than existentially quantified so it is fixed by the
    field, dimensions, and support radius before `D'` and `T` vary.  The
@@ -7061,7 +7061,7 @@ theorem echelonCalFExtensionCount_le_of_raw_low_rank_induction_uniform
     (latticeCoveringRadius_nonneg
       (ambientIntegralRowModule (K := K) m)) hbound
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Transfer the manuscript-facing extension estimate to the row-space count
    used by the lower-rank summation.  The representative is recovered through
    the proved echelon/Grassmannian equivalence; no new choice of notation or
@@ -7101,7 +7101,7 @@ theorem rowSpaceExtensionCount_image_calF_le_of_low_rank_induction
     exact hcount
   exact ⟨C, hC, hcount'⟩
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Raw-Euclidean row-space form of the extension bound.  The transfer through
    the echelon/Grassmannian trijection is unchanged from the manuscript-facing
    proof above; it merely invokes the raw complete extension estimate. -/
@@ -7135,7 +7135,7 @@ theorem rowSpaceExtensionCount_image_calF_le_of_raw_low_rank_induction
     exact hcount
   exact ⟨C, hC, hcount'⟩
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1481]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Row-space form of the fixed-coefficient raw extension bound.  The only
    operation here is the proved correspondence between the echelon
    representative and its row space; in particular, the coefficient is not
@@ -7167,7 +7167,7 @@ theorem rowSpaceExtensionCount_image_calF_le_of_raw_low_rank_induction_uniform
   rw [← echelonExtensionCount_eq_rowSpaceExtensionCount_image]
   exact hcount
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The extension-count constant can be chosen uniformly on the finite family
    of lower row spaces used in the manuscript's height summation.  The
    projected-lattice covolume identity remains a premise for every member of
@@ -7248,7 +7248,7 @@ theorem exists_uniform_rowSpaceExtensionCount_image_calF_le_of_low_rank_inductio
     _ = C * T ^ (degree K * (k - l) * (m - l)) *
           rowSpaceHeight W ^ (k - l) := by ring
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1431--1480]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    Uniformize the raw-metric extension constants over the finite lower-rank
    row-space family.  This is exactly the finite-family bookkeeping used
    above, now with no pointwise projected-covolume hypothesis. -/
@@ -7321,7 +7321,7 @@ theorem exists_uniform_rowSpaceExtensionCount_image_calF_le_of_raw_low_rank_indu
     _ = C * T ^ (degree K * (k - l) * (m - l)) *
           rowSpaceHeight W ^ (k - l) := by ring
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1513--1577]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    This combines the two displayed pointwise estimates for the manuscript's
    exact families `𝓕_l(T)` and `𝓕_k(T)`.  The support inclusion makes the
    inner rank-`l` sum vanish away from `𝓕_l(T)`; the finite-family constants
@@ -7419,7 +7419,7 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_of_radius
   refine ⟨C₁, C₂, D, hC₁, hC₂, hD, ?_⟩
   simpa [B] using hbound
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1513--1577]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Raw-Euclidean form of the lower-stratum estimate.  It preserves the
    manuscript's families `𝓕_l(T)`, `𝓕_k(T)`, cutoff `b`, three-case Abel
    bound, and intrinsic `sqrt n * rho(Λ_D)` radius.  The only changed input
@@ -7535,8 +7535,8 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_of_raw_radius
   refine ⟨C₁, C₂, D, hC₁, hC₂, hD, ?_⟩
   simpa [B] using hbound
 
-/- [derived consequence, paper `le:crude_early` and `le:low_rank_terms`,
-   lines 1091--1120 and 1579--1612] The paper's real cutoff
+/- [derived consequence, paper Lemma 31 (submission PDF p. 15) and Lemma 39 (submission PDF pp. 18--20),
+   PDF p. 15] The paper's real cutoff
    `X = Crude2 * T^(l*d)` is rounded only to index the ordinary height
    shells.  This theorem makes that bridge explicit and then invokes the
    exact `𝓕_l(T)` low-rank estimate above; it does not replace the displayed
@@ -7599,8 +7599,8 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_of_crude_height
   · simpa [X] using hbupper
   · exact hbound
 
-/- [derived consequence, paper `le:crude_early` and `le:low_rank_terms`,
-   lines 1091--1120 and 1579--1612] Raw-Euclidean cutoff specialization of
+/- [derived consequence, paper Lemma 31 (submission PDF p. 15) and Lemma 39 (submission PDF pp. 18--20),
+   PDF p. 15] Raw-Euclidean cutoff specialization of
    the preceding intrinsic-radius estimate.  The cutoff remains the paper's
    `X = Ccrude2 * T^(l*d)` and is rounded only for its ordinary height-shell
    index; no alternate shell decomposition is introduced. -/
@@ -7654,8 +7654,8 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_of_raw_crude_height
   · simpa [X] using hbupper
   · exact hbound
 
-/- [derived consequence, paper `le:crude_early`, `eq:ineqluaty_abel`, and
-   `eq:inequality_semifinal`, lines 1091--1120 and 1579--1612] This returns
+/- [derived consequence, paper Lemma 31 (submission PDF p. 15), Equation (20) (submission PDF p. 19), and
+   Equation (22) (submission PDF p. 19), PDF p. 15] This returns
    the ordinary-shell lower-rank estimate to the manuscript's displayed
    `B_l(T)` notation.  The exact family `𝓕_l(T)` and its real cutoff remain
    visible in the preceding theorem; only the fixed rounding factor is
@@ -7781,8 +7781,8 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_B_l_of_crude_height
         _ = C₁ * C₂ * T ^ alpha_l n m k l (degree K) *
             B_l n m k l (degree K) Ccrudenew T := by ring
 
-/- [derived consequence, paper `le:crude_early`, `eq:ineqluaty_abel`, and
-   `eq:inequality_semifinal`, lines 1091--1120 and 1579--1612] Raw-Euclidean
+/- [derived consequence, paper Lemma 31 (submission PDF p. 15), Equation (20) (submission PDF p. 19), and
+   Equation (22) (submission PDF p. 19), PDF p. 15] Raw-Euclidean
    `B_l(T)` packaging of the same ordinary-shell estimate.  It retains the
    paper's exact cutoff and all three displayed branches; its separate name
    records that the height is still the raw-metric realization. -/
@@ -7897,8 +7897,8 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_B_l_of_raw_crude_height
         _ = C₁ * C₂ * T ^ alpha_l n m k l (degree K) *
             B_l n m k l (degree K) Ccrudenew T := by ring
 
-/- [derived consequence, paper lemma `le:crude_early` and lemma
-   `le:low_rank_terms`, lines 1091--1120 and 1495--1633] This discharges the
+/- [derived consequence, paper lemma Lemma 31 (submission PDF p. 15) and lemma
+   Lemma 39 (submission PDF pp. 18--20), PDF p. 15] This discharges the
    generic height-cutoff hypothesis in the preceding lower-rank estimate with
    the proved, manuscript-normalized `C^crude2`.  In particular, the proof
    continues to use the exact echelon family `𝓕_l(T)` rather than an
@@ -7942,8 +7942,8 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_B_l_of_proved_crude_height
     (fun D hD => echelon_mem_calF_height_le_Ccrude2 D Csup T hlpos hD)
     hRadius μ hhaar hcov
 
-/- [derived consequence, paper lemma `le:crude_early` and lemma
-   `le:low_rank_terms`, lines 1091--1120 and 1495--1633] Raw-Euclidean
+/- [derived consequence, paper lemma Lemma 31 (submission PDF p. 15) and lemma
+   Lemma 39 (submission PDF pp. 18--20), PDF p. 15] Raw-Euclidean
    version with the proved manuscript-facing `C^crude2` height cutoff.  The
    cutoff and the exact echelon family are unchanged; only the raw extension
    count is used beneath the Abel estimate. -/
@@ -7978,10 +7978,10 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_B_l_of_raw_proved_crude_heig
     (fun D hD => echelon_mem_calF_height_le_Ccrude2 D Csup T hlpos hD)
     hRadius
 
-/- [derived consequence of paper corollary `co:covering_bound` and lemmas
-   `le:crude_early`, `le:low_rank_terms`, lines 1091--1120 and 1239--1248,
-   1495--1633] The preceding raw lower-rank estimate no longer needs an
-   externally supplied radius threshold: `co:covering_bound` supplies its
+/- [derived consequence of paper corollary Corollary 37 (submission PDF p. 17) and lemmas
+   Lemma 31 (submission PDF p. 15), Lemma 39 (submission PDF pp. 18--20), PDF p. 15,
+   PDF p. 19] The preceding raw lower-rank estimate no longer needs an
+   externally supplied radius threshold: Corollary 37 (submission PDF p. 17) supplies its
    exact intrinsic threshold on every row space in `𝓕_l(T)`.  The cutoff,
    height, and Abel-summation notation are those of the manuscript. -/
 set_option maxHeartbeats 3000000 in
@@ -8019,7 +8019,7 @@ theorem exists_echelon_calF_lowerStratumTerm_abs_le_B_l_of_raw_covering_bound
   intro W hW
   exact echelon_calF_image_matrixCoveringRadius_div_le hlpos hTpos hW
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1495--1631]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Restore the paper-facing echelon-family notation after finite-in-`l`
    uniformization.  The hypothesis is precisely the preceding pointwise
    `𝓕_l(T)` estimate; the finite sum is Lean bookkeeping for the manuscript's
@@ -8052,7 +8052,7 @@ theorem exists_uniform_echelon_calF_lowerStratumTerm_abs_le_B_l
               calF (K := K) (l := k) (m := m) (n := n) Csup T) f T| /
           T ^ (k * n * degree K)) hpoint)
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1495--1633]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Assemble the manuscript's rank-zero and positive lower-rank contributions.
    `hB_eq` is an explicit proved bridge from the internal finite row-space
    representation back to the exact echelon family `𝓕_k(T)`, rather than a
@@ -8101,7 +8101,7 @@ theorem exists_echelon_calF_lowerSum_normalized_abs_le_corrected
       (d := degree K) Module.finrank_pos hCsize hB
       hC₃.le hCcrudenew.le hpoint_uniform_B)
 
-/- [paper, corollary `co:counting_matrices`, lines 1091--1100]
+/- [paper, corollary Corollary 32 (submission PDF p. 15), PDF p. 15]
    The manuscript's crude height estimate implies the stated cardinality
    bound for the echelon family.  The height estimate itself is kept as the
    preceding paper step's explicit input; this theorem proves the counting
@@ -8166,9 +8166,9 @@ theorem echelonCalF_ncard_le_of_height_bound
         ring
   simpa [F] using hFcardR
 
-/- [derived consequence, paper corollary `co:counting_matrices`,
-   lines 1121--1129] This discharges the preceding generic crude-height
-   hypothesis using the proved manuscript lemma `le:crude_early`.  The
+/- [derived consequence, paper corollary Corollary 32 (submission PDF p. 15),
+   PDF p. 15] This discharges the preceding generic crude-height
+   hypothesis using the proved manuscript lemma Lemma 31 (submission PDF p. 15).  The
    auxiliary `max 1` is Lean infrastructure required by the existing
    height-count interface; the exact `C^crude2` cutoff remains visible in
    `echelon_mem_calF_height_le_Ccrude2`. -/
@@ -8200,8 +8200,8 @@ theorem echelonCalF_ncard_le_of_proved_crude_height
         dsimp [Cheight]
         exact le_max_right _ _) hTnonneg
 
-/- [derived consequence, paper corollary `co:counting_matrices`,
-   lines 1121--1128] Transfer the cardinality estimate from the manuscript's
+/- [derived consequence, paper corollary Corollary 32 (submission PDF p. 15),
+   PDF p. 15] Transfer the cardinality estimate from the manuscript's
    echelon representatives to the finite row-space family used internally.
    The equality is justified by the proved injectivity of the echelon
    representative map, so it retains the exact `𝓕_k(T)` indexing. -/
@@ -8226,8 +8226,8 @@ theorem echelonCalF_rowSpace_image_ncard_le_of_height_bound
     (echelonRowSpace_injective (K := K) (l := k) (m := m))]
   exact hbound
 
-/- [derived consequence of paper lemma `le:crude_early` and corollary
-   `co:counting_matrices`, lines 1091--1129] This is the proved-crude-height
+/- [derived consequence of paper lemma Lemma 31 (submission PDF p. 15) and corollary
+   Corollary 32 (submission PDF p. 15), PDF p. 15] This is the proved-crude-height
    specialization of the preceding cardinality estimate, on the exact
    row-space image of `𝓕_k(T)`.  The image is kept explicit because it is the
    finite family used by the lower-rank sum. -/
@@ -8260,8 +8260,8 @@ theorem echelonCalF_rowSpace_image_ncard_le_of_proved_crude_height
         dsimp [Cheight]
         exact le_max_right _ _) hTnonneg
 
-/- [derived consequence of paper `le:low_rank_terms`, `le:crude_early`, and
-   `co:counting_matrices`, lines 1091--1129 and 1495--1633] This discharges
+/- [derived consequence of paper Lemma 39 (submission PDF pp. 18--20), Lemma 31 (submission PDF p. 15), and
+   Corollary 32 (submission PDF p. 15), PDF p. 15] This discharges
    both finite-family inputs in the lower-rank assembly from the proved crude
    height estimate and the intrinsic covering bound.  The only remaining
    external arithmetic input is the explicitly attributed Schmidt height
@@ -8326,7 +8326,7 @@ theorem exists_echelon_calF_lowerSum_normalized_abs_le_of_raw_covering_bound
   refine ⟨C₃, Ccrudenew, Csize, hC₃, hCcrudenew, hCsize, ?_⟩
   simpa [B, tsum_fintype] using hsum
 
-/- [paper, `co:counting_matrices`, lines 1091--1100]
+/- [paper, Corollary 32 (submission PDF p. 15), PDF p. 15]
    Convert a height cutoff for the norm-bounded support family into the
    manuscript's `T^(m*k*d)` cardinality bound.  The cutoff inclusion is kept
    explicit: proving it is the paper's separate crude height estimate. -/
@@ -8449,8 +8449,8 @@ theorem fixedRankSum_eq_tsum_activeRowSpaces
           f (T⁻¹ • embedMatrix A.1) := by
       rfl
 
-/- [derived consequence, paper equations `eq:main_eq` and `eq:left_side`,
-   lines 758--815 and 1671--1679] Enlarge the support-sensitive row-space
+/- [derived consequence, paper equations Equation (1) (submission PDF p. 2) and Equation (17) (submission PDF p. 16),
+   PDF p. 11] Enlarge the support-sensitive row-space
    family to any finite family containing it.  This generic version is used
    to keep the manuscript's echelon family visible in the final assembly. -/
 theorem fixedRankSum_eq_tsum_of_active_subset
@@ -8500,7 +8500,7 @@ theorem fixedRankSum_eq_tsum_of_active_subset
           f (T⁻¹ • embedMatrix A.1) := by
       rfl
 
-/- [paper, `le:crude_bound` and `eq:left_side`, lines 784--815]
+/- [paper, Lemma 35 (submission PDF p. 16) and Equation (17) (submission PDF p. 16), PDF p. 11]
    The compact-support reduction is now stated with the manuscript's exact
    echelon family `𝓕_k(T)`.  The row-space image is only the indexing bridge;
    the summands are converted back to the row-lattice language by the proved
@@ -8544,8 +8544,8 @@ theorem exists_fixedRankSum_eq_tsum_echelon_calF_rowMatrixZLattice
       intro V
       exact (tsum_rowMatrixZLattice_rank_eq_integralRowMatrices V.1 f T).symm
 
-/- [derived consequence, paper `le:crude_bound` and `eq:left_side`,
-   lines 784--815 and 1671--1679] This is the preceding support reduction
+/- [derived consequence, paper Lemma 35 (submission PDF p. 16) and Equation (17) (submission PDF p. 16),
+   PDF p. 11] This is the preceding support reduction
    with the manuscript's chosen support constant left explicit.  It is the
    form used by the final estimate, where the same `Csup` must also control
    every lower-rank family `𝓕_l(T)`. -/
@@ -8597,7 +8597,7 @@ theorem fixedRankSum_eq_tsum_echelon_calF_rowMatrixZLattice_of_support_bound
 
 /- The support reduction may be enlarged from active row spaces to the
    norm-bounded family.  The extra row spaces contribute zero, so this is the
-   exact finite-family form of the paper's `le:crude_bound`. -/
+   exact finite-family form of the paper's Lemma 35 (submission PDF p. 16). -/
 theorem fixedRankSum_eq_tsum_boundedRowSpaces
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
@@ -8715,7 +8715,7 @@ theorem fixedRankSum_eq_tsum_activeRowSpaces_rowMatrixZLattice
   intro V
   exact (tsum_rowMatrixZLattice_rank_eq_integralRowMatrices V.1 f T).symm
 
-/- [Lean infrastructure for paper equation `eq:value_of_c`, lines 197--202]
+/- [Lean infrastructure for paper equation (5) (submission PDF p. 3), PDF p. 2]
    Internally index the main term by its Grassmannian point.  The exact proved
    bridge back to the manuscript's echelon representative, denominator
    `𝔇(D)⁻ⁿ`, and coordinate integral is
@@ -8728,8 +8728,8 @@ noncomputable def mainConstant
   ∑' V : Grassmannian K m k,
     (rowMatrixLatticeCovolume V n)⁻¹ * rowMatrixSubspaceIntegral V n f
 
-/- [derived consequence, paper equation `eq:value_of_c`, lines 197--203,
-   and `le:without_rank_cond`, lines 1038--1040] The row-space main-term
+/- [derived consequence, paper equation (5) (submission PDF p. 3), PDF p. 2,
+   and Lemma 29 (submission PDF p. 14), PDF p. 14] The row-space main-term
    constant has the manuscript's reciprocal-height normalization.  The
    equality is proved from the exact product-covolume identity; it is not a
    replacement of the paper's echelon-indexed definition. -/
@@ -8745,8 +8745,8 @@ theorem mainConstant_eq_height_normalized
   rw [rowMatrixLatticeCovolume_eq_rowSpaceHeight_pow]
   rw [inv_pow]
 
-/- [derived consequence of paper equation `eq:just_as_before`, lines
-   1724--1753] This is the noncritical radius-sum estimate in the exact form
+/- [derived consequence of paper equation (24) (submission PDF p. 21),
+   PDF p. 21] This is the noncritical radius-sum estimate in the exact form
    consumed by the manuscript's Voronoi Riemann-sum error: the previously
    proved `𝓕_k(T)` bound is reindexed to its equal row-space family and the
    product-covolume identity converts the denominator. -/
@@ -8812,8 +8812,8 @@ theorem exists_uniform_boundedRowSpaces_latticeVoronoi_radius_sum_bound_of_noncr
         dsimp [C_R]
         linarith
 
-/- [derived consequence] Paper equation `eq:just_as_before`,
-   `papers/katznelson.tex`, lines 1724--1753, consumes a product bound for
+/- [derived consequence] Paper equation (24) (submission PDF p. 21),
+   `authoritative submission PDF`, PDF p. 21, consumes a product bound for
    the successive minima uniformly in the echelon matrix.  The proved
    Fieker--Stehlé/Minkowski-II derivation in `FiekerStehle.lean` supplies that
    bound, and this theorem then applies the preceding reindexing/Voronoi
@@ -8845,8 +8845,8 @@ theorem exists_uniform_boundedRowSpaces_latticeVoronoi_radius_sum_bound_of_noncr
   intro D _
   exact hprod (echelonRowSpace D)
 
-/- [derived consequence of paper equation `eq:just_as_before`, lines
-   1724--1753] In rank one, the product-of-minima estimate required in the
+/- [derived consequence of paper equation (24) (submission PDF p. 21),
+   PDF p. 21] In rank one, the product-of-minima estimate required in the
    preceding noncritical radius argument is proved locally from the first
    Minkowski theorem (`exists_rowSuccessiveMinimum_prod_norm_pow_le_rank_one`),
    rather than assumed through the all-rank Fieker--Stehlé interface.  This is
@@ -8902,7 +8902,7 @@ noncomputable def finiteRowMatrixMainTermSum
       rowMatrixSubspaceIntegral V.1 n f
 
 /- Normalize the finite-family rank sum.  This is the algebraic passage from
-   the manuscript's finite sum in `eq:left_side` to the scale used in the
+   the manuscript's finite sum in Equation (17) (submission PDF p. 16) to the scale used in the
    Riemann estimate; the finite-family reindexing itself is supplied by
    `fixedRankSum_eq_tsum_boundedRowSpaces_rowMatrixZLattice`. -/
 theorem fixedRankSum_normalized_eq_finiteRowMatrixRankNormalizedSum
@@ -8969,10 +8969,10 @@ theorem fixedRankSum_normalized_eq_boundedRowSpaces
   exact fixedRankSum_normalized_eq_finiteRowMatrixRankNormalizedSum
     B hT hdecomp
 
-/- [derived consequence, paper Lemma `le:schmidt_makes_c1_finite`, lines
-   837--858] The paper's main-term summands are absolutely summable once the
+/- [derived consequence, paper Lemma 24 (submission PDF pp. 11--12),
+   PDF p. 11] The paper's main-term summands are absolutely summable once the
    height count and the reciprocal-height estimate (equation
-   `eq:summable_matrices`) have been supplied.  The estimate is explicit here;
+   Equation (14) (submission PDF p. 12)) have been supplied.  The estimate is explicit here;
    it is the missing covolume/Jacobian bridge, not a hidden assumption. -/
 theorem summable_mainConstant_terms_of_height_count
     {K : Type*} [Field K] [NumberField K]
@@ -8989,7 +8989,7 @@ theorem summable_mainConstant_terms_of_height_count
   intro V hV
   simpa [rowMatrixLatticeCovolume_eq_rowSpaceHeight_pow, inv_pow] using hdom V hV
 
-/- [derived consequence, paper corollary `co:tail`, lines 1130--1169]
+/- [derived consequence, paper corollary Corollary 34 (submission PDF p. 16), PDF p. 16]
    Quantitative row-space form of the tail estimate.  The paper's echelon
    summand is represented by the row-space integral term; the exact
    identification is deliberately left as a separate normalization bridge. -/
@@ -9015,7 +9015,7 @@ theorem mainConstant_height_tail_abs_le
   intro V hV
   simpa [rowMatrixLatticeCovolume_eq_rowSpaceHeight_pow, inv_pow] using hdom V hV
 
-/- [derived consequence, paper corollary `co:tail`, lines 1130--1169]
+/- [derived consequence, paper corollary Corollary 34 (submission PDF p. 16), PDF p. 16]
    Compare the main-term sum over a finite family with the full constant.  The
    manuscript obtains the displayed height cutoff from the lower-height bound
    for echelon matrices; that comparison is exposed here as `houtside`. -/
@@ -9185,7 +9185,7 @@ theorem finite_mainConstant_subtype_tail_abs_le
             rowMatrixSubspaceIntegral V n f))
   simpa [finiteRowMatrixMainTermSum, hsum_subtype] using htail
 
-/- [derived consequence of paper `co:tail`, lines 1156--1170] Apply the
+/- [derived consequence of paper Corollary 34 (submission PDF p. 16), PDF p. 16] Apply the
    manuscript's summation-by-parts tail bound to the concrete bounded family
    used in the finite-rank decomposition.  The Schmidt height count, the
    product estimate, and the normalized integral domination are all explicit
@@ -9236,7 +9236,7 @@ theorem exists_boundedRowSpaces_mainConstant_tail_abs_le
   refine ⟨Ctail, hCtail, ?_⟩
   exact htail
 
-/- [paper, equations (19)--(21) and `co:tail`, lines 1671--1694]
+/- [paper, equations (19)--(21) and Corollary 34 (submission PDF p. 16), PDF p. 20]
    Add the omitted main-term tail to the finite-family error.  The finite
    estimate and tail estimate are kept as separate hypotheses so that the
    source of every constant remains visible. -/
@@ -9299,8 +9299,8 @@ theorem finite_rowMatrix_rank_error_with_mainConstant_bound
       add_le_add hfinite' htail'
     _ = Cₐ * C_R / T + E_lower + E_tail := by ring
 
-/- [derived consequence of paper equations (19)--(21) and `co:tail`, lines
-   1156--1170 and 1671--1694] This is the same finite-family/main-term-tail
+/- [derived consequence of paper equations (19)--(21) and Corollary 34 (submission PDF p. 16),
+   PDF p. 16 and PDF p. 20] This is the same finite-family/main-term-tail
    assembly with the paper's displayed intrinsic error
    `sqrt n * rho(Λ_D)`, rather than the auxiliary fundamental-domain radius.
    It is derived from the already paper-facing finite-family estimate. -/
@@ -9363,7 +9363,7 @@ theorem finite_rowMatrix_rank_latticeVoronoi_error_with_mainConstant_bound
       add_le_add hfinite' htail'
     _ = Cₐ * C_R / T + E_lower + E_tail := by ring
 
-/- [paper, equations (19)--(21) and `co:tail`, lines 1671--1694]
+/- [paper, equations (19)--(21) and Corollary 34 (submission PDF p. 16), PDF p. 20]
    Once the finite-family estimates and the height cutoff are available, this
    is the complete fixed-rank estimate for that family.  The theorem exposes
    every paper-specific input instead of packaging it as an axiom. -/
@@ -9415,8 +9415,8 @@ theorem finite_rowMatrix_rank_error_with_height_tail_bound
   exact finite_rowMatrix_rank_error_with_mainConstant_bound
     B hT hCₐ hpoint hLower hRadius hTail
 
-/- [derived consequence of paper equations (19)--(21) and `co:tail`, lines
-   1156--1170 and 1671--1694] Insert the paper's height-tail estimate into
+/- [derived consequence of paper equations (19)--(21) and Corollary 34 (submission PDF p. 16),
+   PDF p. 16 and PDF p. 20] Insert the paper's height-tail estimate into
    the finite intrinsic-Voronoi-radius estimate.  The height count is still
    an explicitly attributed input through `HasHeightCountBounds`. -/
 theorem finite_rowMatrix_rank_latticeVoronoi_error_with_height_tail_bound
@@ -9467,8 +9467,8 @@ theorem finite_rowMatrix_rank_latticeVoronoi_error_with_height_tail_bound
   exact finite_rowMatrix_rank_latticeVoronoi_error_with_mainConstant_bound
     B hT hCₐ hpoint hLower hRadius hTail
 
-/- [derived consequence, paper equations (19)--(21) and `co:tail`, lines
-   1038--1061, 1156--1170, and 1671--1694] Assemble the fixed-rank estimate
+/- [derived consequence, paper equations (19)--(21) and Corollary 34 (submission PDF p. 16),
+   PDF p. 14, PDF p. 16, and PDF p. 20] Assemble the fixed-rank estimate
    for a finite row-space family.  The local Riemann constants are selected
    uniformly by the preceding finite-family lemma; the lower-rank, radius,
    and height-tail estimates remain explicit inputs from the corresponding
@@ -9521,8 +9521,8 @@ theorem exists_fixedRankSum_normalized_error_of_finite_family_height_tail
   refine ⟨Cₐ, Ctail, hCₐ, hCtail, ?_⟩
   exact fixedRankSum_normalized_error_of_finite_family B hT hdecomp hfinite
 
-/- [derived consequence of paper equations (19)--(21) and `co:tail`, lines
-   1038--1061, 1156--1170, and 1671--1694] Assemble the finite-row-space
+/- [derived consequence of paper equations (19)--(21) and Corollary 34 (submission PDF p. 16),
+   PDF p. 14, PDF p. 16, and PDF p. 20] Assemble the finite-row-space
    fixed-rank estimate while retaining the manuscript's pointwise condition
    and summed error `sqrt n * rho(Λ_D)`.  This is the paper-facing route;
    the older fundamental-domain-radius statement remains only auxiliary
@@ -9575,8 +9575,8 @@ theorem exists_fixedRankSum_normalized_error_of_finite_family_latticeVoronoi_hei
   refine ⟨Cₐ, Ctail, hCₐ, hCtail, ?_⟩
   exact fixedRankSum_normalized_error_of_finite_family B hT hdecomp hfinite
 
-/- [Lean infrastructure for paper Theorem `th:higher_moments`] The limiting
-expression in Theorem `th:higher_moments`.  The rank-zero
+/- [Lean infrastructure for paper Theorem 42 (submission PDF p. 24; proof pp. 24--25)] The limiting
+expression in Theorem 42 (submission PDF p. 24; proof pp. 24--25).  The rank-zero
    echelon term is `f 0`; the positive-rank terms are the row-space form of
    the manuscript's normalized echelon integrals. -/
 noncomputable def echelonIntegralLimit
@@ -9584,7 +9584,7 @@ noncomputable def echelonIntegralLimit
     (n m s : ℕ) (f : M n m (K_ℝ[K]) → ℝ) : ℝ :=
   f 0 + ∑ k : Fin m, mainConstant n m (k.1 + 1) f
 
-/- [Lean infrastructure for paper Theorem `th:higher_moments`] The
+/- [Lean infrastructure for paper Theorem 42 (submission PDF p. 24; proof pp. 24--25)] The
 prime-norm pullback filter below must be nontrivial for the manuscript's phrase
 `𝓝(𝓟) → ∞` to have its intended meaning.  This derived fact uses Euclid's
 infinitude of rational primes (`Nat.exists_infinite_primes`), Mathlib's
@@ -9615,7 +9615,7 @@ theorem exists_primeIdeal_idealNorm_ge
   rw [← hnorm]
   exact hNp.trans (Nat.le_pow (Ideal.inertiaDeg_pos P ℤ))
 
-/- [Lean infrastructure for paper Theorem `th:higher_moments`] Consequently,
+/- [Lean infrastructure for paper Theorem 42 (submission PDF p. 24; proof pp. 24--25)] Consequently,
 the pullback filter encoding `𝓝(𝓟) → ∞` is nontrivial; limits stated on this
 filter are therefore not vacuous. -/
 noncomputable instance idealNorm_comap_neBot
@@ -9627,7 +9627,7 @@ noncomputable instance idealNorm_comap_neBot
   obtain ⟨P, hP⟩ := exists_primeIdeal_idealNorm_ge (K := K) N
   exact ⟨P, hN _ hP⟩
 
-/- [Lean infrastructure for paper Theorem `th:higher_moments`] The norm
+/- [Lean infrastructure for paper Theorem 42 (submission PDF p. 24; proof pp. 24--25)] The norm
 parameter used in the paper is the defining map of the pullback filter on prime
    ideals.  This is the filter form of the phrase `N(P) → ∞`. -/
 theorem idealNorm_real_tendsto_atTop
@@ -9638,9 +9638,9 @@ theorem idealNorm_real_tendsto_atTop
     (tendsto_comap : Tendsto (idealNorm : PrimeIdeal K → ℕ)
       (comap (idealNorm : PrimeIdeal K → ℕ) atTop) atTop)
 
-/- [derived consequence of paper equation `eq:def_of_L`] Since the admissible
+/- [derived consequence of paper (Equation (26) (submission PDF p. 22))] Since the admissible
 parameters always satisfy `s < n`, the normalizing
-   scale in (eq:def_of_L) tends to infinity as the prime norm does. -/
+   scale in (Equation (26) (submission PDF p. 22)) tends to infinity as the prime norm does. -/
 theorem liftScale_tendsto_atTop
     {K : Type*} [Field K] [NumberField K]
     {n s : ℕ} (hsn : s < n) :
@@ -9664,7 +9664,7 @@ theorem liftScale_tendsto_atTop
   exact (tendsto_rpow_atTop hexp).comp
     (idealNorm_real_tendsto_atTop (K := K))
 
-/- [derived consequence of paper Lemma `le:counting`] The `O(N(P)⁻¹)`
+/- [derived consequence of paper Lemma 41 (submission PDF p. 24)] The `O(N(P)⁻¹)`
 estimate is enough to pass from the
    finite-field correction factor to its limiting value. -/
 theorem codeContainmentCorrection_tendsto_one
@@ -9698,7 +9698,7 @@ theorem codeContainmentCorrection_tendsto_one
   apply tendsto_sub_nhds_zero_iff.1
   exact (tendsto_zero_iff_abs_tendsto_zero _).2 habs
 
-/- [Lean infrastructure for paper Theorem `th:higher_moments`] Named filter
+/- [Lean infrastructure for paper Theorem 42 (submission PDF p. 24; proof pp. 24--25)] Named filter
 form of convergence as `N(𝓟) → ∞`. -/
 def tendsToAtNorm
     {K : Type*} [Field K] [NumberField K]

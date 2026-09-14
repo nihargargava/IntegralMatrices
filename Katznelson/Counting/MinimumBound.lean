@@ -4,7 +4,7 @@ import Katznelson.Counting.SuccessiveMinima
 /-!
 # Matrix-level bound for the last selected successive minimum
 
-This is the matrix-side part of the paper's proof of `le:injective_minima`.
+This is the matrix-side part of the paper's proof of Lemma 36 (submission PDF pp. 16--17).
 The echelon-family wrapper is kept in `MinimumInjection` so that the
 manuscript's `𝓕_k(T)` interface remains visible there.
 -/
@@ -18,7 +18,7 @@ attribute [local instance] Matrix.frobeniusNormedSpace
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [paper, proof of `le:injective_minima`, lines 1221--1225] A rank-`k`
+/- [paper, proof of Lemma 36 (submission PDF pp. 16--17), PDF p. 17] A rank-`k`
    lattice matrix with bounded Frobenius norm supplies `k` independent rows;
    the row norm estimate and the defining minimum property then bound the
    last selected minimum. -/

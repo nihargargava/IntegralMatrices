@@ -9,7 +9,7 @@ import Mathlib.NumberTheory.NumberField.Ideal.Basic
 # Foundations for Integral Matrices of Fixed Rank
 
 The source of the notation and conventions is the preprint referenced as
-arXiv:2510.11673.  Its manuscript is the source of truth for this
+arXiv:2510.11673.  Its submission PDF is the source of truth for this
 formalization.
 -/
 
@@ -24,7 +24,7 @@ abbrev M (n m : ℕ) (R : Type*) := Matrix (Fin n) (Fin m) R
    writes `K_ℝ = K ⊗_ℚ ℝ`.  We use Mathlib's Euclidean mixed space, rather
    than its supremum-normed mixed space, so finite products carry an `l²`
    geometry.  Its complex-place weights and discriminant scaling are not
-   definitionally equation `eq:norm`; the exact manuscript metric and Haar
+   definitionally equation Equation (11) (submission PDF p. 10); the exact manuscript metric and Haar
    normalization are exposed in `Counting/PaperMetric.lean` and
    `Counting/MainTermNormalization.lean`.  The raw norm is used only for the
    author-approved admissibility/Riemann implementation and coarse bounds. -/

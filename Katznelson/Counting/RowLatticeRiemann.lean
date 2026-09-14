@@ -6,9 +6,9 @@ import Mathlib.Analysis.InnerProductSpace.OfNorm
 /-!
 # Riemann sums for matrices with rows in a lattice
 
-This file specializes Lemma `le:Riemann_estimate` to the lattice
-`M_n(Λ_D)` from Definition `de:defi_of_M_t` and rewrites its lattice sum as
-the sum over integral matrices used in Lemma `le:without_rank_cond`.
+This file specializes Lemma 18 (submission PDF p. 9) to the lattice
+`M_n(Λ_D)` from Definition 28 (submission PDF p. 14) and rewrites its lattice sum as
+the sum over integral matrices used in Lemma 29 (submission PDF p. 14).
 -/
 
 namespace Katznelson
@@ -20,7 +20,7 @@ section
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1475--1479]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The projected ambient row module inherits the ambient covering radius,
    because orthogonal projection is norm non-increasing. -/
 set_option maxHeartbeats 800000 in
@@ -33,7 +33,7 @@ theorem projectedAmbientRowModule_isLatticeCovering_of_ambient
       (U := (rowRealSpan V)ᗮ)
       (L := ambientIntegralRowModule (K := K) m) hcover)
 
-/- [derived consequence, paper `le:low_rank_induction`, lines 1475--1479]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
    The radius is the intrinsic covering radius of the ambient row lattice,
    hence it is independent of the lower-rank space `V`. -/
 theorem projectedAmbientRowModule_isLatticeCovering_of_ambientRadius
@@ -56,7 +56,7 @@ noncomputable def rowMatrixFundamentalRadius
   @latticeFundamentalRadius (rowMatrixRealSpan V n) inferInstance inferInstance
     inferInstance (rowMatrixZLattice V n) hdisc hZ
 
-/- [derived consequence, paper `le:without_rank_cond`, lines 1038--1044]
+/- [derived consequence, paper Lemma 29 (submission PDF p. 14), PDF p. 14]
    The intrinsic Voronoi-radius interface for the matrix lattice.  This is
    kept separate from `rowMatrixFundamentalRadius`, which is the arbitrary
    basis radius used by the current cell decomposition in `RiemannSum`. -/
@@ -140,7 +140,7 @@ theorem rowMatrixLatticeCovolume_pos
   rw [rowMatrixLatticeCovolume_eq_rowSpaceHeight_pow V]
   exact pow_pos (rowSpaceHeight_pos V) n
 
-/- [derived consequence, paper `le:ballvol`, lines 463--478]
+/- [derived consequence, paper Lemma 12 (submission PDF p. 7), PDF p. 7]
    Specialize the general lattice-point estimate to `M_n(Λ_D)`.  The
    Euclidean Hausdorff measure is written with the same explicit subtype
    measurable space as the covolume definition, so the specialization keeps
@@ -209,7 +209,7 @@ theorem rowMatrix_lattice_ball_count_height
     ← inv_pow] at hball
   exact hball
 
-/- [derived consequence, paper `le:ballvol`, lines 463--478]
+/- [derived consequence, paper Lemma 12 (submission PDF p. 7), PDF p. 7]
    Uniform version of the matrix-lattice ball count.  The paper's exponent,
    fundamental-radius term, and height factor are unchanged.  The explicit
    Euclidean unit-ball volume is Lean infrastructure that records why the
@@ -326,7 +326,7 @@ theorem rowMatrix_lattice_ball_count_height_uniform
           (rowSpaceHeight V)⁻¹ ^ n := by
       rw [hunit, hdim, hcov]
 
-/- [derived consequence, paper `le:ballvol`, lines 463--478] The same
+/- [derived consequence, paper Lemma 12 (submission PDF p. 7), PDF p. 7] The same
    uniform ball-count estimate with an arbitrary lattice-covering witness.
    This is the form needed to retain the manuscript's intrinsic radius `ρ`:
    the preceding fundamental-radius theorem is only one specialization of
@@ -426,9 +426,9 @@ theorem rowMatrix_lattice_ball_count_height_uniform_of_latticeCovering
           (rowSpaceHeight V)⁻¹ ^ n := by
       rw [hunit, hdim, hcov]
 
-/- [derived consequence, paper `le:ballvol`, lines 463--478] Specialize the
+/- [derived consequence, paper Lemma 12 (submission PDF p. 7), PDF p. 7] Specialize the
    preceding ball count to the intrinsic covering radius of `M_n(Λ_D)`.
-   The factor `sqrt n` is retained exactly as in `le:without_rank_cond`. -/
+   The factor `sqrt n` is retained exactly as in Lemma 29 (submission PDF p. 14). -/
 theorem rowMatrix_lattice_ball_count_height_uniform_intrinsic
     {m k n : ℕ} (V : Grassmannian K m k)
     (hk : 0 < k) (hn : 0 < n) {T : ℝ} (hT : 0 < T) :
@@ -605,7 +605,7 @@ theorem rowMatrix_lattice_ball_count_height_scaled
     (q := n * (k * degree K)) hT hCball.le hH hR hC_R
     (rowMatrixFundamentalRadius_nonneg V) hRadius hball
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Scaled uniform form of the preceding ball count.  This is exactly the
    paper's support-radius comparison, with the dimension-only unit-ball
    coefficient retained so it cannot vary with `V` or `T`. -/
@@ -634,7 +634,7 @@ theorem rowMatrix_lattice_ball_count_height_scaled_uniform
     (q := n * (k * degree K)) hT (euclideanUnitBallVolume_pos _).le hH hR
     hC_R (rowMatrixFundamentalRadius_nonneg V) hRadius hball
 
-/- [derived consequence, paper `le:ballvol`, lines 463--478] Scaled version
+/- [derived consequence, paper Lemma 12 (submission PDF p. 7), PDF p. 7] Scaled version
    of the intrinsic-radius ball count.  This is the exact support-radius
    input needed in the lower-rank argument, with `sqrt n * rho(Λ_D)` rather
    than the auxiliary fundamental-parallelepiped radius. -/
@@ -669,7 +669,7 @@ theorem rowMatrix_lattice_ball_count_height_scaled_uniform_intrinsic
     (q := n * (k * degree K)) hT (euclideanUnitBallVolume_pos _).le hH hR
     hC_R hr hRadius hball
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    The common finite-support step is separated from the row-matrix geometry.
    This is the paper's estimate after its lattice-point count has supplied
    the cardinality bound. -/
@@ -693,7 +693,7 @@ theorem lattice_subtype_scaled_sum_le_of_count
   exact hsum.trans (mul_le_mul_of_nonneg_left hcount hC)
 
 /-
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Bound the rank-`k` inner sum by the row-matrix ball count.  The radius
    hypothesis is kept explicit: the paper obtains it from the covering-radius
    corollary for the echelon family. -/
@@ -891,7 +891,7 @@ theorem Admissible.rowMatrix_rank_sum_abs_le_of_radius
       dsimp [C₂]
       ring
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Fixed-coefficient form of the rank-`k` inner sum.  The supplied `R` and
    `C` are the global support and value bounds for the admissible function;
    making them inputs prevents a new coefficient from being chosen after the
@@ -944,7 +944,7 @@ theorem Admissible.rowMatrix_rank_sum_abs_le_of_radius_uniform_of_bounds
           (rowSpaceHeight V)⁻¹ ^ n * T ^ (n * (k * degree K)) := by
       ring
 
-/- [derived consequence, paper `le:low_rank_terms`, lines 1558--1568]
+/- [derived consequence, paper Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
    Intrinsic-Voronoi-radius version of the fixed-coefficient rank-filtered
    inner-sum estimate.  Its support and value bounds are unchanged; only the
    paper's `sqrt n * rho(Λ_D)` replaces the auxiliary basis radius. -/
@@ -1103,8 +1103,8 @@ theorem Admissible.rowMatrix_latticeRiemann_estimate
     tsum_rowMatrixZLattice_eq_integralRowMatrices V f T] using
     hestimate T hT hRadius
 
-/- [derived consequence of paper `le:without_rank_cond`, lines 1038--1044,
-   and `re:help`, lines 550--562, conditional on
+/- [derived consequence of paper Lemma 29 (submission PDF p. 14), PDF p. 14,
+   and Remark 17 (submission PDF p. 8), PDF p. 8, conditional on
    `AdmissibleErrorControlUpTo`] The Riemann estimate for `M_n(Λ_D)` in the
    manuscript's intrinsic-radius notation through an explicitly supplied
    error-control range.  The `RiemannControl` is the restriction of the
@@ -1220,7 +1220,7 @@ theorem Admissible.rowMatrix_latticeVoronoiRiemann_estimate_of_errorControlUpTo
       tsum_rowMatrixZLattice_eq_integralRowMatrices V f T] using hmain
   exact hmain'.trans hrhs
 
-/- [paper, `le:without_rank_cond`, lines 1038--1044] The base form of the
+/- [paper, Lemma 29 (submission PDF p. 14), PDF p. 14] The base form of the
    intrinsic-radius Riemann estimate, obtained from the preceding statement
    at the manuscript's original threshold `εMax = 1`. -/
 theorem Admissible.rowMatrix_latticeVoronoiRiemann_estimate
@@ -1261,8 +1261,8 @@ theorem Admissible.rowMatrix_latticeRiemann_estimate_rank
   refine ⟨Cₐ, hCₐ, fun T hT hRadius => ?_⟩
   simpa [rowMatrixRealSpan_finrank V] using hestimate T hT hRadius
 
-/- [derived consequence of paper `le:without_rank_cond`, lines 1038--1044,
-   and `re:help`, lines 550--562, conditional on
+/- [derived consequence of paper Lemma 29 (submission PDF p. 14), PDF p. 14,
+   and Remark 17 (submission PDF p. 8), PDF p. 8, conditional on
    `AdmissibleErrorControlUpTo`] The positive-rank matrix form of the
    intrinsic-radius Riemann estimate through the supplied updated range. -/
 theorem Admissible.rowMatrix_latticeVoronoiRiemann_estimate_rank_of_errorControlUpTo
@@ -1285,7 +1285,7 @@ theorem Admissible.rowMatrix_latticeVoronoiRiemann_estimate_rank_of_errorControl
   refine ⟨Cₐ, hCₐ, fun T hT hRadius => ?_⟩
   simpa [rowMatrixRealSpan_finrank V] using hestimate T hT hRadius
 
-/- [paper, `le:without_rank_cond`, lines 1038--1044] The positive-rank
+/- [paper, Lemma 29 (submission PDF p. 14), PDF p. 14] The positive-rank
    matrix form of the intrinsic-radius Riemann estimate, with the exact
    exponent `n * (k * degree K)` used in the manuscript. -/
 theorem Admissible.rowMatrix_latticeVoronoiRiemann_estimate_rank

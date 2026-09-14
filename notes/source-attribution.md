@@ -1,14 +1,20 @@
 # Source attribution and formalization provenance
 
 This committed note records the mathematical sources, library dependencies,
-and reused formalization code used by the project. The public repository does
-not include copies of the manuscript or cited papers.
+and reused formalization code used by the project. Statement alignment uses
+the author-supplied submission PDF, while the public bibliographic citation is
+the arXiv record.
 
 ## Mathematical sources
 
 - Nihar Gargava, Vlad Serban, Maryna Viazovska, and Ilaria Viglino,
   [*Integral Matrices of Fixed Rank over Number Fields*](https://arxiv.org/abs/2510.11673).
-  This is the primary source formalized here.
+  This is the public bibliographic record for the primary source formalized
+  here. The authoritative submission artifact is the 26-page PDF
+  `katznelson.pdf`, supplied from the author's Overleaf workspace on
+  2026-09-14, with SHA-256
+  `da70247ff9872d77373993b4e2117a8059340950968be1fe255c5484648b4c1d`.
+  Lean comments cite its printed page and result/equation numbers.
 - Wolfgang M. Schmidt, [*On Heights of Algebraic Subspaces and Diophantine
   Approximations*](https://doi.org/10.2307/1970360), *Annals of Mathematics*
   85 (1967), 430--472. Its height-counting result is the explicit input
@@ -49,6 +55,6 @@ commit `128a6c5ce5f48622e69927ccd639cbff401022e8`.
 Schmidt's height-counting statement is exposed as an explicit hypothesis;
 the public theorem path does not hide it as an axiom. The Lean development
 uses the approved raw Euclidean mixed-space convention for coarse estimates,
-while proving the manuscript normalization separately. The critical-radius
+while proving the submission-PDF normalization separately. The critical-radius
 and large-radius Riemann branches are local adaptations recorded in the
 metadata and committed Lean comments.

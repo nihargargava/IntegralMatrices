@@ -4,7 +4,7 @@ import Katznelson.Counting.UniformLowerRank
 # Literal termwise-absolute lower-rank estimate
 
 This module supplies the manuscript-literal endpoint for Lemma
-`le:low_rank_terms` of `papers/katznelson.tex`, lines 1495--1635.  In
+Lemma 39 (submission PDF pp. 18--20) of `authoritative submission PDF`, PDF p. 19.  In
 particular, its left side is
 `∑ V, ∑' A, |f (T⁻¹ • embedMatrix A)|`, not
 `∑ V, |∑' A, f (T⁻¹ • embedMatrix A)|`.
@@ -22,8 +22,8 @@ open scoped BigOperators Classical NumberField Topology
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [Lean infrastructure for paper lemma `le:low_rank_terms`, lines
-   1495--1537] Partition matrices of rank `< k` by their exact rank. -/
+/- [Lean infrastructure for paper lemma Lemma 39 (submission PDF pp. 18--20),
+   PDF p. 19] Partition matrices of rank `< k` by their exact rank. -/
 noncomputable def lowerRankSigmaEquiv
     {K : Type*} [Field K] [NumberField K]
     {n m k : ℕ} (V : Grassmannian K m k) :
@@ -47,8 +47,8 @@ noncomputable def lowerRankSigmaEquiv
       apply Subtype.ext
       rfl }
 
-/- [Lean infrastructure for paper lemma `le:low_rank_terms`, lines
-   1495--1537] Generic summable-function rank decomposition.  Separating this
+/- [Lean infrastructure for paper lemma Lemma 39 (submission PDF pp. 18--20),
+   PDF p. 19] Generic summable-function rank decomposition.  Separating this
    analytic-free reindexing prevents the manuscript bridge from duplicating
    the `Admissible` machinery. -/
 theorem tsum_lowerRank_eq_sum_ranks_of_summable
@@ -81,8 +81,8 @@ theorem tsum_lowerRank_eq_sum_ranks_of_summable
       intro A
       rfl
 
-/- [Lean infrastructure for paper lemma `le:low_rank_terms`, lines
-   1495--1537] Generic summable-function form of regrouping a fixed-rank
+/- [Lean infrastructure for paper lemma Lemma 39 (submission PDF pp. 18--20),
+   PDF p. 19] Generic summable-function form of regrouping a fixed-rank
    matrix by its unique row space, using `rowSpaceContainedRankEquiv`. -/
 theorem tsum_rank_eq_sum_contained_rowSpaces_of_summable
     {K : Type*} [Field K] [NumberField K]
@@ -121,8 +121,8 @@ theorem tsum_rank_eq_sum_contained_rowSpaces_of_summable
         exact h
       simp [g, hA]
 
-/- [Lean infrastructure for paper lemma `le:low_rank_terms`, lines
-   1495--1537] Generic finite-family Fubini bridge.  The right side is the
+/- [Lean infrastructure for paper lemma Lemma 39 (submission PDF pp. 18--20),
+   PDF p. 19] Generic finite-family Fubini bridge.  The right side is the
    manuscript's extension multiplicity `n_k(D')`, represented by the proved
    row-space count `((B ∩ {V | W ≤ V}).ncard : ℝ)`. -/
 set_option maxHeartbeats 1600000 in
@@ -197,7 +197,7 @@ theorem finite_lowerRank_sum_eq_sum_containedRowSpaceCounts_of_summable
               w A.1) := by
       rfl
 
-/- [paper, lemma `le:low_rank_terms`, lines 1495--1537] Exact bridge for
+/- [paper, lemma Lemma 39 (submission PDF pp. 18--20), PDF p. 19] Exact bridge for
    the manuscript's termwise-absolute summand.  The left side retains the
    literal lower-rank condition and the right side retains the extension
    multiplicity indexed by the matrix's own rank-`l` row space. -/
@@ -226,8 +226,8 @@ theorem finite_rowSpaceLowerAbsSum_eq_sum_containedRowSpaceCounts_literal
     finite_lowerRank_sum_eq_sum_containedRowSpaceCounts_of_summable
       B w hw hsupport
 
-/- [derived consequence of paper lemma `le:low_rank_terms`, lines
-   1495--1635] Quantitative normalized form of the exact bridge above.  Its
+/- [derived consequence of paper lemma Lemma 39 (submission PDF pp. 18--20),
+   PDF p. 19] Quantitative normalized form of the exact bridge above.  Its
    left side is literally the manuscript's sum over `V` of the inner sum of
    `|f(T⁻¹A)|`; the right side uses the paper's rank-zero term, `alpha_l`,
    and `B_l(T)`. -/
@@ -376,8 +376,8 @@ theorem finite_rowSpaceLowerAbsSum_normalized_le_literal
           T ^ (-(d : ℤ) * ((n - m + k - 1 : ℕ) : ℤ)) :=
       add_le_add hzero hsum_positive
 
-/- [paper, lemma `le:low_rank_terms` and its use in theorem `th:main`,
-   lines 1495--1635 and 1671--1683] Final uniform manuscript-facing
+/- [paper, lemma Lemma 39 (submission PDF pp. 18--20) and its use in theorem Theorem 2 (submission PDF p. 2; proof pp. 20--22),
+   PDF p. 19] Final uniform manuscript-facing
    lower-rank estimate.  The outer family is exactly the row-space image of
    `𝓕_k(T) = calF ...`, and the inner sum contains the termwise absolute
    values `|f(T⁻¹A)|`.  The Schmidt height count remains the explicit,

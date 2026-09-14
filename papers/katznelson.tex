@@ -374,7 +374,7 @@ We have made little effort to optimize this dependence, and it seems unlikely th
 \section*{Acknowledgements}
 
 We would like to thank Andreas Str\"ombergsson for comments on our preprint \cite{GSV23} that motivated the writing of much of this article. The writing has also benefited from some discussions with Phong Nguyen, Thomas Espitau and Seungki Kim.  
-We owe gratitude to Fabian Gundlach for pointing an issue with~\cref{hy:admissible} and also suggesting a speedy resolution. Finally, we thank the anonymous referees for their careful reading, for spotting a number of omissions and for generally helping to significantly improve the quality of this text.
+We owe gratitude to Fabian Gundlach for pointing out an issue with~\cref{hy:admissible} and also suggesting a speedy resolution. Finally, we thank the anonymous referees for their careful reading, for spotting a number of omissions and for numerous contributions to improve the quality of this text.
 
 This research was partly funded by the SNSF Project funding 184927 titled "Optimal configurations in multidimensional spaces". 
 NG acknowledges funding from the ERC Grant
@@ -839,7 +839,7 @@ A corollary of~\cref{th:schmidt} is the following lemma, which is also given in 
 \begin{proof}
     This follows from the claim that for any echelon matrix $D \in \M_{k \times m}(K)$, one has 
     \begin{equation}
-        \Big|\mathfrak{D}(D)^{-n}\int_{\M_{n \times k}(\KR)}^{} f(xD) \diff x  \Big|\leq \Cl[c]{height} H(D)^{-n},
+        \mathfrak{D}(D)^{-n}\int_{\M_{n \times k}(\KR)}^{}\Big| f(xD) \Big|\diff x  \leq \Cl[c]{height} H(D)^{-n},
         \label{eq:summable_matrices}
     \end{equation}
     for some constant $\Cr{height}$ depending on $f$. Once we have established this claim, we note that $n>m$ and \cref{th:schmidt} are sufficient to prove that the right-side of~\cref{eq:summable_matrices} is finitely summable over all echelon matrices in $\M_{k \times m}(K)$. 
@@ -1019,7 +1019,7 @@ Let us introduce a convenient notation for matrices containing rows taken from a
 For $D \in M_{k \times m}(K)$ an echelon matrix,
 observe that $\M_{n}(\Lambda_D \otimes \mathbb{Q}) = \M_{n \times k}(K) \cdot D$ 
 and $\M_{n}(\Lambda_{D} \otimes \mathbb{R}) = \M_{n \times k}(K_\mathbb{R}) \cdot D$. 
-However, $\M_n(\Lambda_D) \subsetneq  \M_{n \times k}(\OK) \cdot D$ for an arbitrary echelon matrix $D \in \M_{k \times m}(K)$. In fact, 
+However, $\M_n(\Lambda_D) \subseteq  \M_{n \times k}(\OK) \cdot D$ for an arbitrary echelon matrix $D \in \M_{k \times m}(K)$. In fact, 
 \begin{equation}
     [\M_{n \times k}(\OK)  D : \M_{n}(\Lambda_{D})] = \mathfrak{D}(D)^{n},
     \label{eq:denominator_index}
@@ -1171,7 +1171,28 @@ Using~\cref{le:lower_bound_not_in_F}, one gets the following convergence estimat
     Here $\Cr{tailconst}>0$ is a constant that does not depend on $T>0$.
 \end{corollary}
 \begin{proof}
-    Follows from summation by parts and Schmidt's ~\cref{th:schmidt}. One must use that $n-m \geq 1$.
+      \begin{proof}
+  As in the proof of~\cref{le:schmidt_makes_c1_finite}, one has
+  \[
+  \mathfrak{D}(D)^{-n}
+  \int_{\M_{n \times k}(\KR)} |f(xD)|\diff x
+  \leq \Cr{height} H(D)^{-n}.
+  \]
+  Hence, by~\cref{le:lower_bound_not_in_F}, the left-hand side is bounded by
+  \[
+  \Cr{height}
+  \sum_{\substack{D \in \M_{k \times m}(K),~D\text{ echelon}\\
+  H(D)\geq \Cr{lowerF}T^{d}}}
+  H(D)^{-n}.
+  \]
+  Summation by parts and~\cref{th:schmidt} show that this is at most
+  \[
+  \Cr{tailconst}T^{-d(n-m)}
+  \leq \Cr{tailconst}T^{-d},
+  \]
+  since \(n-m\geq1\).
+  \end{proof}
+
 \end{proof}
 
 
@@ -1439,7 +1460,7 @@ We begin by the following lemma.
     Let $D' \in \mathcal{F}_{l}{(T)}$.
     For some $\Cl[c]{lrind} > 0$ which 
     depends on 
-    $\rho(\OK)$ but not on $D'$,
+    $\rho(\OK)$ but not on $l,T$ or $D'$,
     one then has for all $T \geq 1$:
     \begin{equation}
         \card \{D \in \mathcal{F}_{k}(T) \mid \Lambda_{D'} \subseteq \Lambda_{D} \} \leq \Cr{lrind}T^{d(k-l)(m-l)} H(D')^{k-l}
@@ -1570,7 +1591,7 @@ From the rest of the proof, we will assume $l \geq 1$.
       & \leq \Cl[c]{lowrank2} H(D')^{-n} T^{lnd}.
     \end{align}
     Note here that $\rho(\Lambda_{D}') \leq (\Cr{covering} \Cr{minima}) T$ from~\cref{co:covering_bound}.
-    Here $\Cr{lowrank2}>0$ is at least $ \|f\|_{\infty} \cdot \Cr{ballvol} \cdot (\Cr{sup} + \Cr{covering} \Cr{minima})^{lnd}$.
+    Here $\Cr{lowrank2}>0$ is taken to be at least $ \|f\|_{\infty} \cdot \Cr{ballvol} \cdot (\Cr{sup} + \Cr{covering} \Cr{minima})^{(k-1)nd}$.
 
     Now take $\Cl[c]{lowrank3} = \Cr{lowrank2} \cdot \Cr{lrind}$. We obtain
     \begin{align}
@@ -1747,7 +1768,7 @@ When $m+k-l-n > 0$, we know that $T^{\alpha_{l}} T^{ld(m+k-l-n)} = T^{d N }$
     \begin{equation}
     \sum_{\substack{(l_{1},\dots,l_{k}) \in  \M_{1 \times m}(\OK) \\  \|l_{1}\|  \leq \dots \leq \|l_{k}\| \leq  \Cr{minima} T  }   }^{} \frac{1}{\|l_{1}\|^{nd} \dots \|l_{k}\|^{nd-1}}.
     \end{equation}
-    When $k \geq 1$, the innermost sum is 
+    When $k \geq 2$, the innermost sum is 
     \begin{equation}
     \sum_{\substack{ l_k\in  \M_{1 \times m}(\OK) \\  \|l_{k-1}\|  \leq \|l_{k}\| \leq  \Cr{minima} T  }   }^{} \frac{1}{\|l_{k}\|^{nd-1}} \leq 
     \sum_{\substack{ l_k\in  \M_{1 \times m}(\OK) \\  \|l_{k-1}\|  \leq \|l_{k}\| < \infty}   }^{} \frac{1}{\|l_{k}\|^{nd-1}} \leq \Cl[c]{easycase} \|l_{k-1}\|^{-(n-m)d+1},

@@ -4,8 +4,8 @@ import Mathlib.RingTheory.Localization.Integer
 /-!
 # Rational row spaces
 
-This is the subspace-indexed form of Proposition `pr:trijection` and Lemma
-`le:new_bijection` in the paper.  A reduced echelon matrix is the canonical
+This is the subspace-indexed form of Proposition Proposition 22 (submission PDF p. 11) and Lemma
+Lemma 30 (submission PDF p. 14) in the paper.  A reduced echelon matrix is the canonical
 coordinate representative of the corresponding point of the Grassmannian;
 for proofs it is cleaner to index directly by that rational row space.
 -/
@@ -259,7 +259,7 @@ theorem rowsInIntegralRowModule_of_rowSpace_eq {n m k : ℕ}
     rowsInIntegralRowModule V A := by
   rw [rowsInIntegralRowModule_iff_rowSpace_le, hspace]
 
-/- Equation `eq:bijection`, with the echelon representative replaced by its
+/- Equation (3) (submission PDF p. 2), with the echelon representative replaced by its
    equivalent Grassmannian point. -/
 noncomputable def rankMatrixEquivRowSpaces {n m k : ℕ} :
     {A : IntegralMatrix K n m // integralMatrixRank A = k} ≃

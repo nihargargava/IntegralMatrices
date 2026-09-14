@@ -9,7 +9,7 @@ import Mathlib.NumberTheory.NumberField.Norm
 /-!
 # Rank drop modulo a prime ideal
 
-This file formalizes Lemma `le:rankdrop` of `papers/katznelson.tex`.  The first
+This file formalizes Lemma 40 (submission PDF p. 23).  The first
 step records the finite-dimensional linear algebra used to select a nonsingular
 minor from a matrix of known rank.
 -/
@@ -332,7 +332,7 @@ theorem idealNorm_le_rankDrop_minor_bound (P : PrimeIdeal K) {n m k : ℕ}
         rfl
   exact hlower.trans hnormUpper
 
-/- Lemma `le:rankdrop` in the paper.  The use of `m!` makes the constant
+/- Lemma 40 (submission PDF p. 23).  The use of `m!` makes the constant
    independent of the actual rank `k`, as required there. -/
 theorem rankDrop_norm_lower_bound (P : PrimeIdeal K) {n m k : ℕ}
     (hk : 1 ≤ k) (hkm : k ≤ m) (A : IntegralMatrix K n m)

@@ -7,8 +7,8 @@ import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Card
 /-!
 # Finite-field code counting
 
-This file begins the formalization of Lemma `le:counting` in
-`papers/katznelson.tex` (arXiv:2510.11673).  The paper averages over all
+This file begins the formalization of Lemma 41 (submission PDF p. 24) in
+`authoritative submission PDF` (arXiv:2510.11673).  The paper averages over all
 `s`-dimensional subspaces of `k_𝓟^n`; here those subspaces are the finite type
 `Code P n s`.
 -/
@@ -242,7 +242,7 @@ theorem reduceMatrix_col (P : PrimeIdeal K) {n m : ℕ}
 
 /- The matrix-level lift condition is exactly containment of the span of its
    reduced columns.  This is the bridge from the lattice average to the
-   finite-field containment probability in Lemma `le:counting`. -/
+   finite-field containment probability in Lemma 41 (submission PDF p. 24). -/
 theorem mem_matricesInLift_iff_codeSpan_le (P : PrimeIdeal K)
     {n m s : ℕ} (S : Code P n s) (A : IntegralMatrix K n m) :
     A ∈ matricesInLift P S ↔ codeSpan P (residueColumns P A) ≤ S.1 := by
@@ -601,7 +601,7 @@ def containingCodeEquivQuotientCode (P : PrimeIdeal K) {n s k : ℕ}
     apply Subtype.ext
     exact Submodule.map_comap_eq_self (by simp)
 
-/- The codes counted in the numerator of the probability in `le:counting`. -/
+/- The codes counted in the numerator of the probability in Lemma 41 (submission PDF p. 24). -/
 noncomputable def containingCodes (P : PrimeIdeal K) {n s k : ℕ}
     (y : Fin k → (Fin n → residueField P)) : Finset (Code P n s) := by
   classical
@@ -638,7 +638,7 @@ theorem mem_containingCodes_iff (P : PrimeIdeal K) {n s k : ℕ}
   simp [containingCodes]
 
 /- The factor multiplying the leading power of `𝓝(P)` in Lemma
-   `le:counting`.  Its distance from one is uniform in `P`. -/
+   Lemma 41 (submission PDF p. 24).  Its distance from one is uniform in `P`. -/
 noncomputable def codeContainmentCorrection (P : PrimeIdeal K)
     (n s k : ℕ) : ℝ :=
   gaussianCorrection (idealNorm P : ℝ) (n - k) (s - k) /

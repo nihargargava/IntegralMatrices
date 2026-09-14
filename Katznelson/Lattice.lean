@@ -27,7 +27,7 @@ structure Lattice where
   discrete' : IsDiscrete (carrier : Set V)
 
 /- [Lean infrastructure] This is the covering clause appearing in the
-   manuscript's definition of `ρ` (lines 433--437).  The separate numerical
+   manuscript's definition of `ρ` (PDF p. 7).  The separate numerical
    covering radius is introduced only after the nearest-point and Voronoi
    lemmas are proved. -/
 def LatticeCovering {E : Type*} [NormedAddCommGroup E]
@@ -62,7 +62,7 @@ noncomputable local instance rationalModule : Module ℚ E :=
 /- [Lean infrastructure] A finitely generated integral module whose rational
    and real spans have the same dimension is discrete.  This is a general
    encoding lemma used below for the rational orthogonal projection in the
-   paper's low-rank induction (papers/katznelson.tex, lines 1475--1479).
+   paper's low-rank induction (authoritative submission PDF, PDF p. 18).
    It is not an alternative proof of a paper estimate: the application still
    has to prove the rational-span dimension equality from the manuscript's
    number-field embedding. -/

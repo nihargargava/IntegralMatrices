@@ -6,7 +6,7 @@ import Katznelson.Counting.RiemannSum
 For a function restricted to a real subspace, the paper bounds its cellwise
 oscillation by the ambient error function E_f; it does not replace E_f
 by a supremum taken only inside the subspace.  This file isolates exactly the
-data used in the proof of Lemma le:Riemann_estimate.
+data used in the proof of Lemma 18 (submission PDF p. 9).
 -/
 
 namespace Katznelson
@@ -19,7 +19,7 @@ section
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
-/- [Lean infrastructure for paper `re:help`, lines 550--562] The hypotheses
+/- [Lean infrastructure for paper Remark 17 (submission PDF p. 8), PDF p. 8] The hypotheses
    actually used by the lattice Riemann-sum proof, with an explicit upper
    range for the error-function parameter.  Omitting `εMax` means the
    manuscript's original range `0 < ε ≤ 1`; a separately proved update of
@@ -42,7 +42,7 @@ structure RiemannControl (f : E → ℝ) (εMax : ℝ := 1) where
       ∫ x : E, oscillation x ε
         ∂(μHE[Module.finrank ℝ E] : Measure E) ≤ C * ε
 
-/- [Lean infrastructure for paper `re:help`, lines 550--562] Replace only
+/- [Lean infrastructure for paper Remark 17 (submission PDF p. 8), PDF p. 8] Replace only
    the proved range of a fixed ambient oscillation control.  The two supplied
    hypotheses are exactly the analytic content of the manuscript's phrase
    "suitably updating the constant"; this definition does not assert that

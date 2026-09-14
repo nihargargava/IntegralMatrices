@@ -6,8 +6,8 @@ import Katznelson.Counting.ControlledRiemann
 This file specializes the controlled lattice Riemann estimate to the
 restriction of an admissible ambient function to a nonzero real subspace.
 The controlling oscillation is the paper's ambient error function `E_f`,
-restricted to the subspace, exactly as in Hypothesis `hy:admissible` and
-Lemma `le:Riemann_estimate` of `papers/katznelson.tex`.
+restricted to the subspace, exactly as in Hypothesis 16 (submission PDF p. 8) and
+Lemma 18 (submission PDF p. 9) of `authoritative submission PDF`.
 -/
 
 namespace Katznelson
@@ -74,7 +74,7 @@ noncomputable def Admissible.submoduleRiemannControl
     rw [← euclideanIntegral_eq_integral]
     exact hbound V hV ε hε hεone
 
-/- [derived consequence of paper `re:help`, lines 550--562, conditional on
+/- [derived consequence of paper Remark 17 (submission PDF p. 8), PDF p. 8, conditional on
    `AdmissibleErrorControlUpTo`] Restrict the paper's updated ambient error
    control to a nonzero real subspace.  The ambient `E_f` is retained, and
    the hypothesis remains uniform in the subspace as required by the paper. -/
@@ -97,7 +97,7 @@ noncomputable def Admissible.submoduleRiemannControlUpTo
     rw [← euclideanIntegral_eq_integral]
     exact hbound V hV ε hε hεMax
 
-/-- Lemma `le:Riemann_estimate` applied to an arbitrary full lattice in a
+/-- Lemma 18 (submission PDF p. 9) applied to an arbitrary full lattice in a
 nonzero real subspace. -/
 theorem Admissible.submodule_latticeRiemann_estimate
     {f : X → ℝ} (h_f : Admissible f) (V : Submodule ℝ X) (hV : V ≠ ⊥)

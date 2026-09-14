@@ -6,7 +6,7 @@ import Mathlib.Analysis.MeanInequalities
 # Crude height bounds
 
 This module formalizes the selected-row/Hadamard argument in the proof of
-`le:crude_early` of the manuscript.  It deliberately retains the manuscript's
+Lemma 31 (submission PDF p. 15) of the manuscript.  It deliberately retains the manuscript's
 height as the covolume of the row lattice.
 -/
 
@@ -23,7 +23,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 /- [Lean infrastructure] A real basis contained in a full lattice generates a
 sub-lattice.  Combining the relative-covolume formula with the manuscript's
 Hadamard bound gives the form needed for the selected rows in
-`le:crude_early` (lines 1091--1120). -/
+Lemma 31 (submission PDF p. 15) (PDF p. 15). -/
 theorem ZLattice.covolume_le_prod_norm_of_real_basis_mem
     (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
     (b : Basis (Fin (Module.finrank ℝ E)) ℝ E)
@@ -97,7 +97,7 @@ section SelectedRows
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [derived consequence, paper proof of `le:crude_early`, lines 1101--1107]
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15]
    The `k` selected independent rows span the same `K`-space as the full
    row lattice.  This is the algebraic content of the manuscript's phrase
    "a full-rank `K`-basis of `Λ_D ⊗ ℚ`". -/
@@ -127,7 +127,7 @@ theorem rowIndependent_K_span_eq_rowZLattice_K_span
   letI : FiniteDimensional K R := rowZLattice_K_span_finiteDimensional V
   exact Submodule.eq_of_le_of_finrank_eq hSR (hfinS.trans hfinR.symm)
 
-/- [derived consequence, paper proof of `le:crude_early`, lines 1104--1107]
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15]
    Scalar extension of those selected `K`-basis vectors is the full real row
    span.  This is the bridge needed to make their integral-basis multiples a
    real basis. -/
@@ -160,8 +160,8 @@ theorem rowIndependent_KRealSpan_eq_top
     exact hx
   exact hreal_le hxreal
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700 and proof
-   of `le:crude_early`, lines 1104--1107] The vectors `w_ij = u_j v_i`, with
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10 and proof
+   of Lemma 31 (submission PDF p. 15), PDF p. 15] The vectors `w_ij = u_j v_i`, with
    `u_j` the fixed integral basis, form the real basis underlying the
    manuscript's `ℤ`-basis of `𝓞_K v₁ ⊕ ⋯ ⊕ 𝓞_K v_k`. -/
 noncomputable def rowIndependentRealBasis
@@ -188,7 +188,7 @@ noncomputable def rowIndependentRealBasis
   exact (Pi.basis (fun _ : Fin k => numberFieldEuclideanBasis (K := K))).map
     (f.linearEquivOfInjective hinj hdim)
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] This is the
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] This is the
    displayed formula `w_ij = u_j v_i` for the preceding basis. -/
 theorem rowIndependentRealBasis_apply
     {m k : ℕ} (V : Grassmannian K m k)
@@ -203,7 +203,7 @@ theorem rowIndependentRealBasis_apply
     rowKRealCombinationMap, numberEmbedding,
     NumberField.mixedEmbedding.latticeBasis_apply]
 
-/- [derived consequence, paper proof of `le:crude_early`, lines 1104--1109]
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15]
    Each `w_ij` belongs to the original row lattice, so the lattice generated
    by the selected free `𝓞_K`-module is a sublattice of `Λ_D`. -/
 theorem rowIndependentRealBasis_mem_rowZLattice
@@ -225,7 +225,7 @@ theorem rowIndependentRealBasis_mem_rowZLattice
     (NumberField.RingOfIntegers.basis K j)
     (v i).property
 
-/- [paper, proof of `le:crude_early`, lines 1103--1110] A selected row of
+/- [paper, proof of Lemma 31 (submission PDF p. 15), PDF p. 15] A selected row of
    the full-rank witness matrix has norm at most its Frobenius norm.  This is
    the first inequality in the manuscript's displayed square-norm estimate. -/
 theorem rowMatrixZLattice_selectedRow_norm_le
@@ -240,10 +240,10 @@ theorem rowMatrixZLattice_selectedRow_norm_le
       norm_rowVectorOfFun_le_frobenius _ _
     _ = ‖(A : rowMatrixRealSpan V n)‖ := rfl
 
-/- [paper, proof of `le:crude_early`, lines 1110--1112] The squared norms
+/- [paper, proof of Lemma 31 (submission PDF p. 15), PDF p. 15] The squared norms
    of pairwise distinct selected rows are bounded by the squared Frobenius
    norm of the witness matrix.  This is the first inequality in the displayed
-   estimate at line 1112, before it is combined with `w_ij = u_j v_i`. -/
+   estimate at PDF p. 15, before it is combined with `w_ij = u_j v_i`. -/
 set_option maxHeartbeats 1000000 in
 theorem rowMatrixZLattice_selectedRows_sq_sum_le
     {m k n : ℕ} (V : Grassmannian K m k)
@@ -288,7 +288,7 @@ theorem rowMatrixZLattice_selectedRows_sq_sum_le
     _ ≤ ∑ r : Fin n, ‖X r‖ ^ 2 := hsubset
     _ = ‖(A : rowMatrixRealSpan V n)‖ ^ 2 := hnorm
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] For a fixed
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] For a fixed
    integral-basis element, this is a finite operator bound for multiplication
    by its inverse image in `K_ℝ`.  It supplies the lower half of the displayed
    `C^okl ‖v_i‖ ≤ ‖u_j v_i‖` comparison. -/
@@ -310,7 +310,7 @@ theorem rowIntegralBasisInverseActionBound_apply
   (Classical.choose_spec (exists_rowKRealScalar_bound (m := m)
     (numberEmbedding K ((NumberField.integralBasis K j)⁻¹)))).2 x
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] A nonzero
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] A nonzero
    integral-basis vector acts invertibly on every row vector.  We retain the
    manuscript's `u_j v_i` notation through `numberFieldEuclideanBasis`. -/
 theorem rowIntegralBasis_inverse_smul_smul
@@ -326,7 +326,7 @@ theorem rowIntegralBasis_inverse_smul_smul
     rw [← map_mul, inv_mul_cancel₀ hj, map_one]
   rw [numberFieldEuclideanBasis_apply, ← mul_smul, hmul, one_smul]
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] The finite
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] The finite
    family of inverse-action bounds is replaced by one positive constant.  It
    is the Lean representative of the paper's fixed `C^okl`. -/
 noncomputable def rowIntegralBasisLowerDenominator {m : ℕ} : ℝ := by
@@ -353,7 +353,7 @@ theorem rowIntegralBasisLowerConstant_pos {m : ℕ} :
   rw [rowIntegralBasisLowerConstant]
   exact inv_pos.mpr (rowIntegralBasisLowerDenominator_pos (K := K) (m := m))
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] This is the
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] This is the
    uniform lower comparison `C^okl ‖x‖ ≤ ‖u_j x‖` for the fixed integral
    basis.  It is stated in the manuscript's multiplication notation. -/
 theorem rowIntegralBasisLowerConstant_apply
@@ -388,11 +388,11 @@ theorem rowIntegralBasisLowerConstant_apply
 
 /- [Lean infrastructure] This is the finite upper-action denominator attached
    to the fixed integral basis.  It is used only to implement the manuscript's
-   permitted decrease of `C^okl` at lines 1108--1109. -/
+   permitted decrease of `C^okl` at PDF p. 15. -/
 noncomputable def rowIntegralBasisUpperDenominator {m : ℕ} : ℝ :=
   1 + rowScalarActionBoundSum (K := K) (m := m)
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] The upper
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] The upper
    action denominator is positive because the finite sum consists of positive
    scalar-action bounds. -/
 theorem rowIntegralBasisUpperDenominator_pos {m : ℕ} :
@@ -400,16 +400,16 @@ theorem rowIntegralBasisUpperDenominator_pos {m : ℕ} :
   rw [rowIntegralBasisUpperDenominator]
   linarith [rowScalarActionBoundSum_nonneg (K := K) (m := m)]
 
-/- [derived consequence, paper proof of `le:crude_early`, lines 1108--1110]
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15]
    This is the manuscript's `C^okl` after it has been decreased so that its
    product with an upper comparison constant is at most one.  The minimum
-   retains `le:basis_of_OK`'s lower comparison while its second term gives the
+   retains Lemma 20 (submission PDF p. 10)'s lower comparison while its second term gives the
    normalized upper comparison used in the corrected square-norm estimate. -/
 noncomputable def rowIntegralBasisAdjustedLowerConstant {m : ℕ} : ℝ :=
   min (rowIntegralBasisLowerConstant (K := K) (m := m))
     (rowIntegralBasisUpperDenominator (K := K) (m := m))⁻¹
 
-/- [derived consequence, paper proof of `le:crude_early`, lines 1108--1110]
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15]
    The adjusted manuscript constant remains positive. -/
 theorem rowIntegralBasisAdjustedLowerConstant_pos {m : ℕ} :
     0 < rowIntegralBasisAdjustedLowerConstant (K := K) (m := m) := by
@@ -418,7 +418,7 @@ theorem rowIntegralBasisAdjustedLowerConstant_pos {m : ℕ} :
     (rowIntegralBasisLowerConstant_pos (K := K) (m := m))
     (inv_pos.mpr (rowIntegralBasisUpperDenominator_pos (K := K) (m := m)))
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] Decreasing
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] Decreasing
    `C^okl` preserves its lower comparison with the integral-basis multiples. -/
 theorem rowIntegralBasisAdjustedLowerConstant_lower_apply
     {m : ℕ} (j : IntegralBasisIndex K) (x : RowVector K m) :
@@ -431,9 +431,9 @@ theorem rowIntegralBasisAdjustedLowerConstant_lower_apply
   exact (mul_le_mul_of_nonneg_right hconstant (norm_nonneg _)).trans
     (rowIntegralBasisLowerConstant_apply (K := K) (m := m) j x)
 
-/- [derived consequence, paper proof of `le:crude_early`,
-   lines 1108--1112] The newly imposed normalization converts the upper bound
-   in `le:basis_of_OK` into the comparison actually used in line 1112:
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15),
+   PDF p. 15] The newly imposed normalization converts the upper bound
+   in Lemma 20 (submission PDF p. 10) into the comparison actually used in PDF p. 15:
    `C^okl ‖u_j x‖ ≤ ‖x‖`. -/
 theorem rowIntegralBasisAdjustedLowerConstant_upper_apply
     {m : ℕ} (j : IntegralBasisIndex K) (x : RowVector K m) :
@@ -470,8 +470,8 @@ theorem rowIntegralBasisAdjustedLowerConstant_upper_apply
     _ = ‖x‖ := by
       rw [← mul_assoc, inv_mul_cancel₀ hBpos.ne', one_mul]
 
-/- [derived consequence, paper proof of `le:crude_early`,
-   lines 1108--1112] The preceding normalized comparison in the row-span
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15),
+   PDF p. 15] The preceding normalized comparison in the row-span
    subtype, retaining the manuscript's `u_j v_i` notation. -/
 set_option maxHeartbeats 1000000 in
 theorem rowIntegralBasisAdjustedLowerConstant_upper_apply_subtype
@@ -484,8 +484,8 @@ theorem rowIntegralBasisAdjustedLowerConstant_upper_apply_subtype
         ‖(x : RowVector K m)‖
   exact rowIntegralBasisAdjustedLowerConstant_upper_apply (K := K) (m := m) j x
 
-/- [derived consequence, paper proof of `le:crude_early`,
-   lines 1108--1112] This is the pair-indexed statement used when summing the
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15),
+   PDF p. 15] This is the pair-indexed statement used when summing the
    comparison over `j` in the manuscript's square-norm display. -/
 set_option maxHeartbeats 1000000 in
 theorem rowIndependentRealBasis_adjusted_norm_le
@@ -500,8 +500,8 @@ theorem rowIndependentRealBasis_adjusted_norm_le
   exact rowIntegralBasisAdjustedLowerConstant_upper_apply_subtype V j
     (v i : rowRealSpan V)
 
-/- [derived consequence, paper proof of `le:crude_early`,
-   lines 1110--1112] Summing the normalized comparison over the fixed
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15),
+   PDF p. 15] Summing the normalized comparison over the fixed
    integral basis gives the square-norm inequality before division by `d`.
    The factor is kept as the cardinality of that basis until the next lemma
    identifies it with the manuscript's degree `d = [K : ℚ]`. -/
@@ -556,7 +556,7 @@ theorem rowIndependentRealBasis_square_sum_le
       simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
       rw [Finset.mul_sum]
 
-/- [derived consequence, paper `le:basis_of_OK`, lines 679--700] The fixed
+/- [derived consequence, paper Lemma 20 (submission PDF p. 10), PDF p. 10] The fixed
    integral-basis index has cardinality `d = [K : ℚ]`, so the preceding
    cardinality factor is exactly the manuscript's degree factor. -/
 theorem integralBasisIndex_card_eq_degree :
@@ -567,7 +567,7 @@ theorem integralBasisIndex_card_eq_degree :
     NumberField.RingOfIntegers.rank]
   rfl
 
-/- [paper proof of `le:crude_early`, lines 1110--1112] This is
+/- [paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15] This is
    precisely the second inequality in the manuscript's displayed square-norm
    estimate, with `w_ij` represented by `rowIndependentRealBasis`. -/
 set_option maxHeartbeats 1000000 in
@@ -605,7 +605,7 @@ theorem rowIndependentRealBasis_square_norm_bound
     _ = ∑ i : Fin k, ‖(v i : rowRealSpan V)‖ ^ 2 := by
       exact mul_div_cancel_left₀ _ hdegree.ne'
 
-/- [paper proof of `le:crude_early`, lines 1110--1112] This is
+/- [paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15] This is
    the complete corrected square-norm display: the rank-`k` witness supplies
    the selected rows `v_i`, and their integral-basis multiples are the
    manuscript's `w_ij`. -/
@@ -629,7 +629,7 @@ theorem rowMatrixZLattice_crude_square_norm_bound
       (fun i => rowMatrixZLatticeEquiv V A (e i)) hv).trans
     (rowMatrixZLattice_selectedRows_sq_sum_le V A e he)
 
-/- [paper, proof of `le:crude_early`, lines 1114--1118] The arithmetic--
+/- [paper, proof of Lemma 31 (submission PDF p. 15), PDF p. 15] The arithmetic--
    geometric mean step for the manuscript's `kd` vectors `w_ij`.  The sigma
    index is exactly the paper's pair index `(i,j)`, and its cardinality is
    proved to be `k d` rather than absorbed into an unnamed dimension. -/
@@ -707,7 +707,7 @@ theorem rowIndependentRealBasis_geom_mean_le
           ‖rowIndependentRealBasis V v hv q‖ ^ 2 := by
       ring
 
-/- [derived consequence, paper proof of `le:crude_early`, lines 1104--1116]
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15]
    The free `𝓞_K`-module generated by the selected rows is a sublattice of
    `Λ_D`; applying the paper's Hadamard bound to its displayed `w_ij` basis
    gives the required comparison with `H(D)`. -/
@@ -753,7 +753,7 @@ theorem crudeMeanDivision
 
 /- [Lean infrastructure] Raising the manuscript's positive `2/(kd)` root
    inequality back to its natural-power form.  This is only real-power
-   bookkeeping for the final sentence of `le:crude_early`. -/
+   bookkeeping for the final sentence of Lemma 31 (submission PDF p. 15). -/
 theorem le_pow_of_rpow_le_sq
     {x y : ℝ} {N : ℕ} (hx : 0 ≤ x) (hy : 0 ≤ y) (hN : 0 < N)
     (h : x ^ (2 / (N : ℝ)) ≤ y ^ 2) :
@@ -780,8 +780,8 @@ theorem le_pow_of_rpow_le_sq
           field_simp [hN_R.ne']
         _ = y ^ N := Real.rpow_natCast y N
 
-/- [derived consequence, paper proof of `le:crude_early`,
-   lines 1112--1118] Divide the corrected square-norm estimate by the
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15),
+   PDF p. 15] Divide the corrected square-norm estimate by the
    positive factor `(C^okl)^2 k`.  This is the middle comparison between the
    arithmetic mean of the manuscript's `w_ij` and the witness norm. -/
 set_option maxHeartbeats 1000000 in
@@ -817,7 +817,7 @@ theorem rowMatrixZLattice_crude_mean_bound
   have hdivision := crudeMeanDivision hc hdegreeR hkR hsq
   simpa only [Nat.cast_mul] using hdivision
 
-/- [paper proof of `le:crude_early`, lines 1112--1118] This is
+/- [paper proof of Lemma 31 (submission PDF p. 15), PDF p. 15] This is
    the paper's complete height-root chain for a full-rank witness matrix:
    square norms, AM--GM over the actual `w_ij`, Hadamard, and the
    lattice-height comparison. -/
@@ -845,8 +845,8 @@ theorem rowMatrixZLattice_height_rpow_le
   have hmean := rowMatrixZLattice_crude_mean_bound V A e hk hv
   exact hheight_rpow.trans (hgeom.trans hmean)
 
-/- [derived consequence, paper proof of `le:crude_early`,
-   lines 1118--1120] This is the natural-power conclusion of the displayed
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15),
+   PDF p. 15] This is the natural-power conclusion of the displayed
    root-height chain before substituting the support bound `‖A‖ ≤ Csup T`. -/
 set_option maxHeartbeats 1500000 in
 theorem rowMatrixZLattice_height_le_normPower
@@ -882,15 +882,15 @@ theorem rowMatrixZLattice_height_le_normPower
       exact Module.finrank_pos)
   · exact hroot
 
-/- [paper, definition in the proof of `le:crude_early`, line 1120] The
+/- [paper, definition in the proof of Lemma 31 (submission PDF p. 15), PDF p. 15] The
    manuscript's displayed constant `C^crude2`, with the adjusted
-   `C^okl` from lines 1108--1109 retained in its denominator. -/
+   `C^okl` from PDF p. 15 retained in its denominator. -/
 noncomputable def Ccrude2 {m k : ℕ} (Csup : ℝ) : ℝ :=
   (Csup /
     Real.sqrt ((rowIntegralBasisAdjustedLowerConstant (K := K) (m := m)) ^ 2 *
       (k : ℝ))) ^ (k * degree K)
 
-/- [derived consequence, paper `le:crude_early`, lines 1093--1097 and 1120]
+/- [derived consequence, paper Lemma 31 (submission PDF p. 15), PDF p. 15]
    The displayed crude-height constant is positive when `Csup > 0`. -/
 theorem Ccrude2_pos
     {m k : ℕ} (Csup : ℝ) (hCsup : 0 < Csup) (hk : 0 < k) :
@@ -903,8 +903,8 @@ theorem Ccrude2_pos
   apply pow_pos
   exact div_pos hCsup (Real.sqrt_pos.2 (by positivity))
 
-/- [derived consequence, paper proof of `le:crude_early`,
-   lines 1118--1120] Substitute the witness norm bound in the natural-power
+/- [derived consequence, paper proof of Lemma 31 (submission PDF p. 15),
+   PDF p. 15] Substitute the witness norm bound in the natural-power
    height inequality.  The conclusion retains the exact `C^crude2 T^(kd)`
    expression displayed by the manuscript. -/
 set_option maxHeartbeats 1500000 in
@@ -952,7 +952,7 @@ theorem rowMatrixZLattice_height_le_Ccrude2
         ring, mul_pow]
     _ = Ccrude2 (K := K) (m := m) (k := k) Csup * T ^ (k * degree K) := rfl
 
-/- [paper, lemma `le:crude_early`, lines 1091--1120] The manuscript-facing
+/- [paper, lemma Lemma 31 (submission PDF p. 15), PDF p. 15] The manuscript-facing
    conclusion: membership in the exact echelon family `𝓕_k(T)` supplies the
    rank-`k` witness to which the preceding selected-row argument applies. -/
 set_option maxHeartbeats 1500000 in

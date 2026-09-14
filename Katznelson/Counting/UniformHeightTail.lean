@@ -26,8 +26,8 @@ new norm or normalization. -/
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [Lean infrastructure for paper `le:lower_bound_not_in_F` and `co:tail`,
-lines 1132--1169] The manuscript cutoff `X` is real, while Schmidt's ordinary
+/- [Lean infrastructure for paper Lemma 33 (submission PDF p. 15) and Corollary 34 (submission PDF p. 16),
+PDF p. 16] The manuscript cutoff `X` is real, while Schmidt's ordinary
 height shells are indexed by naturals.  This lower-rounding bridge makes the
 comparison explicit.  When `X ≥ 1`, the selected `N` is a usable lower
 height cutoff; for `0 < X < 1`, the later tail proof separately absorbs the
@@ -61,8 +61,8 @@ theorem exists_nat_height_cutoff_below_comparable (X : ℝ) (hX : 0 < X) :
     · simp [max_eq_left hXle]
     · exact fun h => (hXone h).elim
 
-/- [derived consequence of paper lines 837--858 and `co:tail`, lines
-1158--1169] This is `weighted_height_tsum_tail_inv_pow_le` with the
+/- [derived consequence of paper PDF p. 11 and Corollary 34 (submission PDF p. 16),
+PDF p. 16] This is `weighted_height_tsum_tail_inv_pow_le` with the
 manuscript's positive real cutoff `X`.  Above one it uses the proved natural
 tail with `N = floor X`; below one it uses absolute summability of the full
 series.  Thus the single constant is selected before `X`, and no
@@ -184,7 +184,7 @@ theorem weighted_height_tsum_tail_real_inv_pow_le
 /- [Lean infrastructure] If every point outside `B` lies beyond the real
 height cutoff `X`, absolute summability injects the complement series into
 the corresponding height tail.  This is only the subtype bookkeeping behind
-paper `co:tail`; it asserts no geometric estimate. -/
+paper Corollary 34 (submission PDF p. 16); it asserts no geometric estimate. -/
 theorem tsum_complement_abs_le_height_tail
     {alpha : Type*} {H : alpha → ℝ} {g : alpha → ℝ}
     (habs : Summable (fun x : alpha => |g x|))
@@ -214,16 +214,16 @@ theorem tsum_complement_abs_le_height_tail
       simpa [Real.norm_eq_abs] using norm_tsum_le_tsum_norm hsumNorm
     _ ≤ ∑' x : betaX, |g x.1| := hsubset
 
-/- [Lean infrastructure for paper `co:tail`, lines 1158--1169] Exact bridge
+/- [Lean infrastructure for paper Corollary 34 (submission PDF p. 16), PDF p. 16] Exact bridge
 between the reciprocal natural-power form produced by the real-cutoff proof
 and the manuscript notation `T ^ (-d)`. -/
 theorem inv_nat_pow_eq_zpow_neg_nat (T : ℝ) (d : ℕ) :
     (T ^ d)⁻¹ = T ^ (-(d : ℤ)) := by
   rw [zpow_neg, zpow_natCast]
 
-/- [derived consequence of paper `le:lower_bound_not_in_F`, lines
-1132--1155] This is the manuscript's echelon height lower bound with its
-quantifiers exposed in the order used by `co:tail`: `C_lower` is chosen once,
+/- [derived consequence of paper Lemma 33 (submission PDF p. 15),
+PDF p. 16] This is the manuscript's echelon height lower bound with its
+quantifiers exposed in the order used by Corollary 34 (submission PDF p. 16): `C_lower` is chosen once,
 before `T`.  The proof repeats the already proved ingredients of
 `exists_uniform_echelon_height_lower_bound_of_not_mem_calF`, because that
 older interface fixes `T` before returning the constant. -/
@@ -288,8 +288,8 @@ theorem exists_uniform_echelon_height_lower_bound_for_all_scales
     T ^ degree K ≤ rowSpaceHeight V
   exact hbound
 
-/- [derived consequence of paper `eq:defi_of_calF`, lines 1073--1082, and
-`le:lower_bound_not_in_F`, lines 1132--1155] The preceding uniform echelon
+/- [derived consequence of paper Equation (16) (submission PDF p. 14), PDF p. 14, and
+Lemma 33 (submission PDF p. 15), PDF p. 16] The preceding uniform echelon
 bound is transported through the proved exact equality between
 `echelonRowSpace '' calF` and `boundedRowSpaces`.  This is the precise family
 used by `MainTheorems`, not a support enlargement. -/
@@ -348,13 +348,13 @@ theorem exists_uniform_boundedRowSpaces_complement_height_lower_bound_of_fiekerS
   exact exists_uniform_boundedRowSpaces_complement_height_lower_bound
     hkn hkm hk hCsup hCprod (fun D => hprod (echelonRowSpace D))
 
-/- [derived consequence of paper `co:tail`, lines 1158--1169, used in the
-final assembly at lines 1641--1697, specifically `eq:nonrequired_eq` at
-1653--1665] Uniform height-tail input for the exact `boundedRowSpaces` family.
+/- [derived consequence of paper Corollary 34 (submission PDF p. 16), PDF p. 16, used in the
+final assembly at PDF p. 20, specifically Theorem 2 proof, tail estimate (submission PDF p. 20) at
+PDF p. 20] Uniform height-tail input for the exact `boundedRowSpaces` family.
 The constants are chosen before `T`.  The proof first obtains the direct
 Schmidt decay `T ^ (-degree K * (n-m))` and then uses `n-m ≥ 1` to return
 exactly the manuscript's `T ^ (-degree K)` notation.  In the
-degree-one, rank-one exceptional case of lines 1716--1724 it specializes to
+degree-one, rank-one exceptional case of PDF p. 21 it specializes to
 an ordinary `T⁻¹` tail, which is absorbed by the manuscript's
 `T⁻¹ * log T` scale via `inv_le_two_mul_inv_mul_log_of_two_le`.
 
@@ -482,14 +482,14 @@ theorem exists_uniform_boundedRowSpaces_mainConstant_complement_tail
     _ ≤ Ctail * T ^ (-(degree K : ℤ)) :=
       mul_le_mul_of_nonneg_left hdecay hCtail.le
 
-/- [derived consequence of paper `co:tail`, lines 1158--1169, and the final
-assembly `eq:nonrequired_eq`, lines 1653--1665 within lines 1641--1697]
+/- [derived consequence of paper Corollary 34 (submission PDF p. 16), PDF p. 16, and the final
+assembly Theorem 2 proof, tail estimate (submission PDF p. 20), PDF p. 20 within PDF p. 20]
 Assembly-ready finite-family form of the preceding complement estimate.  The
 identity is the absolutely summable decomposition of `mainConstant` into the
 exact `boundedRowSpaces` subtype and its complement.  In particular,
 `C_lower` and `C_tail` remain outside both the `T` and `Fintype` binders.
 
-For the exceptional degree-one/rank-one assembly at lines 1716--1724, the
+For the exceptional degree-one/rank-one assembly at PDF p. 21, the
 right side is literally `Ctail * T⁻¹`; the already proved theorem
 `inv_le_two_mul_inv_mul_log_of_two_le` embeds it into `T⁻¹ log T`. -/
 set_option maxHeartbeats 2400000 in

@@ -12,7 +12,7 @@ import Mathlib.Topology.MetricSpace.ProperSpace
 /-!
 # Quantitative lattice Riemann sums
 
-This file develops Lemma `le:Riemann_estimate` of `papers/katznelson.tex`.
+This file develops Lemma 18 (submission PDF p. 9) of `authoritative submission PDF`.
 For a full `ℤ`-lattice, we use the half-open fundamental parallelepiped of
 an arbitrary lattice basis.  Its explicit radius plays the role of the
 paper's covering radius in the cell-by-cell estimate.
@@ -162,20 +162,20 @@ noncomputable def latticeFundamentalDomain : Set E :=
 noncomputable def latticeFundamentalRadius : ℝ :=
   ∑ i, ‖latticeRealBasis L i‖
 
-/- [paper, lines 431--445] The Voronoi domain used in the manuscript.  The
+/- [paper, PDF p. 7] The Voronoi domain used in the manuscript.  The
    lattice is viewed inside its real span, so the translated point is written
    using the subtype coercion from `L`. -/
 noncomputable def latticeVoronoiDomain : Set E :=
   {x | ∀ v : L, ‖x‖ ≤ ‖x + (v : E)‖}
 
-/- [paper, equation (the definition at lines 433--437)] Zero belongs to the
+/- [paper, equation (the definition at PDF p. 7)] Zero belongs to the
    Voronoi domain. -/
 theorem zero_mem_latticeVoronoiDomain :
     (0 : E) ∈ latticeVoronoiDomain L := by
   intro v
   simp [latticeVoronoiDomain]
 
-/- [derived consequence, paper lines 441--444] If a lattice point is a
+/- [derived consequence, paper PDF p. 7] If a lattice point is a
    nearest point to `x`, translating `x` by that point produces a point of the
    Voronoi domain. -/
 theorem sub_mem_latticeVoronoiDomain_of_isNearest
@@ -212,7 +212,7 @@ theorem norm_le_latticeFundamentalRadius {x : E}
   rw [← ZSpan.fract_eq_self.mpr hx]
   exact ZSpan.norm_fract_le (latticeRealBasis L) x
 
-/- [derived consequence, paper `le:voronoi`, lines 447--457] The Voronoi
+/- [derived consequence, paper Lemma 11 (submission PDF p. 7), PDF p. 7] The Voronoi
    domain is contained in a bounded fundamental-domain radius.  A point of a
    fixed parallelepiped is used only as a bound; it is not identified with the
    manuscript's intrinsic covering radius. -/
@@ -266,7 +266,7 @@ theorem lattice_ball_finite [ProperSpace E] {T : ℝ} :
     exact hv
   · exact v.2
 
-/- [derived consequence, paper lines 433--437] A full lattice has a nearest
+/- [derived consequence, paper PDF p. 7] A full lattice has a nearest
    point to every ambient point.  The proof uses the finite lattice ball
    estimate above: a minimizer among a sufficiently large finite ball also
    minimizes globally by the triangle inequality. -/
@@ -311,7 +311,7 @@ theorem exists_lattice_nearest_point [ProperSpace E] (x : E) :
 noncomputable def latticeNearestDistance (L : Submodule ℤ E) (x : E) : ℝ :=
   sInf ((fun v : L => dist x (v : E)) '' Set.univ)
 
-/- [derived consequence, paper definition at lines 433--437] The order-
+/- [derived consequence, paper definition at PDF p. 7] The order-
    theoretic minimum above is attained by an actual lattice point. -/
 theorem latticeNearestDistance_eq_dist_nearest [ProperSpace E] (x : E) :
     ∃ v : L, (∀ w : L, dist x (v : E) ≤ dist x (w : E)) ∧
@@ -333,7 +333,7 @@ theorem latticeNearestDistance_eq_dist_nearest [ProperSpace E] (x : E) :
     exact hmin w
   exact ⟨v, hmin, le_antisymm hleft hright⟩
 
-/- [derived consequence, paper `le:voronoi`, lines 447--457] The norms of the
+/- [derived consequence, paper Lemma 11 (submission PDF p. 7), PDF p. 7] The norms of the
    Voronoi domain are bounded above by the radius of the fixed fundamental
    parallelepiped. -/
 theorem bddAbove_norm_image_latticeVoronoiDomain :
@@ -363,7 +363,7 @@ theorem norm_le_latticeCoveringRadius_of_mem_latticeVoronoiDomain
   apply le_csSup (bddAbove_norm_image_latticeVoronoiDomain L)
   exact ⟨x, hx, rfl⟩
 
-/- [derived consequence, paper `le:voronoi`, lines 447--457] The intrinsic
+/- [derived consequence, paper Lemma 11 (submission PDF p. 7), PDF p. 7] The intrinsic
    Voronoi radius is no larger than the auxiliary radius of the chosen
    fundamental parallelepiped. -/
 theorem latticeCoveringRadius_le_latticeFundamentalRadius :
@@ -373,7 +373,7 @@ theorem latticeCoveringRadius_le_latticeFundamentalRadius :
   · rintro _ ⟨x, hx, rfl⟩
     exact norm_le_latticeFundamentalRadius_of_mem_latticeVoronoiDomain L hx
 
-/- [Lean infrastructure, paper definition at lines 433--437] The displayed
+/- [Lean infrastructure, paper definition at PDF p. 7] The displayed
    `max min` radius is first represented by a supremum.  The following
    lemmas identify this representation with the Voronoi supremum; proving
    that the supremum is attained is a separate compactness statement. -/
@@ -462,7 +462,7 @@ theorem latticeCoveringRadius_eq_latticeMaxMinRadius :
     apply le_csSup (bddAbove_norm_image_latticeVoronoiDomain L)
     exact latticeNearestDistance_mem_latticeVoronoi_norm_image L x
 
-/- [derived consequence, paper definition at lines 433--437] A nontrivial
+/- [derived consequence, paper definition at PDF p. 7] A nontrivial
    full lattice has strictly positive intrinsic covering radius.  Discreteness
    gives a ball about zero containing no nonzero lattice point; a point at
    half that radius has positive distance from every lattice point. -/
@@ -522,7 +522,7 @@ theorem latticeCoveringRadius_pos [ProperSpace E] [Nontrivial E] :
   rw [latticeCoveringRadius_eq_latticeMaxMinRadius L]
   exact lt_of_lt_of_le (half_pos hε) hmax
 
-/- [derived consequence, paper `le:voronoi`, lines 447--457] The Voronoi
+/- [derived consequence, paper Lemma 11 (submission PDF p. 7), PDF p. 7] The Voronoi
    domain is closed, since it is an intersection of closed norm inequalities. -/
 theorem isClosed_latticeVoronoiDomain :
     IsClosed (latticeVoronoiDomain L) := by
@@ -532,7 +532,7 @@ theorem isClosed_latticeVoronoiDomain :
     simp [latticeVoronoiDomain]]
   exact isClosed_iInter fun v => isClosed_le continuous_norm (by fun_prop)
 
-/- [derived consequence, paper `le:voronoi`, lines 447--457] Boundedness of
+/- [derived consequence, paper Lemma 11 (submission PDF p. 7), PDF p. 7] Boundedness of
    the Voronoi domain together with closedness gives compactness in the proper
    finite-dimensional ambient space. -/
 theorem isCompact_latticeVoronoiDomain [ProperSpace E] :
@@ -545,7 +545,7 @@ theorem isCompact_latticeVoronoiDomain [ProperSpace E] :
     rw [Metric.mem_closedBall, dist_zero_right]
     exact norm_le_latticeFundamentalRadius_of_mem_latticeVoronoiDomain L hx
 
-/- [derived consequence, paper definition at lines 433--437] Compactness
+/- [derived consequence, paper definition at PDF p. 7] Compactness
    supplies the `max` appearing in the manuscript's definition of `ρ`. -/
 theorem exists_latticeCoveringRadius_max [ProperSpace E] :
     ∃ x : E, x ∈ latticeVoronoiDomain L ∧
@@ -563,7 +563,7 @@ theorem exists_latticeCoveringRadius_max [ProperSpace E] :
     rintro r ⟨y, hy, rfl⟩
     exact hmax hy
 
-/- [derived consequence, paper definition at lines 433--437] The maximum of
+/- [derived consequence, paper definition at PDF p. 7] The maximum of
    the minimum-distance function is attained, matching the manuscript's
    `max` rather than only its order-theoretic supremum. -/
 theorem exists_latticeMaxMinRadius_max [ProperSpace E] :
@@ -576,7 +576,7 @@ theorem exists_latticeMaxMinRadius_max [ProperSpace E] :
     _ = latticeCoveringRadius L := hxr
     _ = latticeMaxMinRadius L := latticeCoveringRadius_eq_latticeMaxMinRadius L
 
-/- [derived consequence, paper lines 433--457] The Voronoi radius covers the
+/- [derived consequence, paper PDF p. 7] The Voronoi radius covers the
    whole real span: subtracting a nearest lattice point lands in the
    Voronoi domain and hence has norm at most the radius. -/
 theorem latticeCovering_latticeCoveringRadius :
@@ -589,7 +589,7 @@ theorem latticeCovering_latticeCoveringRadius :
   have hnorm := norm_le_latticeCoveringRadius_of_mem_latticeVoronoiDomain L hvor
   simpa [dist_eq_norm] using hnorm
 
-/- [paper, the standard Voronoi fact used in `le:voronoi`, lines 447--457]
+/- [paper, the standard Voronoi fact used in Lemma 11 (submission PDF p. 7), PDF p. 7]
    In an inner-product space, the overlap of a Voronoi cell with a nontrivial
    lattice translate lies in the perpendicular bisector of that translate. -/
 /- Any explicit covering estimate bounds the intrinsic Voronoi radius. -/
@@ -633,7 +633,7 @@ theorem latticeCoveringRadius_le_of_submodule
 /- A finite real basis whose vectors lie in a lattice gives a covering bound
    for that lattice.  The proof uses the fundamental domain of the sublattice
    generated by the basis; this is the abstract form of the parallelepiped
-   argument used in the manuscript's proof of part 2 of le:props_of_minima. -/
+   argument used in the manuscript's proof of part 2 of Lemma 27 (submission PDF pp. 12--13). -/
 theorem latticeCovering_of_real_basis
     {ι : Type*} [Fintype ι]
     (b : Basis ι ℝ E) (L : Submodule ℤ E)
@@ -787,7 +787,7 @@ theorem covolume_eq_measureReal_latticeFundamentalDomain
   exact ZLattice.covolume_eq_measure_fundamentalDomain L mu
     (latticeFundamentalDomain_isAddFundamentalDomain L mu)
 
-/- The paper's Lemma `le:ballvol` (lines 463--478).  The proof below uses
+/- The paper's Lemma 12 (submission PDF p. 7) (PDF p. 7).  The proof below uses
 the explicit half-open fundamental domain already used for the Riemann-sum
 estimate; its radius is a valid covering-radius substitute for this coarse
 bound. -/
@@ -874,7 +874,7 @@ theorem lattice_ball_count_uniform
 /- [Lean infrastructure] Uniform-in-radius form of the preceding lattice
    ball count.  The constant is the fixed unit-ball volume from the proof,
    so it may be used in the ordinary-shell summation of
-   `le:domain_dimension_bound`. -/
+   Lemma 19 (submission PDF p. 9). -/
 theorem lattice_ball_count
     [MeasurableSpace E] [BorelSpace E] [ProperSpace E]
     (mu : Measure E) [Measure.IsAddHaarMeasure mu] {T : ℝ} (hT : 0 < T) :
@@ -889,7 +889,7 @@ end FundamentalDomain
 
 /- [Lean infrastructure] Orthogonal projection does not increase the
    covering radius.  This is the abstract form of the fixed-radius step in
-   `le:low_rank_induction` (papers/katznelson.tex, lines 1475--1479): project
+   Lemma 38 (submission PDF pp. 17--18) (authoritative submission PDF, PDF p. 18): project
    an ambient lattice point approximating a point of the orthogonal
    complement. -/
 set_option maxHeartbeats 800000 in
@@ -926,7 +926,7 @@ theorem latticeCovering_orthogonalProjection
   rw [← hPsub]
   exact hnonexp.trans (by simpa [dist_eq_norm] using hy)
 
-/- [derived consequence, paper `le:ballvol`, lines 463--478] The
+/- [derived consequence, paper Lemma 12 (submission PDF p. 7), PDF p. 7] The
    manuscript's ball-count estimate uses the intrinsic covering radius.  This
    deterministic form records its actual unit-ball constant, so callers over
    varying subspaces can prove that their implicit constant is uniform. -/
@@ -1017,7 +1017,7 @@ theorem lattice_ball_count_of_latticeCovering_unitBall
     (le_div_iff₀ hcovpos).2 hcard
   simpa [S, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hdiv
 
-/- [derived consequence, paper `le:ballvol`, lines 463--478] Existential
+/- [derived consequence, paper Lemma 12 (submission PDF p. 7), PDF p. 7] Existential
    presentation of the preceding deterministic ball-count bound, retained
    for callers that only need a positive implicit constant. -/
 theorem lattice_ball_count_of_latticeCovering
@@ -1318,7 +1318,7 @@ theorem cell_integral_error_bound (f : E → ℝ) (h_f : Admissible f)
 
 /- Summing the cellwise errors is legitimate because the translated
 fundamental domains decompose Haar measure.  This is the quantitative core
-of Lemma `le:Riemann_estimate`, lines 582--607 of the paper. -/
+of Lemma 18 (submission PDF p. 9), PDF p. 9 of the paper. -/
 theorem tsum_cell_integral_error_bound (f : E → ℝ) (h_f : Admissible f)
     {T : ℝ} (hT : 0 < T)
     (hRadius : latticeFundamentalRadius L / T ≤ 1) :
@@ -1459,7 +1459,7 @@ theorem covolume_mul_latticeSum_sub_integral_le (f : E → ℝ)
   rw [hidentity]
   exact tsum_cell_integral_error_bound L f h_f hT hRadius
 
-/- Lemma `le:Riemann_estimate` in the paper, first in the equivalent form
+/- Lemma 18 (submission PDF p. 9) in the paper, first in the equivalent form
 with the covolume kept on the lattice-sum side. -/
 theorem latticeRiemann_estimate_weighted (f : E → ℝ)
     (h_f : Admissible f) :
@@ -1509,7 +1509,7 @@ theorem latticeRiemann_estimate_weighted (f : E → ℝ)
   apply (div_le_iff₀ hscale).2
   simpa [ε, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hraw'
 
-/- The normalized form appearing on line 574 of `papers/katznelson.tex`.
+/- The normalized form appearing on PDF p. 9 of `authoritative submission PDF`.
 Our explicit fundamental-domain radius replaces the Voronoi covering radius;
 the proof is otherwise the paper's argument verbatim. -/
 theorem latticeRiemann_estimate (f : E → ℝ) (h_f : Admissible f) :

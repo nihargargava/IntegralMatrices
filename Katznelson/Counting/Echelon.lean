@@ -7,7 +7,7 @@ import Mathlib.RingTheory.Ideal.Quotient.Index
 # Echelon representatives and the paper's support family
 
 The manuscript abbreviates “echelon” to mean a row-reduced echelon matrix of
-maximal rank (lines 177--183).  The existing row-space development indexes the
+maximal rank (PDF p. 2).  The existing row-space development indexes the
 same objects by their rational row spaces; this file restores the manuscript's
 echelon representative as an explicit type.  Any identification of the two
 indexing systems is kept as a separate bridge rather than being built into a
@@ -257,7 +257,7 @@ theorem echelonMatrix_eq_of_rowSpace_eq
   exact congrFun hrow j
 
 /- The manuscript's direct definition
-   `Λ_D = (M_{1 × l}(K) D) ∩ O_K^m` (equation `eq:defi_of_lambda`).
+   `Λ_D = (M_{1 × l}(K) D) ∩ O_K^m` (equation (13) (submission PDF p. 11)).
    We keep this carrier written in terms of the rows of `D`; the equality with
    the row-space-indexed module is proved below rather than hidden in the
    definition. -/
@@ -304,7 +304,7 @@ theorem echelonLambda_eq_integralRowModule {l m : ℕ}
   intro v
   rfl
 
-/- [derived consequence, paper equation `eq:defi_of_lambda`, lines 760--795]
+/- [derived consequence, paper equation (13) (submission PDF p. 11), PDF p. 11]
    Inclusion of the primitive lattices attached to two echelon representatives
    is equivalent to inclusion of their rational row spaces.  This is the
    bridge needed to translate the paper's `Λ_{D'} ⊆ Λ_D` condition into the
@@ -345,7 +345,7 @@ theorem echelonLambda_le_iff_echelonRowSpace_le
     apply (mem_echelonLambda_iff D v).mpr
     exact h ((mem_echelonLambda_iff D' v).mp hv)
 
-/- The denominator module from equation `de:denonimator` (line 193).  Its
+/- The denominator module from equation (4) (submission PDF p. 2) (PDF p. 2).  Its
    elements are the coefficient vectors `v ∈ O_K^l` for which the row
    combination `vᵀ D` has integral coordinates. -/
 def echelonDenominatorModule {l m : ℕ} (D : EchelonMatrix K l m) :
@@ -514,7 +514,7 @@ noncomputable def echelonDenominator {l m : ℕ}
 
 /- The coefficient module for `n` rows is the product of `n` copies of the
    one-row denominator module.  This is the product-index calculation that
-   produces the exponent `n` in equation `eq:denominator_index`. -/
+   produces the exponent `n` in equation Lemma 29 setup (submission PDF p. 14). -/
 def echelonDenominatorMatrixModule {l m n : ℕ}
     (D : EchelonMatrix K l m) :
     Submodule (𝓞 K) (Fin n → Fin l → 𝓞 K) where
@@ -865,7 +865,7 @@ theorem tsum_echelonIntegralMatrices_eq_integralRowMatrices
         f (T⁻¹ • embedMatrix A.1) := by rfl
 
 /- This is the real ambient version of the manuscript's notation `M_n(R)`
-   from Definition `de:defi_of_M_t` (lines 1031--1036). -/
+   from Definition 28 (submission PDF p. 14) (PDF p. 14). -/
 def echelonLambdaRealSet {l m : ℕ} (D : EchelonMatrix K l m) :
     Set (RowVector K m) :=
   (integralVectorEmbedding (K := K) m) ''
@@ -1058,9 +1058,9 @@ theorem tsum_echelonIntegralMatrices_rank_eq_rowMatrixZLattice_rank
         f (T⁻¹ • (((A.1 : rowMatrixRealSpan (echelonRowSpace D) n) :
           M n m (K_ℝ[K])))) := by rfl
 
-/- [Lean infrastructure for paper equation `eq:defi_of_calF`, lines 784--803]
+/- [Lean infrastructure for paper equation (16) (submission PDF p. 14), PDF p. 11]
 The row-space implementation of the paper's family
-   `𝓕_l^(Csup)(T)` (equation `eq:defi_of_calF`).  The direct
+   `𝓕_l^(Csup)(T)` (equation (16) (submission PDF p. 14)).  The direct
    `Λ_D`-implementation and its equality with this definition are given
    below; keeping this representation is convenient for the existing lattice
    estimates. -/
@@ -1071,7 +1071,7 @@ noncomputable def calF {l m n : ℕ}
       ‖((A.1 : rowMatrixRealSpan (echelonRowSpace D) n) :
         M n m (K_ℝ[K]))‖ ≤ Csup * T}
 
-/- [paper, equation `eq:defi_of_calF`, lines 784--803] The manuscript
+/- [paper, equation (16) (submission PDF p. 14), PDF p. 11] The manuscript
 separately declares `𝓕_0(T) = {0}`.  We record that
    convention as a named family; the unique zero-row representative can be
    connected to `calF` after the zero-row echelon instance is developed. -/
@@ -1328,7 +1328,7 @@ theorem echelonConsKernelTail_injective {l m : ℕ}
   apply Subtype.ext
   exact (Fin.consLinearEquiv K (fun _ : Fin (m + 1) => K)).symm.injective hp
 
-/- `derived consequence`/Lean infrastructure for Proposition `pr:trijection`:
+/- `derived consequence`/Lean infrastructure for Proposition 22 (submission PDF p. 11):
    this is the zero-first-coordinate branch of the row-space induction. -/
 theorem echelonRowSpace_surjective_of_head_zero
     {l m : ℕ} (V : Grassmannian K (m + 1) l)
@@ -1730,7 +1730,7 @@ theorem echelonRowSpace_surjective {l m : ℕ} :
         · exact echelonRowSpace_surjective_of_head_ne_zero V x hx hx0
             (ih (l := l - 1)) (Nat.one_le_iff_ne_zero.mpr hl)
 
-/- The trijection in Proposition `pr:trijection`, now discharged by the
+/- The trijection in Proposition 22 (submission PDF p. 11), now discharged by the
    injectivity and constructive surjectivity proofs above. -/
 def EchelonRowSpaceBridge (K : Type*) [Field K] [NumberField K]
     (l m : ℕ) : Prop :=
@@ -1756,7 +1756,7 @@ theorem echelonRowSpaceBridge {l m : ℕ} :
     EchelonRowSpaceBridge K l m := by
   exact echelonRowSpaceBridge_iff_surjective.mpr echelonRowSpace_surjective
 
-/- `Equiv` form of Proposition `pr:trijection`; this is the reindexing form
+/- `Equiv` form of Proposition 22 (submission PDF p. 11); this is the reindexing form
    used whenever a paper sum over echelon matrices is written as a sum over
    rational row spaces. -/
 noncomputable def echelonRowSpaceEquiv {l m : ℕ} :
@@ -1784,7 +1784,7 @@ theorem mem_calF_iff {l m n : ℕ} {Csup T : ℝ}
             M n m (K_ℝ[K]))‖ ≤ Csup * T := by
   rfl
 
-/- [paper, equation `eq:defi_of_calF`, lines 784--803] The same family written
+/- [paper, equation (16) (submission PDF p. 14), PDF p. 11] The same family written
 with the manuscript's direct `M_n(Λ_D)` model. -/
 noncomputable def calFDirect {l m n : ℕ}
     (Csup T : ℝ) : Set (EchelonMatrix K l m) :=

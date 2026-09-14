@@ -6,7 +6,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 This module records the exact bridge between the finite average over lifted
 codes and the reduced-column containment condition used in the paper's proof
-of `th:higher_moments`.
+of Theorem 42 (submission PDF p. 24; proof pp. 24--25).
 -/
 
 namespace Katznelson
@@ -22,7 +22,7 @@ section
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [Lean infrastructure for paper equation `eq:nthmoment`, lines 1828--1836]
+/- [Lean infrastructure for paper equation (9) (submission PDF p. 5), PDF p. 24]
 Rewrite one code-indexed lattice sum as an indicator sum on all integral
 matrices. -/
 theorem liftCodeSum_eq_tsum_integralMatrix_indicator
@@ -53,7 +53,7 @@ theorem liftCodeSum_eq_tsum_integralMatrix_indicator_if
   intro A
   by_cases hA : A ∈ matricesInLift P S <;> simp [Set.indicator, hA]
 
-/- [derived consequence of paper equation `eq:nthmoment`, lines 1828--1836]
+/- [derived consequence of paper equation (9) (submission PDF p. 5), PDF p. 24]
 For one integral matrix, summing the containment indicator counts precisely
 the codes containing its reduced column span. -/
 theorem sum_code_indicator_eq_card_containingCodes_mul
@@ -73,7 +73,7 @@ theorem sum_code_indicator_eq_card_containingCodes_mul
         simp [containingCodes, mem_matricesInLift_iff_codeSpan_le]]
     simp [nsmul_eq_mul]
 
-/- [derived consequence of paper equation `eq:nthmoment`, lines 1828--1836]
+/- [derived consequence of paper equation (9) (submission PDF p. 5), PDF p. 24]
 Interchange the finite code sum and the absolutely summable matrix sum to
 obtain the manuscript's containment-probability expansion. -/
 theorem liftsMoment_eq_tsum_codeContainmentProbability
@@ -143,7 +143,7 @@ theorem liftsMoment_eq_tsum_codeContainmentProbability
       ring
 
 /- [derived consequence of the finite-field Grassmannian count used after
-paper equation `eq:nthmoment`] The containment probability depends only on
+paper equation (9) (submission PDF p. 5)] The containment probability depends only on
 the span of the prescribed
    vectors.  This removes the temporary independence assumption in the
    Gaussian-binomial formula and makes the formula rank-sensitive. -/
@@ -197,11 +197,11 @@ theorem codeContainmentProbability_eq_of_reduceMatrixRank_eq
     (residueColumns P A) (r := r) ?_ hrs hsn
   exact (reduceMatrix_rank_eq_span_finrank P A).symm.trans hrank
 
-/- [paper, proof of Theorem `th:higher_moments`, rank-drop step following
-equation `eq:nthmoment`] The rank-drop terms are eventually outside the
+/- [paper, proof of Theorem 42 (submission PDF p. 24; proof pp. 24--25), rank-drop step following
+equation (9) (submission PDF p. 5)] The rank-drop terms are eventually outside the
 compact support.  This is
-   the support reduction used in the proof of `th:higher_moments`; the
-   algebraic lower bound comes from `le:rankdrop`, while the positive
+   the support reduction used in the proof of Theorem 42 (submission PDF p. 24; proof pp. 24--25); the
+   algebraic lower bound comes from Lemma 40 (submission PDF p. 23), while the positive
    exponent is exactly the paper's hypothesis
    `1 - s/n < 1/m`. -/
 theorem exists_rankDrop_support_threshold
@@ -390,8 +390,8 @@ theorem weightedContainmentTerm_eq_of_large_prime
           (le_trans hrankle hms) hsn
       rw [hprob]
 
-/- [paper, proof of Theorem `th:higher_moments`, finite-field expansion after
-equation `eq:nthmoment`] Group the surviving matrix terms with the correction
+/- [paper, proof of Theorem 42 (submission PDF p. 24; proof pp. 24--25), finite-field expansion after
+equation (9) (submission PDF p. 5)] Group the surviving matrix terms with the correction
 factor indexed by their algebraic rank. -/
 theorem exists_liftsMoment_eq_tsum_rankWeighted
     {n m s : ℕ} (hm : 0 < m) (hmn : m ≤ n) (hms : m ≤ s)

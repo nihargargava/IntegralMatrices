@@ -1,7 +1,8 @@
 # Formalization of Integral Matrices of Fixed Rank
 
 This repository formalizes the results of [*Integral matrices of fixed rank
-over number fields*](https://arxiv.org/abs/2510.11673).
+over number fields*](https://arxiv.org/abs/2510.11673), using the
+author-supplied submission PDF as the authoritative statement source.
 
 The formalized main results are:
 
@@ -15,6 +16,6 @@ and formalizes the relevant Fieker--Stehlé result on successive minima over
 number fields.
 
 See [`notes/source-attribution.md`](notes/source-attribution.md) for the full
-list of attributions.
+list of attributions and the submission-PDF fingerprint.
 
 Licensed under [GPL-3.0](LICENSE).

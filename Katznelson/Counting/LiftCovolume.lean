@@ -6,19 +6,19 @@ import Mathlib.LinearAlgebra.Isomorphisms
 /-!
 # Covolume of normalized lifts
 
-This module formalizes the lattice setup in the cited manuscript, lines
-1816--1827, including the assertion that every normalized lift has covolume
-one.  The arXiv manuscript is authoritative.
+This module formalizes the lattice setup in the cited submission PDF,
+Section 5 and Equation (26), p. 22, including the assertion that every
+normalized lift has covolume one.  The submission PDF is authoritative.
 
 Provenance:
 
 * `paper`: the raw lift, normalization, and unit-covolume statements refer to
-  the manuscript's equation `eq:def_of_L` and lines 1816--1827.
+  Equation (26) (submission PDF p. 22).
 * `derived consequence`: the quotient-index and determinant calculations are
   proved from the paper definitions and standard Mathlib lattice theorems.
 * `Lean infrastructure`: the one-column embedding, scalar pullback, and
   topology bridges only represent the paper's objects in the ambient matrix
-  space.  The Euclidean-to-manuscript measure bridge is the existing,
+  space.  The Euclidean-to-submission-PDF measure bridge is the existing,
   attributed result in `MainTermNormalization`.
 
 No external theorem is used as an axiom here; all cited arithmetic and
@@ -64,7 +64,7 @@ theorem rawLiftQuotientHom_surjective (P : PrimeIdeal K) {n s : ℕ}
   change S.1.mkQ (reduce P x) = z
   rw [hx, hy]
 
-/- [derived consequence of paper equation `eq:def_of_L`, lines 1816--1827]
+/- [derived consequence of paper Equation (26) (submission PDF p. 22)]
 The quotient map computes the exact finite index of a raw lift. -/
 theorem rawLift_index (P : PrimeIdeal K) {n s : ℕ}
     (S : Code P n s) :
@@ -434,7 +434,7 @@ theorem normalizedRawLift_mem_iff (P : PrimeIdeal K) {n s : ℕ}
     rw [smul_smul]
     simp [hscale]
 
-/- [paper, equation `eq:def_of_L`, lines 1816--1827; derived consequence]
+/- [paper, Equation (26) (submission PDF p. 22); derived consequence]
 The scalar-normalized lift has covolume one in the manuscript-normalized
 matrix measure. -/
 theorem normalizedRawLift_covolume_paperMatrixMeasure
