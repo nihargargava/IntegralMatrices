@@ -18,6 +18,7 @@
 /Check*.lean
 
 # TeX build artifacts and generated PDFs
+/papers/
 *.aux
 *.bbl
 *.bcf
