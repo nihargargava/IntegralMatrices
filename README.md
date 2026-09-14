@@ -17,4 +17,4 @@ number fields.
 See [`notes/source-attribution.md`](notes/source-attribution.md) for the full
 list of attributions.
 
-Licensed under [GPL-3.0-only](LICENSE).
+Licensed under [GPL-3.0](LICENSE).

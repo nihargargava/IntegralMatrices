@@ -9,7 +9,7 @@ version: "0.1.0"
 date-released: 2026-09-13
 repository-code: "https://github.com/nihargargava/IntegralMatrices"
 url: "https://arxiv.org/abs/2510.11673"
-license: GPL-3.0-only
+license: GPL-3.0
 keywords:
   - Lean
   - Mathlib

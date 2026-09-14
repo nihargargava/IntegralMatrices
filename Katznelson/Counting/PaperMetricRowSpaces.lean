@@ -1,6 +1,6 @@
 /-
 Copyright (c) 2026 Nihar Gargava.
-Released under GPL-3.0-only as described in the file LICENSE.
+Released under GPL-3.0 as described in the file LICENSE.
 Authors: Nihar Gargava
 -/
 

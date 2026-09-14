@@ -88,7 +88,7 @@ The external Lake project is not currently imported as a dependency because
 its Lean/Mathlib revision differs from this repository's pin; a direct import
 is permitted if those versions later become compatible. The focused port is
 small, compiled here, and excludes its deliberately scaffolded `Challenge.lean`.
-`LICENSE` makes this repository GPL-3.0-only; Mathlib remains an external
+`LICENSE` makes this repository GPL-3.0; Mathlib remains an external
 Apache-2.0 dependency under its own license.
 
 `Katznelson/Counting/LiftCovolume.lean` uses the pinned Mathlib finite-index,
