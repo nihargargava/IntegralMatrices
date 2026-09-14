@@ -17,6 +17,11 @@
 # Root-level Lean scratch files
 /Check*.lean
 
+# Local project notes and instructions
+/AGENTS.md
+/notes/formalization-issues.md
+/notes/paper-issues.md
+
 # TeX build artifacts and generated PDFs
 /papers/
 *.aux
