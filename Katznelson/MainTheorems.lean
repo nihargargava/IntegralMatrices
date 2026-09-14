@@ -6969,7 +6969,7 @@ theorem normalize_echelonExtensionCount_bound_uniform
    manuscript-facing extension-count estimate.  The projected lattice's
    covolume identity is retained as an explicit hypothesis because the exact
    number-field height normalization is recorded as Lean infrastructure work
-   in `notes/formalization-issues.md`; the manuscript's normalized identity
+   in `formalization.yaml`; the manuscript's normalized identity
    itself is valid. -/
 set_option maxHeartbeats 1600000 in
 theorem echelonCalFExtensionCount_le_of_low_rank_induction
@@ -7328,7 +7328,7 @@ theorem exists_uniform_rowSpaceExtensionCount_image_calF_le_of_raw_low_rank_indu
    are then inserted into the paper's three-case Abel estimate.  The
    projected-covolume identity is still an explicit premise, so this does not
    conceal the unresolved Lean normalization bridge recorded in
-   `notes/formalization-issues.md`. -/
+   `formalization.yaml`. -/
 set_option maxHeartbeats 2400000 in
 theorem exists_echelon_calF_lowerStratumTerm_abs_le_of_radius
     {K : Type*} [Field K] [NumberField K]

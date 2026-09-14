@@ -2076,7 +2076,7 @@ def FiekerStehleProductBound (K : Type*) [Field K] [NumberField K]
    `K`-linearly-independent family.  This proves the local, raw-Mathlib-metric
    rank-one interface; the separate normalization bridge to the manuscript's
    discriminant/trace metric remains recorded in
-   `notes/formalization-issues.md`. -/
+   `formalization.yaml`. -/
 theorem moduleMinimum_zero_le_firstMinkowski
     {m : ℕ} (V : Grassmannian K m 1) :
     moduleMinimum (K := K) (rowZLattice V) (0 : Fin 1) ≤

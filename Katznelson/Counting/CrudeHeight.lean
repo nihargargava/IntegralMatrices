@@ -431,7 +431,7 @@ theorem rowIntegralBasisAdjustedLowerConstant_lower_apply
   exact (mul_le_mul_of_nonneg_right hconstant (norm_nonneg _)).trans
     (rowIntegralBasisLowerConstant_apply (K := K) (m := m) j x)
 
-/- [derived consequence, corrected paper proof of `le:crude_early`,
+/- [derived consequence, paper proof of `le:crude_early`,
    lines 1108--1112] The newly imposed normalization converts the upper bound
    in `le:basis_of_OK` into the comparison actually used in line 1112:
    `C^okl ‖u_j x‖ ≤ ‖x‖`. -/
@@ -470,7 +470,7 @@ theorem rowIntegralBasisAdjustedLowerConstant_upper_apply
     _ = ‖x‖ := by
       rw [← mul_assoc, inv_mul_cancel₀ hBpos.ne', one_mul]
 
-/- [derived consequence, corrected paper proof of `le:crude_early`,
+/- [derived consequence, paper proof of `le:crude_early`,
    lines 1108--1112] The preceding normalized comparison in the row-span
    subtype, retaining the manuscript's `u_j v_i` notation. -/
 set_option maxHeartbeats 1000000 in
@@ -484,9 +484,9 @@ theorem rowIntegralBasisAdjustedLowerConstant_upper_apply_subtype
         ‖(x : RowVector K m)‖
   exact rowIntegralBasisAdjustedLowerConstant_upper_apply (K := K) (m := m) j x
 
-/- [derived consequence, corrected paper proof of `le:crude_early`,
+/- [derived consequence, paper proof of `le:crude_early`,
    lines 1108--1112] This is the pair-indexed statement used when summing the
-   corrected comparison over `j` in the manuscript's square-norm display. -/
+   comparison over `j` in the manuscript's square-norm display. -/
 set_option maxHeartbeats 1000000 in
 theorem rowIndependentRealBasis_adjusted_norm_le
     {m k : ℕ} (V : Grassmannian K m k)
@@ -500,7 +500,7 @@ theorem rowIndependentRealBasis_adjusted_norm_le
   exact rowIntegralBasisAdjustedLowerConstant_upper_apply_subtype V j
     (v i : rowRealSpan V)
 
-/- [derived consequence, corrected paper proof of `le:crude_early`,
+/- [derived consequence, paper proof of `le:crude_early`,
    lines 1110--1112] Summing the normalized comparison over the fixed
    integral basis gives the square-norm inequality before division by `d`.
    The factor is kept as the cardinality of that basis until the next lemma
@@ -567,7 +567,7 @@ theorem integralBasisIndex_card_eq_degree :
     NumberField.RingOfIntegers.rank]
   rfl
 
-/- [paper, corrected proof of `le:crude_early`, lines 1110--1112] This is
+/- [paper proof of `le:crude_early`, lines 1110--1112] This is
    precisely the second inequality in the manuscript's displayed square-norm
    estimate, with `w_ij` represented by `rowIndependentRealBasis`. -/
 set_option maxHeartbeats 1000000 in
@@ -605,7 +605,7 @@ theorem rowIndependentRealBasis_square_norm_bound
     _ = ∑ i : Fin k, ‖(v i : rowRealSpan V)‖ ^ 2 := by
       exact mul_div_cancel_left₀ _ hdegree.ne'
 
-/- [paper, corrected proof of `le:crude_early`, lines 1110--1112] This is
+/- [paper proof of `le:crude_early`, lines 1110--1112] This is
    the complete corrected square-norm display: the rank-`k` witness supplies
    the selected rows `v_i`, and their integral-basis multiples are the
    manuscript's `w_ij`. -/
@@ -780,7 +780,7 @@ theorem le_pow_of_rpow_le_sq
           field_simp [hN_R.ne']
         _ = y ^ N := Real.rpow_natCast y N
 
-/- [derived consequence, corrected paper proof of `le:crude_early`,
+/- [derived consequence, paper proof of `le:crude_early`,
    lines 1112--1118] Divide the corrected square-norm estimate by the
    positive factor `(C^okl)^2 k`.  This is the middle comparison between the
    arithmetic mean of the manuscript's `w_ij` and the witness norm. -/
@@ -817,9 +817,9 @@ theorem rowMatrixZLattice_crude_mean_bound
   have hdivision := crudeMeanDivision hc hdegreeR hkR hsq
   simpa only [Nat.cast_mul] using hdivision
 
-/- [paper, corrected proof of `le:crude_early`, lines 1112--1118] This is
+/- [paper proof of `le:crude_early`, lines 1112--1118] This is
    the paper's complete height-root chain for a full-rank witness matrix:
-   corrected square norms, AM--GM over the actual `w_ij`, Hadamard, and the
+   square norms, AM--GM over the actual `w_ij`, Hadamard, and the
    lattice-height comparison. -/
 set_option maxHeartbeats 1500000 in
 theorem rowMatrixZLattice_height_rpow_le
@@ -845,7 +845,7 @@ theorem rowMatrixZLattice_height_rpow_le
   have hmean := rowMatrixZLattice_crude_mean_bound V A e hk hv
   exact hheight_rpow.trans (hgeom.trans hmean)
 
-/- [derived consequence, corrected paper proof of `le:crude_early`,
+/- [derived consequence, paper proof of `le:crude_early`,
    lines 1118--1120] This is the natural-power conclusion of the displayed
    root-height chain before substituting the support bound `‖A‖ ≤ Csup T`. -/
 set_option maxHeartbeats 1500000 in
@@ -903,7 +903,7 @@ theorem Ccrude2_pos
   apply pow_pos
   exact div_pos hCsup (Real.sqrt_pos.2 (by positivity))
 
-/- [derived consequence, corrected paper proof of `le:crude_early`,
+/- [derived consequence, paper proof of `le:crude_early`,
    lines 1118--1120] Substitute the witness norm bound in the natural-power
    height inequality.  The conclusion retains the exact `C^crude2 T^(kd)`
    expression displayed by the manuscript. -/

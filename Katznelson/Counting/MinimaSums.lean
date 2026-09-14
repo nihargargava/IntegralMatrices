@@ -1194,8 +1194,8 @@ theorem integralRow_orderedNormTupleWeight_sum_le
 /- [Lean infrastructure for paper `le:injective_minima`, lines 1205--1208,
    and `eq:just_as_before`, lines 1731--1748] Finite representation of the
 intended nonzero part of `𝓑_k(T)`.  The separate name retains the literal
-checked-in definition while making the reciprocal product mathematically
-defined; see `notes/paper-issues.md`. -/
+definition while making the reciprocal product mathematically defined; the
+   corresponding domain clarification is reflected in this declaration. -/
 noncomputable def possibleSuccessiveMinimaNonzeroFinset
     {m k : ℕ} (C T : ℝ) : Finset (Fin k → Fin m → 𝓞 K) :=
   ((finite_possibleSuccessiveMinimaSet (K := K) (m := m) (k := k)
@@ -1326,7 +1326,7 @@ theorem possibleSuccessiveMinima_nonzero_product_weight_sum_le
 /- [Lean infrastructure for paper equation `eq:just_as_before`, lines
    1731--1743] Under Lean's totalized inversion convention, a tuple with a
 zero row has zero radius weight.  This proves the bridge from the literal
-finite set in the checked-in manuscript to its explicitly nonzero intended
+finite set in the cited manuscript to its explicitly nonzero intended
 reciprocal-sum domain. -/
 theorem possibleSuccessiveMinimaRadiusWeight_eq_zero_of_some_zero
     {m k n : ℕ} (hk : 0 < k) (hn : 0 < n)
@@ -1344,7 +1344,7 @@ theorem possibleSuccessiveMinimaRadiusWeight_eq_zero_of_some_zero
    1731--1743] Exact finite-sum bridge between the current literal Lean
 encoding of `𝓑_{j+1}(T)` and the nonzero ordered reciprocal product.  It is
 not presented as a substitute for the manuscript notation: the zero-domain
-clarification is recorded separately in `notes/paper-issues.md`. -/
+clarification is reflected in the explicit nonzero-domain statement above. -/
 theorem sum_possibleSuccessiveMinimaRadiusWeight_eq_nonzero_product_weight
     {m n j : ℕ} (hk : 0 < j + 1) (hn : 0 < n) (C T : ℝ) :
     (∑ l ∈ (finite_possibleSuccessiveMinimaSet

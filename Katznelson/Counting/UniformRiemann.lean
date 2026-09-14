@@ -615,7 +615,7 @@ theorem rowMatrixZLatticeSum_eq_rank_add_lower_uniformRiemann
    Voronoi Riemann estimate after restoring the rank condition.  The
    constant is selected before every row space and scale, the displayed
    `sqrt n * ρ(Λ_D)` and covolume are unchanged, and the strictly lower-rank
-   sum appears as the manuscript's absolute correction term. -/
+   sum appears as the manuscript's absolute error term. -/
 set_option maxHeartbeats 1800000 in
 theorem Admissible.exists_uniform_rowMatrix_rank_latticeVoronoi_estimate_with_lower_upTo
     {n m k : ℕ} (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)

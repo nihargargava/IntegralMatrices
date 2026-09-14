@@ -4,7 +4,7 @@ import Mathlib
 # Palomar challenge statements
 
 This is the isolated, reader-auditable statement surface for the two main
-results of the checked-in manuscript.  It deliberately does not import the
+results of the cited manuscript.  It deliberately does not import the
 proof development.  The definitions below are statement-level holes; the
 proved counterparts and the theorem proofs are supplied by `Solution.lean`.
 

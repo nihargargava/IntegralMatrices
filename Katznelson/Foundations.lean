@@ -8,9 +8,9 @@ import Mathlib.NumberTheory.NumberField.Ideal.Basic
 /-!
 # Foundations for Integral Matrices of Fixed Rank
 
-The source of the notation and conventions is `papers/katznelson.tex`, the
-preprint referenced as arXiv:2510.11673.  The checked-in TeX source remains
-the source of truth for this formalization.
+The source of the notation and conventions is the preprint referenced as
+arXiv:2510.11673.  Its manuscript is the source of truth for this
+formalization.
 -/
 
 namespace Katznelson

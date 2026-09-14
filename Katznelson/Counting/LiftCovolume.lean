@@ -6,9 +6,9 @@ import Mathlib.LinearAlgebra.Isomorphisms
 /-!
 # Covolume of normalized lifts
 
-This module formalizes the lattice setup in `papers/katznelson.tex`, lines
+This module formalizes the lattice setup in the cited manuscript, lines
 1816--1827, including the assertion that every normalized lift has covolume
-one.  The checked-in TeX source is authoritative.
+one.  The arXiv manuscript is authoritative.
 
 Provenance:
 

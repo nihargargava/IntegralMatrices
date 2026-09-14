@@ -4,7 +4,7 @@ import Katznelson.Counting.MinkowskiSecond
 # The Fieker--Stehlé product bound for the manuscript's minima
 
 Fieker--Stehlé, *Short Bases of Lattices over Number Fields*, Theorem 2
-(`papers/Fieker-Stehle-ShortBases-2010.pdf`, p. 3), obtains a product bound
+(doi:10.1007/978-3-642-14518-6_15, p. 3), obtains a product bound
 for number-field module minima by applying Minkowski's second theorem to the
 underlying integral lattice.  Its proof selects, for the `i`-th field minimum,
 one of the first `i * [K : Q] + 1` real minima outside the preceding field
@@ -16,7 +16,8 @@ Euclidean Minkowski-II supporting theorem in `MinkowskiSecond.lean` and adds
 no cited hypothesis.  Its metric is the repository's existing raw Euclidean
 row realization; it does not identify that metric with the manuscript's
 trace/discriminant normalization.  The required fixed-field normalization
-bridge remains explicitly recorded in `notes/formalization-issues.md`.
+bridge remains explicitly recorded in `formalization.yaml` and the
+corresponding Lean declarations.
 The resulting raw-metric constant is deliberately non-sharp, as only a
 constant uniform in the row lattice is used at this stage.
 -/

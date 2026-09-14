@@ -24,8 +24,7 @@ change of variables and lattice normalization asserted in
 * **paper:** `papers/katznelson.tex`, lines 192--202 and 837--858.
 * **proof provenance (not a logical input):** Gargava--Serban--Viazovska,
   *Moments of the number of points in a bounded set for number field
-  lattices*, Lemma 11 and Appendix A, checked-in as
-  `papers/Gargava-Serban-Viazovska-Moments-2024.pdf`.  The normalization and
+  lattices*, arXiv:2308.15275, Lemma 11 and Appendix A.  The normalization and
   denominator calculation motivate the organization below, but every theorem
   in this file is proved from prior Lean declarations and Mathlib; no result
   from that paper is assumed.

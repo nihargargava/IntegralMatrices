@@ -4,9 +4,9 @@ import Mathlib.Analysis.Matrix.Normed
 /-!
 # Katznelson formalization
 
-This project formalizes `papers/katznelson.tex`, the checked-in source of the
-preprint *Integral matrices of fixed rank over number fields* (arXiv:2510.11673).
-The TeX source is authoritative; the arXiv handle is included for reference.
+This project formalizes the preprint *Integral matrices of fixed rank over
+number fields* (arXiv:2510.11673).  The arXiv manuscript is the cited source
+of the notation and statements.
 -/
 
 namespace Katznelson
@@ -22,7 +22,7 @@ attribute [local instance] Matrix.frobeniusNormedSpace
 /-!
 ## Main counting theorem
 
-This is Theorem `th:main` of `papers/katznelson.tex`: for an admissible
+This is Theorem `th:main` of the cited manuscript: for an admissible
 function on `M_{n × m}(K_ℝ)`, the rank-k integral-matrix sum has order
 `T^(k*n*d)`, with normalized additive error bounded by `T⁻¹ log T`.
 Unless `d = k = 1` and `m = n - 1`, the logarithm can be dropped.

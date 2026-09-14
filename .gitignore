@@ -20,7 +20,7 @@
 # Local project notes and instructions
 /AGENTS.md
 /notes/formalization-issues.md
-/notes/paper-issues.md
+/notes/*-issues.md
 
 # TeX build artifacts and generated PDFs
 /papers/

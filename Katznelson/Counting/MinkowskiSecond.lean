@@ -6,7 +6,7 @@ import Mathlib.Topology.Algebra.Module.FiniteDimension
 # A Euclidean Minkowski-second-theorem supporting argument
 
 Fieker--Stehlé, *Short Bases of Lattices over Number Fields*, Theorem 2
-(`papers/Fieker-Stehle-ShortBases-2010.pdf`, p. 3), reduces its product bound
+(doi:10.1007/978-3-642-14518-6_15, p. 3), reduces its product bound
 to the classical Minkowski second theorem for the underlying integral lattice.
 This module supplies that standard Euclidean argument from the first
 Minkowski theorem already proved in `GeometryOfNumbers.lean`.  It is supporting

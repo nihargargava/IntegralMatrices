@@ -37,7 +37,7 @@ sources:
       - "Wolfgang M. Schmidt"
     id: "doi:10.2307/1970360"
     type: "paper"
-    location: "Annals of Mathematics 85 (1967), 430--472"
+    location: "https://doi.org/10.2307/1970360"
     relationship: "background"
     note: >-
       Schmidt's height-counting result is represented by the explicit
@@ -46,10 +46,46 @@ sources:
     authors:
       - "Claus Fieker"
       - "Damien Stehlé"
-    id: "papers/Fieker-Stehle-ShortBases-2010.pdf"
+    id: "doi:10.1007/978-3-642-14518-6_15"
     type: "paper"
+    location: "https://doi.org/10.1007/978-3-642-14518-6_15"
+    relationship: "adapts"
+    note: >-
+      Theorem 2 is the source of the number-field successive-minima/product
+      estimate; its selection argument is formalized in
+      Katznelson/Counting/FiekerStehle.lean.
+  - title: "Integral matrices of fixed rank"
+    authors:
+      - "Yonatan R. Katznelson"
+    id: "doi:10.2307/2160455"
+    type: "paper"
+    location: "https://doi.org/10.2307/2160455"
+    relationship: "adapts"
+    note: >-
+      Source of the original fixed-rank integral-matrix and Abel-summation
+      strategy generalized in the manuscript and Lean development.
+  - title: "An Asymptotic Estimate for Heights of Algebraic Subspaces"
+    authors:
+      - "Jeffrey Lin Thunder"
+    id: "doi:10.2307/2154015"
+    type: "paper"
+    location: "https://doi.org/10.2307/2154015"
     relationship: "background"
-    note: "Source of the cited number-field successive-minima argument."
+    note: >-
+      Source of the sharper effective height asymptotic cited for context;
+      Schmidt's height-counting bound remains the explicit logical input.
+  - title: "Moments of the number of points in a bounded set for number field lattices"
+    authors:
+      - "Nihar Gargava"
+      - "Vlad Serban"
+      - "Maryna Viazovska"
+    id: "arXiv:2308.15275"
+    type: "paper"
+    location: "https://arxiv.org/abs/2308.15275"
+    relationship: "background"
+    note: >-
+      Source of the height/denominator relationship and the convergence
+      provenance for the echelon/Grassmannian expression.
 
 related_formalizations:
   - id: "https://github.com/nihargargava/MeanValueIdealLattices"
@@ -61,15 +97,16 @@ related_formalizations:
 
 status:
   scope: >-
-    The formalization proves the two main theorem paths in the checked-in
+    The formalization proves the two main theorem paths in the cited
     manuscript: the fixed-rank count and the higher-moment convergence for
     lifts of codes. Schmidt's intermediate-rank height count remains an
     explicit hypothesis. The admissibility/Riemann subsystem uses the
     author-approved raw Euclidean mixed-space convention, while exact
     coefficient measures and covolume normalizations are bridged to the
     manuscript. The exceptional critical-radius and large-radius Riemann
-    branches are documented local adaptations. The manuscript source is
-    author-owned and is not modified by this repository's formalization.
+    branches are documented local adaptations in this metadata and committed
+    Lean comments. The author-provided manuscript is cited as the primary
+    source but is not included in this repository snapshot.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
@@ -99,19 +136,18 @@ fidelity:
     Mathlib's raw Euclidean mixed-space metric rather than making the
     manuscript's discriminant-scaled trace metric a global typeclass; exact
     main-term normalization is proved separately. The approved critical
-    radius and large-radius Riemann adaptations are recorded in the README
-    and notes/formalization-issues.md. Known manuscript corrections are
-    recorded in notes/paper-issues.md.
+    radius and large-radius Riemann adaptations are recorded in the committed
+    Lean comments and this metadata.
 
 review:
   status: "self-assessed"
   reviewers:
     - "none"
   notes: >-
-    The source was audited against the checked-in TeX, public theorem paths
-    were built with the pinned toolchain, and the final declarations were
-    checked for project-specific axioms, sorryAx, and other hidden proof
-    placeholders.
+    The formal statements were audited against the cited manuscript, public
+    theorem paths were built with the pinned toolchain, and the final
+    declarations were checked for project-specific axioms, sorryAx, and
+    other hidden proof placeholders.
 
 alignment:
   namespace: "Katznelson.Palomar"
