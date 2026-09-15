@@ -22,7 +22,7 @@ section
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [Lean infrastructure for paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [Lean infrastructure for paper equation (9) (submission PDF p. 5)]
 Rewrite one code-indexed lattice sum as an indicator sum on all integral
 matrices. -/
 theorem liftCodeSum_eq_tsum_integralMatrix_indicator
@@ -53,7 +53,7 @@ theorem liftCodeSum_eq_tsum_integralMatrix_indicator_if
   intro A
   by_cases hA : A ∈ matricesInLift P S <;> simp [Set.indicator, hA]
 
-/- [derived consequence of paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [derived consequence of paper equation (9) (submission PDF p. 5)]
 For one integral matrix, summing the containment indicator counts precisely
 the codes containing its reduced column span. -/
 theorem sum_code_indicator_eq_card_containingCodes_mul
@@ -73,7 +73,7 @@ theorem sum_code_indicator_eq_card_containingCodes_mul
         simp [containingCodes, mem_matricesInLift_iff_codeSpan_le]]
     simp [nsmul_eq_mul]
 
-/- [derived consequence of paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [derived consequence of paper equation (9) (submission PDF p. 5)]
 Interchange the finite code sum and the absolutely summable matrix sum to
 obtain the manuscript's containment-probability expansion. -/
 theorem liftsMoment_eq_tsum_codeContainmentProbability

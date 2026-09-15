@@ -74,7 +74,7 @@ noncomputable def Admissible.submoduleRiemannControl
     rw [← euclideanIntegral_eq_integral]
     exact hbound V hV ε hε hεone
 
-/- [derived consequence of paper Remark 17 (submission PDF p. 8), PDF p. 8, conditional on
+/- [derived consequence of paper Remark 17 (submission PDF p. 8), conditional on
    `AdmissibleErrorControlUpTo`] Restrict the paper's updated ambient error
    control to a nonzero real subspace.  The ambient `E_f` is retained, and
    the hypothesis remains uniform in the subspace as required by the paper. -/

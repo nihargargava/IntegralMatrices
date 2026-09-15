@@ -21,7 +21,7 @@ import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 # The submission PDF's number-field metric
 
 This module records the metric and ambient covolume normalization fixed in
-`authoritative submission PDF`, PDF p. 10.  It deliberately does not replace
+submission PDF p. 10.  It deliberately does not replace
 Lean's global norm on `K_ℝ[K]`: that would silently change existing lattice
 interfaces.  Instead, `paperNorm` and `paperCovolume` are explicit named
 bridges.  Coarse row-space estimates use fixed-field norm equivalence, while
@@ -33,12 +33,11 @@ the exact normalized public main-term path is proved with
 The imported Mathlib inputs are:
 
 * `ZLattice.covolume_comap` in
-  `Mathlib/Algebra/Module/ZLattice/Covolume.lean`, PDF p. 1;
+  `Mathlib/Algebra/Module/ZLattice/Covolume.lean`;
 * `NumberField.mixedEmbedding.euclidean.volumePreserving_toMixed` in
-  `Mathlib/NumberTheory/NumberField/CanonicalEmbedding/Basic.lean`,
-  PDF p. 12; and
+  `Mathlib/NumberTheory/NumberField/CanonicalEmbedding/Basic.lean`; and
 * `NumberField.mixedEmbedding.covolume_integerLattice` in
-  `Mathlib/NumberTheory/NumberField/Discriminant/Basic.lean`, PDF p. 2.
+  `Mathlib/NumberTheory/NumberField/Discriminant/Basic.lean`.
 
 They are used as cited library inputs, not restated as locally proved source
 results.  The derived results below are proved from those exact interfaces.
@@ -51,7 +50,7 @@ open scoped BigOperators Classical NumberField
 
 noncomputable section
 
-/- paper: `authoritative submission PDF`, equation (11) (submission PDF p. 10), PDF p. 10.  This
+/- paper: `authoritative submission PDF`, equation (11) (submission PDF p. 10).  This
 is the real/complex-coordinate realization of `Tr(x * conjugate x)`, matching
 the definition called `traceForm` in Gargava's GPL-3.0 formalization cited in
 the file header. -/
@@ -70,13 +69,13 @@ theorem paperTraceForm_nonneg
   refine add_nonneg (Finset.sum_nonneg fun _ _ => sq_nonneg _) ?_
   exact mul_nonneg (by norm_num) (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _)
 
-/- paper: `authoritative submission PDF`, equation (11) (submission PDF p. 10), PDF p. 10.  This
+/- paper: `authoritative submission PDF`, equation (11) (submission PDF p. 10).  This
 is its displayed squared norm with `d = degree K`; `Real.rpow` represents the
 paper's real exponent `-1 / d`. -/
 def paperNormSq (K : Type*) [Field K] [NumberField K] (x : K_ℝ[K]) : ℝ :=
   |(NumberField.discr K : ℝ)| ^ (-(1 / (degree K : ℝ))) * paperTraceForm K x
 
-/- paper: `authoritative submission PDF`, equation (11) (submission PDF p. 10), PDF p. 10.  The
+/- paper: `authoritative submission PDF`, equation (11) (submission PDF p. 10).  The
 paper's norm is represented explicitly, rather than changing the inherited
 Mathlib norm on `K_ℝ[K]`. -/
 def paperNorm (K : Type*) [Field K] [NumberField K] (x : K_ℝ[K]) : ℝ :=
@@ -114,7 +113,7 @@ def traceCovolume (K : Type*) [Field K] [NumberField K]
 /- Lean infrastructure: transporting a full integral lattice by a real linear
 equivalence scales its covolume by the absolute determinant.  This is copied
 and adapted from `MeanValueIdealLattices`, `dependencies/Foundations.lean`,
-PDF p. 26, at the GPL-3.0 revision cited in the file header.  It is a
+submission PDF p. 26, at the GPL-3.0 revision cited in the file header.  It is a
 general measure-transport interface needed to connect the manuscript metric
 to lattice covolumes; it is not a substitute for a manuscript proof step. -/
 theorem covolume_comap_symm_det
@@ -185,7 +184,7 @@ theorem sqrt_abs_discr_ne_zero
 
 /- derived consequence: the manuscript-normalized ambient covolume of
 `𝓞_K` is one, exactly as asserted at
-`authoritative submission PDF`, PDF p. 10. -/
+submission PDF p. 10. -/
 theorem paperCovolume_euclidean_integerLattice
     (K : Type*) [Field K] [NumberField K] :
     paperCovolume K (NumberField.mixedEmbedding.euclidean.integerLattice K) = 1 := by

@@ -18,7 +18,7 @@ attribute [local instance] Matrix.frobeniusNormedSpace
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [paper, proof of Lemma 36 (submission PDF pp. 16--17), PDF p. 17] A rank-`k`
+/- [paper, proof of Lemma 36 (submission PDF pp. 16--17)] A rank-`k`
    lattice matrix with bounded Frobenius norm supplies `k` independent rows;
    the row norm estimate and the defining minimum property then bound the
    last selected minimum. -/

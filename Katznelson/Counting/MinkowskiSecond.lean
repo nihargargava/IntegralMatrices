@@ -418,7 +418,7 @@ theorem euclidean_product_norm_le_covolume_of_ordered_minima
 
 /- [derived consequence] Applying the preceding Euclidean product estimate
    to the paper's recursive construction Definition 25 (submission PDF p. 12),
-   PDF p. 12, with scalar field `ℝ`.  This is the real-lattice component of
+   submission PDF p. 12, with scalar field `ℝ`.  This is the real-lattice component of
    the cited Fieker--Stehlé input, not a new formulation of the manuscript's
    number-field minima. -/
 theorem euclidean_successiveMinimum_product_le_covolume

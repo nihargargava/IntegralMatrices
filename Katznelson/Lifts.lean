@@ -70,7 +70,7 @@ noncomputable instance code.fintype (P : PrimeIdeal K) (n s : ℕ) :
 
 /- [paper, Equation (26) (submission PDF p. 22)] The full preimage of a
 code under reduction.  This is the unscaled lift
-   `Λ ⊆ 𝓞 K^n` in equation (Equation (26) (submission PDF p. 22)) of the paper. -/
+   `Λ ⊆ 𝓞 K^n` in Equation (26) (submission PDF p. 22) of the paper. -/
 def rawLift (P : PrimeIdeal K) {n s : ℕ} (S : Code P n s) :
     Submodule (𝓞 K) (Fin n → 𝓞 K) where
   carrier := (reduce P) ⁻¹' S.1
@@ -104,7 +104,7 @@ theorem mem_rawLift_iff (P : PrimeIdeal K) {n s : ℕ} (S : Code P n s)
 
 /- [paper, Equation (26) (submission PDF p. 22)] The coordinatewise copy
 of `𝓟` inside `𝓞 K^n`, corresponding to
-   `(𝓟 𝓞_K)^n ⊆ Λ` in equation (Equation (26) (submission PDF p. 22)). -/
+   `(𝓟 𝓞_K)^n ⊆ Λ` in Equation (26) (submission PDF p. 22). -/
 def primePowerVectors (P : PrimeIdeal K) (n : ℕ) :
     Submodule (𝓞 K) (Fin n → 𝓞 K) where
   carrier := {x | ∀ i, x i ∈ P.1}
@@ -436,35 +436,35 @@ theorem code_rank (P : PrimeIdeal K) {n s : ℕ} (Λ : 𝓛[K, P, n, s]) :
   ((codeEquivLifts P n s).symm Λ).2
 
 /- [Lean infrastructure for the finite average in paper equation
-Equation (9) (submission PDF p. 5), PDF p. 24] Transport the finite code index across the
+Equation (9) (submission PDF p. 5)] Transport the finite code index across the
 proved code--lift equivalence. -/
 noncomputable instance lifts.fintype (P : PrimeIdeal K) (n s : ℕ) :
     Fintype 𝓛[K, P, n, s] :=
   Fintype.ofEquiv (Code P n s) (codeEquivLifts P n s)
 
-/- [Lean infrastructure for paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [Lean infrastructure for paper equation (9) (submission PDF p. 5)]
 Matrices in `Λ^m`, represented by integral matrices whose columns lie in
    the raw lift.  This is the matrix form of the inner sum in (Equation (9) (submission PDF p. 5)). -/
 def matricesInLift (P : PrimeIdeal K) {n m s : ℕ} (S : Code P n s) :
     Set (IntegralMatrix K n m) :=
   {A | ∀ j, (fun i => A i j) ∈ rawLift P S}
 
-/- [Lean infrastructure for paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [Lean infrastructure for paper equation (9) (submission PDF p. 5)]
 Unfolded membership in the integral matrix realization of `Λ^m`. -/
 theorem mem_matricesInLift_iff (P : PrimeIdeal K) {n m s : ℕ}
     (S : Code P n s) (A : IntegralMatrix K n m) :
     A ∈ matricesInLift P S ↔
       ∀ j, (fun i => A i j) ∈ rawLift P S := Iff.rfl
 
-/- [paper, equation (9) (submission PDF p. 5), PDF p. 24] For an actual
+/- [paper, equation (9) (submission PDF p. 5)] For an actual
 normalized lift `Λ`, this is the manuscript's Cartesian power `Λ^m`, written
 as an `n × m` matrix whose columns belong to `Λ`. -/
 def matricesInNormalizedLift {n m : ℕ}
     (Λ : Set (Fin n → K_ℝ[K])) : Set (M n m (K_ℝ[K])) :=
   {B | ∀ j, (fun i => B i j) ∈ Λ}
 
-/- [Lean infrastructure for paper equations Equation (26) (submission PDF p. 22) and
-Equation (9) (submission PDF p. 5), PDF p. 24] Apply the canonical embedding and the
+/- [Lean infrastructure for paper Equations (26) (submission PDF p. 22) and
+Equation (9) (submission PDF p. 5)] Apply the canonical embedding and the
 normalizing scalar entrywise.  The codomain records the literal condition
 that every column belongs to the normalized lift. -/
 noncomputable def integralMatrixToNormalizedLift
@@ -477,8 +477,8 @@ noncomputable def integralMatrixToNormalizedLift
     refine ⟨(fun i => A.1 i j), A.2 j, ?_⟩
     rfl⟩
 
-/- [Lean infrastructure for paper equations Equation (26) (submission PDF p. 22) and
-Equation (9) (submission PDF p. 5), PDF p. 24] The preceding map is injective. -/
+/- [Lean infrastructure for paper Equations (26) (submission PDF p. 22) and
+Equation (9) (submission PDF p. 5)] The preceding map is injective. -/
 theorem integralMatrixToNormalizedLift_injective
     (P : PrimeIdeal K) {n m s : ℕ} (S : Code P n s) :
     Function.Injective (integralMatrixToNormalizedLift P (m := m) S) := by
@@ -493,8 +493,8 @@ theorem integralMatrixToNormalizedLift_injective
   apply NumberField.RingOfIntegers.coe_injective
   exact numberEmbedding_injective K (congrFun (congrFun hembed i) j)
 
-/- [derived consequence of paper equations Equation (26) (submission PDF p. 22) and
-Equation (9) (submission PDF p. 5), PDF p. 24] Every matrix in the literal Cartesian power
+/- [derived consequence of paper Equations (26) (submission PDF p. 22) and
+Equation (9) (submission PDF p. 5)] Every matrix in the literal Cartesian power
 of a normalized lift has a unique integral representative in the raw lift. -/
 theorem integralMatrixToNormalizedLift_surjective
     (P : PrimeIdeal K) {n m s : ℕ} (S : Code P n s) :
@@ -515,8 +515,8 @@ theorem integralMatrixToNormalizedLift_surjective
   funext i j
   exact (congrFun (hyColumn j) i).symm
 
-/- [derived consequence of paper equations Equation (26) (submission PDF p. 22) and
-Equation (9) (submission PDF p. 5), PDF p. 24] This equivalence is the explicit bridge
+/- [derived consequence of paper Equations (26) (submission PDF p. 22) and
+Equation (9) (submission PDF p. 5)] This equivalence is the explicit bridge
 between the integral representatives used in the proof and the manuscript's
 literal `Λ^m` indexing. -/
 noncomputable def integralMatrixEquivNormalizedLift
@@ -528,13 +528,13 @@ noncomputable def integralMatrixEquivNormalizedLift
     ⟨integralMatrixToNormalizedLift_injective P (m := m) S,
       integralMatrixToNormalizedLift_surjective P (m := m) S⟩
 
-/- [paper, equation (9) (submission PDF p. 5), PDF p. 24] The inner lattice sum
+/- [paper, equation (9) (submission PDF p. 5)] The inner lattice sum
 over the literal Cartesian power `Λ^m`. -/
 noncomputable def normalizedLiftMatrixSum {n m : ℕ}
     (Λ : Set (Fin n → K_ℝ[K])) (f : M n m (K_ℝ[K]) → ℝ) : ℝ :=
   ∑' B : {B : M n m (K_ℝ[K]) // B ∈ matricesInNormalizedLift Λ}, f B.1
 
-/- [Lean infrastructure for paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [Lean infrastructure for paper equation (9) (submission PDF p. 5)]
 The code-indexed realization of one lattice sum, with the normalization from
 `normalizedLift`.  Its equality with the literal Cartesian-power sum is
 proved immediately below. -/
@@ -543,8 +543,8 @@ noncomputable def liftCodeSum (P : PrimeIdeal K) {n m s : ℕ}
   ∑' A : {A : IntegralMatrix K n m // A ∈ matricesInLift P S},
     f ((liftScale P n s)⁻¹ • embedMatrix A.1)
 
-/- [derived consequence of paper equations Equation (26) (submission PDF p. 22) and
-Equation (9) (submission PDF p. 5), PDF p. 24] The code-indexed inner sum used by the
+/- [derived consequence of paper Equations (26) (submission PDF p. 22) and
+Equation (9) (submission PDF p. 5)] The code-indexed inner sum used by the
 finite-field calculation is exactly the manuscript's sum over `Λ^m`. -/
 theorem liftCodeSum_eq_normalizedLiftMatrixSum
     (P : PrimeIdeal K) {n m s : ℕ} (S : Code P n s)
@@ -553,7 +553,7 @@ theorem liftCodeSum_eq_normalizedLiftMatrixSum
   exact (integralMatrixEquivNormalizedLift P S).tsum_eq
     (fun B => f B.1)
 
-/- [Lean infrastructure for paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [Lean infrastructure for paper equation (9) (submission PDF p. 5)]
 The finite average over `𝓛(𝓟,s)`, represented temporarily by its equivalent
 code index. -/
 noncomputable def liftsMoment (P : PrimeIdeal K) (n m s : ℕ)
@@ -561,7 +561,7 @@ noncomputable def liftsMoment (P : PrimeIdeal K) (n m s : ℕ)
   (Fintype.card (Code P n s) : ℝ)⁻¹ *
     ∑ S : Code P n s, liftCodeSum P S f
 
-/- [paper, equation (9) (submission PDF p. 5), PDF p. 24] This is the literal
+/- [paper, equation (9) (submission PDF p. 5)] This is the literal
 finite average over the actual family `𝓛(𝓟,s)` and the actual Cartesian
 powers `Λ^m` occurring in the manuscript. -/
 noncomputable def manuscriptLiftsMoment (P : PrimeIdeal K) (n m s : ℕ)
@@ -569,7 +569,7 @@ noncomputable def manuscriptLiftsMoment (P : PrimeIdeal K) (n m s : ℕ)
   (Fintype.card 𝓛[K, P, n, s] : ℝ)⁻¹ *
     ∑ Λ : 𝓛[K, P, n, s], normalizedLiftMatrixSum Λ.1 f
 
-/- [derived consequence of paper equation (9) (submission PDF p. 5), PDF p. 24]
+/- [derived consequence of paper equation (9) (submission PDF p. 5)]
 The literal manuscript average agrees with the code-indexed form used for the
 finite-field expansion.  Both changes of index are supplied by proved
 equivalences above. -/

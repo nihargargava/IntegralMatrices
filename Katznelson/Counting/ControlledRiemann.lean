@@ -19,7 +19,7 @@ section
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
-/- [Lean infrastructure for paper Remark 17 (submission PDF p. 8), PDF p. 8] The hypotheses
+/- [Lean infrastructure for paper Remark 17 (submission PDF p. 8)] The hypotheses
    actually used by the lattice Riemann-sum proof, with an explicit upper
    range for the error-function parameter.  Omitting `εMax` means the
    manuscript's original range `0 < ε ≤ 1`; a separately proved update of
@@ -42,7 +42,7 @@ structure RiemannControl (f : E → ℝ) (εMax : ℝ := 1) where
       ∫ x : E, oscillation x ε
         ∂(μHE[Module.finrank ℝ E] : Measure E) ≤ C * ε
 
-/- [Lean infrastructure for paper Remark 17 (submission PDF p. 8), PDF p. 8] Replace only
+/- [Lean infrastructure for paper Remark 17 (submission PDF p. 8)] Replace only
    the proved range of a fixed ambient oscillation control.  The two supplied
    hypotheses are exactly the analytic content of the manuscript's phrase
    "suitably updating the constant"; this definition does not assert that

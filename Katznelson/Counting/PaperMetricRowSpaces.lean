@@ -12,8 +12,8 @@ import Mathlib.MeasureTheory.Measure.Haar.Unique
 # Haar-normalization bridges for row spaces
 
 The manuscript fixes the trace/discriminant Euclidean metric in
-`authoritative submission PDF`, PDF p. 10, and uses the induced Lebesgue measure
-on each row-matrix subspace at PDF p. 11.  The current lattice and
+submission PDF p. 10, and uses the induced Lebesgue measure
+on each row-matrix subspace at submission PDF p. 11.  The current lattice and
 Riemann-sum development uses Mathlib's Euclidean Hausdorff measure.  This
 module proves the exact bridge relevant to the main term: reciprocal
 covolume times an integral is independent of the choice of additive Haar
@@ -57,7 +57,7 @@ theorem covolume_nnreal_smul_measure
 nonzero scalar rescaling of Haar measure.  This combines the preceding
 covolume formula with Mathlib's exact `integral_smul_nnreal_measure`; it is
 the algebraic cancellation used implicitly in manuscript equation
-Equation (15) (submission PDF p. 12), PDF p. 11. -/
+Equation (15) (submission PDF p. 12). -/
 theorem normalized_lattice_integral_nnreal_smul
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
@@ -80,7 +80,7 @@ an explicitly supplied scalar multiple.  Mathlib's uniqueness theorem
 identifies the second measure with such a nonzero multiple.  Applied to the
 Lebesgue measure induced by the paper metric and to Mathlib's Euclidean
 Hausdorff measure, this is the exact normalization bridge required at
-manuscript PDF p. 11. -/
+submission PDF p. 11. -/
 theorem normalized_lattice_integral_eq_of_isAddHaarMeasure
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
@@ -100,7 +100,7 @@ theorem normalized_lattice_integral_eq_of_isAddHaarMeasure
 /- derived consequence: if the second Haar measure normalizes the lattice to
 unit covolume, its integral is exactly the reciprocal-covolume normalized
 integral for any other Haar measure.  This is the abstract form of the
-measure `d_D x` introduced in manuscript PDF p. 11. -/
+measure `d_D x` introduced in submission PDF p. 11. -/
 theorem integral_unitCovolume_eq_normalized_lattice_integral
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
@@ -116,7 +116,7 @@ theorem integral_unitCovolume_eq_normalized_lattice_integral
 
 /- derived consequence: an additive Haar measure for which a fixed full
 lattice has covolume one is unique.  Consequently the manuscript's `d_D x`
-at PDF p. 11 is characterized by its stated unit-covolume property; no
+at submission PDF p. 11 is characterized by its stated unit-covolume property; no
 unrecorded choice of Lebesgue normalization remains. -/
 theorem isAddHaarMeasure_eq_of_lattice_covolume_eq_one
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -147,7 +147,7 @@ mixed-coordinate volume on `K_ℝ` to the trace/discriminant-normalized volume
 used by the manuscript.  The factor `2 ^ r₂` converts each complex coordinate
 to the trace form and division by `sqrt |Δ_K|` accounts for the global
 `|Δ_K|⁻¹/d` metric scaling in real dimension `d`; compare Equation (11) (submission PDF p. 10),
-PDF p. 10, and `toTraceCovolume` in `PaperMetric.lean`. -/
+submission PDF p. 10, and `toTraceCovolume` in `PaperMetric.lean`. -/
 noncomputable def paperMeasureScale
     (K : Type*) [Field K] [NumberField K] : NNReal :=
   ⟨(2 : ℝ) ^ nrComplexPlaces K /
@@ -207,7 +207,7 @@ theorem covolume_paperMeasure_eq_paperCovolume
         Real.sqrt |(NumberField.discr K : ℝ)|
   ring
 
-/- paper: the covolume-one normalization asserted at manuscript PDF p. 10,
+/- paper: the covolume-one normalization asserted at submission PDF p. 10,
 now stated for the explicit Haar measure `paperMeasure`.  It is the actual
 measure-level version of `paperCovolume_euclidean_integerLattice`. -/
 theorem integerLattice_covolume_paperMeasure
@@ -284,7 +284,7 @@ noncomputable def rowMatrixNormalizedIntegralWithMeasure
 
 /- derived consequence: the exposed row-matrix summand is independent of
 the chosen additive Haar measure.  In particular, this gives a direct bridge
-between the paper-metric induced measure from Equation (11) (submission PDF p. 10) (PDF p. 10) and
+between the paper-metric induced measure from Equation (11) (submission PDF p. 10) and
 the raw Euclidean measure used in the Lean Riemann-sum implementation. -/
 theorem rowMatrixNormalizedIntegralWithMeasure_eq
     {K : Type*} [Field K] [NumberField K]
@@ -305,7 +305,7 @@ theorem rowMatrixNormalizedIntegralWithMeasure_eq
     (fun A : rowMatrixRealSpan V n => f (A : M n m (K_ℝ[K])))
 
 /- derived consequence: exact measure-normalization form of the summand in
-Equation (15) (submission PDF p. 12), manuscript PDF p. 11.  For every additive Haar measure
+Equation (15) (submission PDF p. 12), submission PDF p. 11.  For every additive Haar measure
 `mu`--hence in particular for the Lebesgue measure induced by the
 trace/discriminant metric--normalizing by the covolume of `M_n(Λ_D)` gives
 the existing Lean main-term summand.  This theorem makes no norm-equivalence
@@ -324,7 +324,7 @@ theorem rowMatrixNormalizedIntegralWithMeasure_eq_mainSummand
   rfl
 
 /- derived consequence: if `mu` is the manuscript's unit-covolume measure
-`d_D x` from PDF p. 11, its integral is exactly the existing Lean
+`d_D x` from submission PDF p. 11, its integral is exactly the existing Lean
 main-term summand.  This isolates the defining unit-covolume property used in
 the paper and does not require a choice of normalization for Haar measure. -/
 theorem rowMatrix_unitCovolume_integral_eq_mainSummand
@@ -346,7 +346,7 @@ theorem rowMatrix_unitCovolume_integral_eq_mainSummand
 /- derived consequence: reciprocal-height form of the same
 measure-independent summand,
 combining the preceding normalization theorem with the exact product
-covolume identity formalizing `M_n(Λ_D)` at manuscript PDF p. 11.
+covolume identity formalizing `M_n(Λ_D)` at submission PDF p. 11.
 This is the form used by `mainConstant_eq_height_normalized`.  Here
 `rowSpaceHeight` remains the raw Euclidean realization; this equality is used
 to compare the normalized summand, not to identify that raw height by itself
@@ -384,7 +384,7 @@ theorem tsum_rowMatrixNormalizedIntegralWithMeasure_eq_mainSummands
   exact rowMatrixNormalizedIntegralWithMeasure_eq_mainSummand V (mu V) f
 
 /- derived consequence: summing the unit-covolume integrals `∫ f d_D` from
-Equation (15) (submission PDF p. 12), PDF p. 11, gives the current row-space main-constant
+Equation (15) (submission PDF p. 12), gives the current row-space main-constant
 expression.  The hypotheses state exactly the manuscript's characterization
 of each `d_D`; uniqueness was proved above.  The existing echelon-to-row-space
 bridge, rather than this theorem alone, justifies the change of index. -/

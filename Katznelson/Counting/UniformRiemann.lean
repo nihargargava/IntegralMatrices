@@ -4,9 +4,9 @@ import Katznelson.Counting.UniformIntegral
 # Uniform intrinsic Voronoi Riemann estimates
 
 This module repairs the order of quantifiers in the row-matrix Riemann estimate
-used at `authoritative submission PDF`, PDF p. 20.  The admissibility constant,
+used at submission PDF p. 20.  The admissibility constant,
 support radius, and value bound are selected before the varying row space and
-scale.  For the arbitrary fixed threshold in Remark 17 (submission PDF p. 8), PDF p. 8,
+scale.  For the arbitrary fixed threshold in Remark 17 (submission PDF p. 8),
 the proof uses the manuscript's oscillation argument when the normalized
 covering radius is at most one and a direct support-ball lattice count above
 one.  In particular, no measurability assertion about the large-radius
@@ -29,7 +29,7 @@ variable (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
 
 /- [Lean infrastructure] Fixed-constant form of
    `controlled_latticeRiemann_estimate_of_fundamentalDomain`.  Its proof is
-   the normalization calculation in `ControlledVoronoi.lean`, PDF p. 3;
+   the normalization calculation in `ControlledVoronoi.lean`;
    making the oscillation constant an input prevents Lean from choosing it
    after a varying lattice or subspace has been introduced. -/
 theorem controlled_latticeRiemann_estimate_of_fundamentalDomain_fixedConstant
@@ -104,7 +104,7 @@ theorem controlled_latticeRiemann_estimate_of_fundamentalDomain_fixedConstant
   rw [hidentity', abs_div, abs_of_pos hcovol, hrhs]
   exact (div_le_div_iff_of_pos_right hcovol).2 hnormalized
 
-/- [derived consequence of paper Lemma 18 (submission PDF p. 9), PDF p. 9]
+/- [derived consequence of paper Lemma 18 (submission PDF p. 9)]
    The preceding fixed-constant normalization on the intrinsic Voronoi
    domain.  The constant is still an input and therefore can be selected
    before any later-varying lattice. -/
@@ -144,11 +144,11 @@ section UniformSmallRowEstimate
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [paper, Hypothesis 16 (submission PDF p. 8), PDF p. 8, and Lemma
-   Lemma 18 (submission PDF p. 9), PDF p. 9] Uniform small-radius specialization
+/- [paper, Hypothesis 16 (submission PDF p. 8), and Lemma
+   Lemma 18 (submission PDF p. 9)] Uniform small-radius specialization
    to `M_n(Λ_D)`.  The single admissibility constant is extracted before
    `V` and `T`; the exact intrinsic radius and covolume are those used at
-   PDF p. 20. -/
+   submission PDF p. 20. -/
 set_option maxHeartbeats 1800000 in
 theorem Admissible.exists_uniform_rowMatrix_latticeVoronoiRiemann_estimate_rank
     {n m k : ℕ} (f : M n m (K_ℝ[K]) → ℝ) (h_f : Admissible f)
@@ -286,8 +286,8 @@ section UniformCoarseBounds
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [derived consequence of paper Lemma 12 (submission PDF p. 7), PDF p. 7, and
-   Hypothesis 16 (submission PDF p. 8), PDF p. 8] A support-ball count bounds
+/- [derived consequence of paper Lemma 12 (submission PDF p. 7), and
+   Hypothesis 16 (submission PDF p. 8)] A support-ball count bounds
    the normalized unrestricted `M_n(Λ_D)` sum uniformly for every row
    space whose normalized intrinsic radius is below a fixed threshold. -/
 set_option maxHeartbeats 1800000 in
@@ -399,7 +399,7 @@ section UniformArbitraryThreshold
 variable {K : Type*} [Field K] [NumberField K]
 
 /- [derived consequence; author-approved local adaptation of Remark 17 (submission PDF p. 8),
-   PDF p. 8, and Lemma 18 (submission PDF p. 9), PDF p. 9] For every
+   submission PDF p. 8, and Lemma 18 (submission PDF p. 9)] For every
    fixed positive cutoff, one constant chosen before `V` and `T` gives the
    manuscript's intrinsic row-matrix Riemann estimate.  The branch
    `r / T ≤ 1` is exactly the paper's error-function proof.  In the complementary
@@ -523,8 +523,8 @@ section RankRestoration
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [paper, Lemma 29 (submission PDF p. 14), PDF p. 14, and equations
-   (19)--(21), PDF p. 20] For a fixed row space, partition the
+/- [paper, Lemma 29 (submission PDF p. 14), and Equations
+   (19)--(21) (submission PDF p. 19)] For a fixed row space, partition the
    manuscript's unrestricted integral-matrix sum into rank `k` and strictly
    lower-rank terms. -/
 theorem rowSpaceSum_eq_rank_add_lower_uniformRiemann
@@ -593,7 +593,7 @@ theorem rowSpaceSum_eq_rank_add_lower_uniformRiemann
       rfl
 
 /- [derived consequence of the preceding paper split and the row-lattice
-   reindexings in `RowLatticeRiemann.lean`, PDF p. 14] The same
+   reindexings in `RowLatticeRiemann.lean`] The same
    identity in the exact `M_n(Λ_D)` notation consumed by rank restoration. -/
 theorem rowMatrixZLatticeSum_eq_rank_add_lower_uniformRiemann
     {n m k : ℕ} (V : Grassmannian K m k)
@@ -611,7 +611,7 @@ theorem rowMatrixZLatticeSum_eq_rank_add_lower_uniformRiemann
   rw [rowSpaceSum_eq_rank_add_lower_uniformRiemann V f h_f hT]
   rw [← tsum_rowMatrixZLattice_rank_eq_integralRowMatrices V f T]
 
-/- [paper, equations (19)--(21), PDF p. 20] Uniform intrinsic
+/- [paper, Equations (19)--(21) (submission PDF p. 19)] Uniform intrinsic
    Voronoi Riemann estimate after restoring the rank condition.  The
    constant is selected before every row space and scale, the displayed
    `sqrt n * ρ(Λ_D)` and covolume are unchanged, and the strictly lower-rank

@@ -6,8 +6,8 @@ import Katznelson.MainTheorems
 # The critical higher-rank minima sums
 
 This module completes the ordinary-shell argument in the degree-one,
-`n = m + 1`, `k ≥ 2` branch of Theorem 2 (submission PDF p. 2; proof pp. 20--22) (PDF p. 22 of the checked-in
-manuscript).  The critical innermost sum is split exactly at
+`n = m + 1`, `k ≥ 2` branch of Theorem 2 (submission PDF p. 2; proof pp. 20--22),
+at the exceptional argument on p. 22.  The critical innermost sum is split exactly at
 `C * ‖l_{k-1}‖`, as in equation (25) (submission PDF p. 22).  Its near part is bounded by
 the endpoint Abel formula, while its far part uses the projection-slab count
 proved in `CriticalMinima.lean` and the strict `m - 1 < m` Abel tail.  All
@@ -21,7 +21,7 @@ open scoped Classical NumberField
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [paper, first term of equation (25) (submission PDF p. 22), PDF p. 22] Abel
+/- [paper, first term of equation (25) (submission PDF p. 22)] Abel
    summation over ordinary unit shells bounds the reciprocal-`m` norm sum in
    every multiplicative annulus `‖x‖ ≤ ‖y‖ ≤ c ‖x‖`, uniformly in the
    nonzero integral row `x`.  The below-unit case is a fixed finite lattice
@@ -335,7 +335,7 @@ theorem exists_ambientIntegralRowModule_critical_annulus_sum_bound
         dsimp [Ctotal]
         linarith [hCsmall]
 
-/- [paper, second term of equation (25) (submission PDF p. 22), PDF p. 22] The
+/- [paper, second term of equation (25) (submission PDF p. 22)] The
    degree-one slab count gives cumulative exponent `m - 1`; ordinary-shell
    Abel summation against `‖y‖⁻ᵐ` therefore leaves the factor
    `‖x‖ / (c ‖x‖)`.  This theorem records the resulting bound uniformly in
@@ -756,7 +756,7 @@ theorem exists_ambientIntegralRowModule_critical_projection_slab_tail_bound
       dsimp [Ctotal]
       linarith [hDlarge])
 
-/- [paper, equation (25) (submission PDF p. 22) and its estimates, PDF p. 22]
+/- [paper, equation (25) (submission PDF p. 22) and its estimates]
    This is the literal manuscript split of the innermost row family at
    `c * ‖x‖`.  The first filtered sum is the multiplicative annulus and the
    complementary filtered sum is the projection slab; the preceding two
@@ -815,7 +815,7 @@ theorem exists_ambientIntegralRowModule_critical_innermost_sum_bound
   rw [htwoTerms]
   exact add_le_add hnearBound hfarBound
 
-/- [Lean infrastructure for paper PDF p. 22] The recursive relaxed
+/- [Lean infrastructure for submission PDF p. 22] The recursive relaxed
    tuple weight is rewritten with the manuscript's last row singled out.
    This is the explicit bridge used below to keep the outer `k - 1` rows and
    the critical innermost row in their displayed order. -/
@@ -848,7 +848,7 @@ theorem orderedNormTupleWeight_eq_init_prod_mul_last
       rw [hfirst, hmiddle, hlast]
       ring
 
-/- [Lean infrastructure for paper PDF p. 22] When every row has the
+/- [Lean infrastructure for submission PDF p. 22] When every row has the
    same reciprocal exponent, the recursive tuple weight is the ordinary
    product over those rows.  This bridge lets the outer `k - 1` rows be fed
    directly to the already proved ordered-row sum. -/
@@ -862,7 +862,7 @@ theorem orderedNormTupleWeight_same_eq_prod
   exact (Fin.prod_univ_castSucc
     (fun i : Fin (j + 1) => (H (l i))⁻¹ ^ a)).symm
 
-/- [derived consequence of paper equation (25) (submission PDF p. 22), PDF p. 22]
+/- [derived consequence of paper equation (25) (submission PDF p. 22)]
    Transfer the proved ordinary-shell innermost estimate from the fixed
    ambient integral-row lattice back to the manuscript's rows in
    `\mathcal O_K^m`.  The Minkowski embedding is injective and preserves
@@ -922,7 +922,7 @@ theorem exists_integralRow_critical_innermost_sum_bound
       rw [Finset.sum_image he.injOn]
     _ ≤ C := hambient
 
-/- [derived consequence of paper PDF p. 22] After the literal
+/- [derived consequence of submission PDF p. 22] After the literal
    Equation (25) (submission PDF p. 22) estimate is applied to the final row, the first `k - 1`
    ordered rows carry reciprocal exponent `m + 1`.  Their ordinary-shell
    sum is strictly convergent because `m * degree K < m + 1`.  This theorem
@@ -1127,7 +1127,7 @@ theorem possibleSuccessiveMinima_nonzero_critical_higher_rank_weight_sum_le
     _ ≤ Cinner * Couter :=
       mul_le_mul_of_nonneg_left houterBound hCinner.le
 
-/- [paper, exceptional critical branch at PDF p. 22] Uniform bound
+/- [paper, exceptional critical branch at submission PDF p. 22] Uniform bound
    for the literal `possibleSuccessiveMinimaRadiusWeight` sum when
    `degree K = 1`, `n = m + 1`, and `k = j + 2 ≥ 2`.  The exact nonzero
    bridge retains the manuscript's `\mathcal B_k^{(c)}(T)` notation; the
@@ -1195,8 +1195,8 @@ theorem possibleSuccessiveMinimaRadiusWeight_sum_le_of_critical_higher_rank
       exact hweight l hl
     _ ≤ M := hbound T
 
-/- [derived consequence of paper equation (24) (submission PDF p. 21) and the
-   exceptional critical argument, PDF p. 22] Transfer the literal
+/- [derived consequence of paper Equation (24) (submission PDF p. 21) and the
+   exceptional critical argument (submission PDF p. 22)] Transfer the literal
    higher-rank tuple bound to the exact echelon family `\mathcal F_k(T)`.
    The manuscript's product-of-minima comparison remains an explicit
    argument at this interface. -/
@@ -1275,7 +1275,7 @@ theorem exists_uniform_calF_coveringRadius_sum_bound_of_critical_higher_rank
       linarith
 
 /- [derived consequence of paper equation (24) (submission PDF p. 21),
-   PDF pp. 21--22] The critical higher-rank `\mathcal F_k(T)` estimate with the
+   submission PDF pp. 21--22] The critical higher-rank `\mathcal F_k(T)` estimate with the
    product comparison discharged by the proved Fieker--Stehlé selection and
    Euclidean Minkowski-II theorem in `FiekerStehle.lean`. -/
 theorem exists_uniform_calF_coveringRadius_sum_bound_of_critical_higher_rank_of_fiekerStehle
@@ -1303,8 +1303,8 @@ theorem exists_uniform_calF_coveringRadius_sum_bound_of_critical_higher_rank_of_
   intro D hD
   exact hprod (echelonRowSpace D)
 
-/- [derived consequence of paper equation (24) (submission PDF p. 21),
-   PDF p. 21, and the exceptional critical argument, PDF p. 22]
+/- [derived consequence of paper Equation (24) (submission PDF p. 21) and the
+   exceptional critical argument (submission PDF p. 22)]
    Reindex the hypothesis-free higher-rank `\mathcal F_k(T)` estimate to the
    manuscript's exactly equal bounded row-space family.  The preceding
    theorem discharges the product input by the proved Fieker--Stehlé/
@@ -1333,9 +1333,9 @@ theorem exists_uniform_boundedRowSpaces_coveringRadius_sum_bound_of_critical_hig
     hCproj hCsup hT (by omega)]
   exact hbound hCproj hCsup hT
 
-/- [derived consequence of paper lemma Lemma 29 (submission PDF p. 14),
-   PDF p. 14, equation (23) (submission PDF p. 20), PDF p. 20, and the exceptional
-   critical argument, PDF p. 22] This is the exact intrinsic summand
+/- [derived consequence of paper Lemma 29 (submission PDF p. 14),
+   Equation (23) (submission PDF p. 20), and the exceptional critical
+   argument (submission PDF p. 22)] This is the exact intrinsic summand
    consumed by the fixed-rank Voronoi assembly: the `sqrt n` factor is
    explicit and the denominator is the row-matrix lattice covolume.  Its
    product input is the same proved Fieker--Stehlé/Minkowski-II derivation. -/
@@ -1396,9 +1396,9 @@ theorem exists_uniform_boundedRowSpaces_latticeVoronoi_radius_sum_bound_of_criti
         dsimp [C_R]
         linarith
 
-/- [derived consequence of the rank-one argument in subsection
-   Section 1.3 (submission PDF pp. 5--6), PDF p. 6, its use at PDF p. 21, and equation
-   Equation (24) (submission PDF p. 21), PDF p. 21] Reindex the proved first-Minkowski
+/- [derived consequence of the rank-one argument in Section 1.3
+   (submission PDF pp. 5--6), its use in the proof on p. 21, and Equation (24)
+   (submission PDF p. 21)] Reindex the proved first-Minkowski
    rank-one `\mathcal F_1(T)` estimate to the exact bounded row-space family. -/
 theorem exists_boundedRowSpaces_coveringRadius_sum_bound_of_critical_rank_one
     {m : ℕ} (hm : 0 < m) (hdegree : degree K = 1)
@@ -1426,8 +1426,8 @@ theorem exists_boundedRowSpaces_coveringRadius_sum_bound_of_critical_rank_one
   exact hbound hCproj hCsup hT
 
 /- [derived consequence of paper lemma Lemma 29 (submission PDF p. 14),
-   PDF p. 14, the rank-one argument at PDF p. 6, and
-   equation (23) (submission PDF p. 20), PDF p. 20] This is the logarithmic
+   submission PDF p. 14, the rank-one argument at submission PDF p. 6, and
+   equation (23) (submission PDF p. 20)] This is the logarithmic
    rank-one counterpart of the exact intrinsic critical higher-rank endpoint. -/
 theorem exists_boundedRowSpaces_latticeVoronoi_radius_sum_bound_of_critical_rank_one
     {m : ℕ} (hm : 0 < m) (hdegree : degree K = 1)

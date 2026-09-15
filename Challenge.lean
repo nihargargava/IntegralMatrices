@@ -73,7 +73,7 @@ def manuscriptEchelonIntegralLimit {K : Type u} [Field K] [NumberField K]
 def tendsToAtNorm {K : Type u} [Field K] [NumberField K]
     (F : PrimeIdeal K → ℝ) (limit : ℝ) : Prop := by sorry
 
-/- [paper, Theorem 2 (submission PDF p. 2; proof pp. 20--22), PDF p. 2] Fixed-rank asymptotic count.
+/- [paper, Theorem 2 (submission PDF p. 2; proof pp. 20--22)] Fixed-rank asymptotic count.
 The statement retains the paper's scale `T^(k*n*d)` and its
 `T⁻¹ log T` error, with the no-log refinement outside the exceptional case.
 -/
@@ -95,7 +95,7 @@ theorem fixed_rank_count
             cError * T⁻¹) := by
   sorry
 
-/- [paper, Theorem 42 (submission PDF p. 24; proof pp. 24--25), PDF p. 24] Convergence of
+/- [paper, Theorem 42 (submission PDF p. 24; proof pp. 24--25)] Convergence of
 the moments of lifts of codes to the echelon-integral expression. -/
 theorem lifts_of_codes_convergence
     {K : Type*} [Field K] [NumberField K]

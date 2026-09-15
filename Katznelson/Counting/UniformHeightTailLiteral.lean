@@ -4,8 +4,8 @@ import Katznelson.Counting.UniformHeightTail
 # Literal absolute height tail
 
 This module exposes the height tail in the termwise-absolute form used in
-`authoritative submission PDF`, Corollary 34 (submission PDF p. 16) (PDF p. 16) and equation
-Theorem 2 proof, tail estimate (submission PDF p. 20) (PDF p. 20).  In contrast with the older
+`authoritative submission PDF`, Corollary 34 (submission PDF p. 16) and equation
+Theorem 2 proof, tail estimate (submission PDF p. 20).  In contrast with the older
 assembly interface, the absolute value here is inside the `tsum`.
 -/
 
@@ -19,8 +19,8 @@ the same Frobenius-norm instances used to define the exact manuscript family
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [derived consequence of paper Corollary 34 (submission PDF p. 16), PDF p. 16,
-and its use in equation Theorem 2 proof, tail estimate (submission PDF p. 20), PDF p. 20] This is the
+/- [derived consequence of paper Corollary 34 (submission PDF p. 16),
+and its use in equation Theorem 2 proof, tail estimate (submission PDF p. 20)] This is the
 row-space form obtained through the proved exact family identity
 `echelon_calF_image_eq_boundedRowSpaces`.  The cutoff is retained literally as
 `X = Clower * T ^ degree K`.  Most importantly, the left side is the `tsum`
@@ -151,8 +151,8 @@ theorem exists_uniform_boundedRowSpaces_mainConstant_complement_abs_sum_tail_wit
       mul_le_mul_of_nonneg_left hdecay hCtail.le
 
 /- [derived consequence of the preceding formalization of paper Corollary
-Corollary 34 (submission PDF p. 16), PDF p. 16] This is the manuscript-facing form consumed at
-PDF p. 20: the cutoff witness is hidden, but `Ctail` remains outside
+Corollary 34 (submission PDF p. 16)] This is the manuscript-facing form consumed at
+submission PDF p. 20: the cutoff witness is hidden, but `Ctail` remains outside
 the scale quantifier and the absolute value remains inside the `tsum`. -/
 theorem exists_uniform_boundedRowSpaces_mainConstant_complement_abs_sum_tail
     {K : Type*} [Field K] [NumberField K]
@@ -179,8 +179,8 @@ theorem exists_uniform_boundedRowSpaces_mainConstant_complement_abs_sum_tail
   obtain ⟨X, hX, hXpos, houtside, htailT⟩ := htail T hT
   exact htailT
 
-/- [derived consequence of paper Corollary 34 (submission PDF p. 16), PDF p. 16,
-and equation Theorem 2 proof, tail estimate (submission PDF p. 20), PDF p. 20] The literal termwise
+/- [derived consequence of paper Corollary 34 (submission PDF p. 16),
+and equation Theorem 2 proof, tail estimate (submission PDF p. 20)] The literal termwise
 tail above implies the absolute error form consumed by the final finite-family
 assembly.  This bridge uses only the exact decomposition of `mainConstant`
 into the chosen finite family and its complement, followed by the triangle

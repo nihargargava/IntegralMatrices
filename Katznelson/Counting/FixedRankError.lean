@@ -65,8 +65,8 @@ theorem one_add_log_mul_zpow_neg_nat_le_inv
     _ = T⁻¹ := by rw [zpow_neg_one]
 
 /- [derived consequence] In the non-exceptional range of the proof of
-Theorem 2 (submission PDF p. 2; proof pp. 20--22) (paper PDF p. 20), the corrected lower-rank exponent from
-PDF p. 20 has absolute value at least two.  The statement keeps the paper's
+Theorem 2 (submission PDF p. 2; proof pp. 20--22) (submission PDF p. 20), the corrected lower-rank exponent from
+submission PDF p. 20 has absolute value at least two.  The statement keeps the paper's
 criterion `(n-m) d k > 1` literally visible. -/
 theorem fixedRankLowerExponent_two_le_of_nonexceptional
     {n m k d : ℕ} (hnm : m < n) (hk : 1 ≤ k) (hd : 1 ≤ d)
@@ -85,8 +85,8 @@ theorem fixedRankLowerExponent_two_le_of_nonexceptional
       _ ≤ d * (n - m + k - 1) := Nat.mul_le_mul hd hsum
 
 /- [derived consequence] This is the precise absorption claimed after
-Lemma 39 (submission PDF pp. 18--20) at paper PDF p. 20 in the non-exceptional range declared
-at PDF p. 20.  No lower-rank estimate is assumed here; only its displayed
+Lemma 39 (submission PDF pp. 18--20) at submission PDF p. 20 in the non-exceptional range declared
+at submission PDF p. 20.  No lower-rank estimate is assumed here; only its displayed
 scale is compared with `T⁻¹`. -/
 theorem lowerRankErrorScale_le_inv_of_nonexceptional
     {n m k d : ℕ} {T : ℝ} (hT : 1 ≤ T) (hnm : m < n)
@@ -108,7 +108,7 @@ theorem lowerRankErrorScale_le_inv_of_nonexceptional
   exact hbound
 
 /- [derived consequence] The height-tail scale `T⁻ᵈ` in paper
-Theorem 2 proof, tail estimate (submission PDF p. 20), PDF p. 20, is at most `T⁻¹` for positive number
+Theorem 2 proof, tail estimate (submission PDF p. 20), is at most `T⁻¹` for positive number
 field degree and `T ≥ 1`. -/
 theorem heightTailScale_le_inv
     {d : ℕ} {T : ℝ} (hT : 1 ≤ T) (hd : 1 ≤ d) :
@@ -119,7 +119,7 @@ theorem heightTailScale_le_inv
   omega
 
 /- [Lean infrastructure] A bound for the finite radius sum can be multiplied
-by the explicit `1/T` from paper equation (23) (submission PDF p. 20) (PDF p. 20)
+by the explicit `1/T` from paper equation (23) (submission PDF p. 20)
 without changing its provenance. -/
 theorem radiusError_div_le
     {radius C_radius C_riemann T : ℝ} (hT : 0 ≤ T)
@@ -130,7 +130,7 @@ theorem radiusError_div_le
     (mul_le_mul_of_nonneg_left hradius hC_riemann) hT
 
 /- [derived consequence] Arithmetic assembly of the three displayed error
-terms in paper PDF p. 20.  The lower-rank, tail, and radius estimates
+terms in submission PDF p. 20.  The lower-rank, tail, and radius estimates
 are not manufactured here: this theorem merely combines their exact scales
 after they have been proved elsewhere. -/
 theorem fixedRankErrorTerms_le_inv_of_nonexceptional
@@ -160,7 +160,7 @@ theorem fixedRankErrorTerms_le_inv_of_nonexceptional
       rw [div_eq_mul_inv]
       ring
 
-/- [derived consequence] Paper-facing wrapper for PDF p. 20.  Each
+/- [derived consequence] Paper-facing wrapper for submission PDF p. 20.  Each
 mathematical estimate is an explicit hypothesis, while the conclusion is the
 single `C/T` error required by Equation (23) (submission PDF p. 20) in the non-exceptional case. -/
 theorem fixedRankError_le_inv_of_nonexceptional_bounds
@@ -189,7 +189,7 @@ theorem fixedRankError_le_inv_of_nonexceptional_bounds
 
 /- [Lean infrastructure] Exact bridge from the integer-power representation
 used for lower-rank exponents to the manuscript's exceptional notation
-`T⁻¹ log T` (paper PDF p. 20). -/
+`T⁻¹ log T` (submission PDF p. 20). -/
 theorem zpow_neg_one_mul_log_eq_inv_mul_log (T : ℝ) :
     T ^ (-1 : ℤ) * Real.log T = T⁻¹ * Real.log T := by
   rw [zpow_neg_one]
@@ -202,7 +202,7 @@ theorem inv_mul_log_eq_log_div (T : ℝ) :
   rw [div_eq_mul_inv, mul_comm]
 
 /- [Lean infrastructure] On the manuscript's exact range `T ≥ 2` (paper
-PDF p. 2), one has `log T ≥ 1/2`.  The deliberately coarse factor two
+submission PDF p. 2), one has `log T ≥ 1/2`.  The deliberately coarse factor two
 avoids introducing a decimal approximation or a hidden larger threshold. -/
 theorem one_le_two_mul_log_of_two_le {T : ℝ} (hT : 2 ≤ T) :
     1 ≤ 2 * Real.log T := by
@@ -215,8 +215,8 @@ theorem one_le_two_mul_log_of_two_le {T : ℝ} (hT : 2 ≤ T) :
   linarith
 
 /- [derived consequence] Explicit comparison between the `1 + log T`
-factor arising in Lemma 39 (submission PDF pp. 18--20) (PDF p. 20) and the paper's exceptional
-`T⁻¹ log T` scale announced at PDF p. 20 and treated at PDF p. 21. -/
+factor arising in Lemma 39 (submission PDF pp. 18--20) (submission PDF p. 20) and the paper's exceptional
+`T⁻¹ log T` scale announced at submission PDF p. 20 and treated at submission PDF p. 21. -/
 theorem one_add_log_mul_zpow_neg_one_le_three_inv_mul_log
     {T : ℝ} (hT : 2 ≤ T) :
     (1 + Real.log T) * T ^ (-1 : ℤ) ≤
@@ -235,7 +235,7 @@ theorem one_add_log_mul_zpow_neg_one_le_three_inv_mul_log
     _ = 3 * (T⁻¹ * Real.log T) := by ring
 
 /- [derived consequence] In the exceptional dimensions singled out at paper
-PDF p. 21, the corrected lower-rank scale specializes exactly to
+submission PDF p. 21, the corrected lower-rank scale specializes exactly to
 `(1 + log T) T⁻¹`.  The dimension equalities remain explicit in the
 interface. -/
 theorem lowerRankErrorScale_eq_exceptional
@@ -266,7 +266,7 @@ theorem inv_le_two_mul_inv_mul_log_of_two_le
     _ = 2 * (T⁻¹ * Real.log T) := by ring
 
 /- [derived consequence] Arithmetic assembly for the exceptional branch of
-paper PDF p. 20.  `C_exceptional` represents the direct
+submission PDF p. 20.  `C_exceptional` represents the direct
 rank-one estimate discussed in Section 1.3 (submission PDF pp. 5--6); all four analytic estimates
 remain explicit inputs in the wrapper below. -/
 theorem fixedRankErrorTerms_le_inv_log_of_exceptional

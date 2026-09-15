@@ -18,9 +18,9 @@ open scoped Classical NumberField
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [derived consequence of paper equations (19)--(21), PDF p. 20,
-   Corollary 37 (submission PDF p. 17), PDF p. 17, and Equation (16) (submission PDF p. 14),
-   PDF p. 11] Apply the uniform arbitrary-cutoff Riemann estimate to the exact
+/- [derived consequence of paper Equations (19)--(21) (submission PDF p. 19),
+   Corollary 37 (submission PDF p. 17), and Equation (16) (submission PDF p. 14)]
+   Apply the uniform arbitrary-cutoff Riemann estimate to the exact
    row-space image of `\mathcal F_k(T)`.  The explicit cutoff is one larger
    than the fixed covering-radius bound, so both it and the Riemann constant
    are chosen before `T` and `V`.  The conclusion is exactly the pointwise

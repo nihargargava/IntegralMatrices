@@ -33,7 +33,7 @@ attributed in `Katznelson.Counting.Schmidt`; it is not a local axiom.
 -/
 /- [derived consequence; author-approved local metric adaptation of paper
    Theorem 2 (submission PDF p. 2; proof pp. 20--22)]
-   the exceptional branch at PDF p. 21 uses the author's explicitly
+   the exceptional branch at submission PDF p. 21 uses the author's explicitly
    permitted critical-radius adaptation.  The `Admissible` implementation
    uses the separately documented, author-approved raw-Euclidean convention
    only in the admissibility/Riemann subsystem; the exact displayed main

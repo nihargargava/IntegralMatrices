@@ -18,9 +18,9 @@ open scoped Classical MeasureTheory NumberField
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [derived consequence of paper Hypothesis 16 (submission PDF p. 8), PDF p. 8,
-   used in Lemma 24 (submission PDF pp. 11--12), PDF p. 11, and Corollary
-   Corollary 34 (submission PDF p. 16), PDF p. 16] Compact support and boundedness give one
+/- [derived consequence of paper Hypothesis 16 (submission PDF p. 8),
+   used in Lemma 24 (submission PDF pp. 11--12), and Corollary
+   Corollary 34 (submission PDF p. 16)] Compact support and boundedness give one
    bound for the manuscript's integrals over all rank-`k` row-matrix
    subspaces.  Their common real dimension is `n * k * degree K`, so the
    enclosing-ball volume is independent of the row space. -/

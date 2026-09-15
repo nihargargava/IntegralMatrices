@@ -235,7 +235,7 @@ theorem exists_shortest_nonzero_latticeVector
   · exact (hvS.2.trans_lt (lt_of_not_ge hbound)).le
 
 /- The shortest vector therefore satisfies the first Minkowski bound, which
-   is the role of `l_1` in the proof of Lemma 27 (submission PDF pp. 12--13) (PDF p. 13). -/
+   is the role of `l_1` in the proof of Lemma 27 (submission PDF pp. 12--13) (submission PDF p. 13). -/
 theorem exists_shortest_nonzero_latticeVector_norm_le_covolume_rpow
     (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L] :
     ∃ v : L, v ≠ 0 ∧
@@ -281,8 +281,8 @@ theorem orthonormal_basis_det_le_prod_norm
     _ = ∏ i, ‖b' i‖ := by
       simp [g.orthonormal.norm_eq_one]
 
-/- The paper's Definition 14 (submission PDF p. 8) (PDF p. 8), with
-   `ZLattice.covolume L` realizing its height `H(Λ)` (PDF p. 7). -/
+/- The paper's Definition 14 (submission PDF p. 8), with
+   `ZLattice.covolume L` realizing its height `H(Λ)` (submission PDF p. 7). -/
 noncomputable def hadamardRatio
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
@@ -290,7 +290,7 @@ noncomputable def hadamardRatio
     (b : Basis (Fin (Module.finrank ℝ E)) ℤ L) : ℝ :=
   (∏ i, ‖(b i : E)‖) / ZLattice.covolume L
 
-/- The paper's Lemma 15 (submission PDF p. 8) (PDF p. 8). -/
+/- The paper's Lemma 15 (submission PDF p. 8). -/
 theorem one_le_hadamardRatio
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] [Nontrivial E]
@@ -333,7 +333,7 @@ theorem one_le_hadamardRatio
 end Hadamard
 
 /- [Lean infrastructure, used for the paper step Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]
+   submission PDF p. 18]
    A spanning set contains a finite-dimensional complement to a subspace.
    The selected vectors are elements of the original set, and the conclusion
    is expressed by the quotient map.  This is the abstract linear-algebra
@@ -410,7 +410,7 @@ theorem exists_fin_basis_extension_from_spanningSet
   exact hsum
 
 /- [Lean infrastructure, used for the paper step Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Equality of the quotient spans of two complements forces
+   submission PDF p. 18]  Equality of the quotient spans of two complements forces
    equality of the ambient subspaces.  This is the abstract linear-algebra
    content of the paper's assertion that two row spaces are equal exactly
    when the corresponding tuples have equal spans modulo the lower-rank
@@ -467,7 +467,7 @@ theorem sup_eq_of_quotient_map_eq
     exact V.add_mem (hUV hdiff) hzV
 
 /- [Lean infrastructure, used for the paper step Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Equality after orthogonal projection onto the
+   submission PDF p. 18]  Equality after orthogonal projection onto the
    complement of `U` is equivalent to equality modulo `U`.  This is the
    real-vector-space part of the paper's passage from selected vectors to
    their projected representatives.  The number-field identification of
@@ -491,7 +491,7 @@ theorem orthogonalProjectionOnto_eq_iff_sub_mem
     exact Submodule.orthogonalProjectionOnto_orthogonal_apply_eq_zero hxy
 
 /- [Lean infrastructure, used for the paper step Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Pointwise equality of finitely or infinitely indexed tuples
+   submission PDF p. 18]  Pointwise equality of finitely or infinitely indexed tuples
    modulo `U` gives equality of the quotient spans.  This is the bookkeeping
    step that turns the paper's equality of projected tuples into the quotient
    equality consumed by `sup_eq_of_quotient_map_eq`. -/
@@ -511,7 +511,7 @@ theorem quotient_map_span_range_eq_of_forall
   rw [Submodule.map_span, Submodule.map_span, himage]
 
 /- [Lean infrastructure, used for the paper step Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Convert a complement equation in the subtype `V`
+   submission PDF p. 18]  Convert a complement equation in the subtype `V`
    back to the ambient row-space equation.  This is the bridge needed after
    selecting the paper's vectors inside the lower-containing row space. -/
 theorem sup_eq_of_comap_sup_span_eq_top

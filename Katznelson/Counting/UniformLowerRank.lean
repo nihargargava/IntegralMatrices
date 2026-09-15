@@ -19,7 +19,7 @@ open scoped BigOperators Classical NumberField Topology
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 attribute [local instance] Matrix.frobeniusNormedSpace
 
-/- [Lean infrastructure, paper lemma Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
+/- [Lean infrastructure, paper lemma Lemma 39 (submission PDF pp. 18--20)]
    Make explicit the canonical Borel structure on the manuscript's ambient
    row space.  This is the same local structure used in `MainTheorems` for the
    covolume and covering-radius bounds; it changes neither norm nor measure. -/
@@ -32,8 +32,8 @@ local instance uniformLowerRankAmbientRowBorelSpace
     @BorelSpace (RowVector K m) _
       uniformLowerRankAmbientRowMeasurableSpace := ⟨rfl⟩
 
-/- [paper, equations Equation (20) (submission PDF p. 19) and Equation (21) (submission PDF p. 19),
-   PDF p. 19] The manuscript's counting function
+/- [paper, Equations (20) (submission PDF p. 19) and Equation (21) (submission PDF p. 19),
+   submission PDF p. 19] The manuscript's counting function
    `η(x) = ∑_{D' echelon, H(D') ≤ x} 1`.  Its codomain is `ℝ` because it is
    inserted directly into the displayed Abel integral. -/
 noncomputable def η (K : Type*) [Field K] [NumberField K]
@@ -42,7 +42,7 @@ noncomputable def η (K : Type*) [Field K] [NumberField K]
     rowSpaceHeight (echelonRowSpace D) ≤ x} : ℝ)
 
 /- [derived consequence of paper Proposition 22 (submission PDF p. 11) and equation
-   Equation (21) (submission PDF p. 19), PDF p. 19] The literal echelon count `η`
+   Equation (21) (submission PDF p. 19)] The literal echelon count `η`
    is exactly Schmidt's Grassmannian height count.  This is the explicit
    bridge that permits the internally verified ordinary-shell Abel estimate
    to reindex by row spaces. -/
@@ -64,7 +64,7 @@ theorem eta_eq_rowSpaceHeightBall_ncard
 
 /- [derived consequence of the cited Schmidt input represented by
    `HasHeightCountBounds`, for paper equation (21) (submission PDF p. 19),
-   PDF p. 19] Schmidt's bound is now stated in the manuscript's literal
+   submission PDF p. 19] Schmidt's bound is now stated in the manuscript's literal
    `η(x)` notation. -/
 theorem eta_le_of_height_count
     {K : Type*} [Field K] [NumberField K] {l m : ℕ}
@@ -78,7 +78,7 @@ theorem eta_le_of_height_count
   exact (hbound x hx).2
 
 /- [derived consequence, paper equation (20) (submission PDF p. 19) and
-   Equation (22) (submission PDF p. 19), PDF p. 19] Uniform-in-the-cutoff form of
+   Equation (22) (submission PDF p. 19)] Uniform-in-the-cutoff form of
    the manuscript's ordinary Abel summation.  This is the same unit-shell
    argument as `heightShell_sum_Ioc_one_le_by_exponent`; only the quantifier
    order is strengthened so its coefficient is chosen before `b`. -/
@@ -290,7 +290,7 @@ theorem exists_uniform_heightShell_sum_Ioc_one_le_by_exponent
           ring
 
 /- [derived consequence, paper equation (20) (submission PDF p. 19) and
-   Equation (22) (submission PDF p. 19), PDF p. 19] Restore the first ordinary
+   Equation (22) (submission PDF p. 19)] Restore the first ordinary
    height shell in the preceding uniform Abel estimate.  This is the exact
    `1 <= H(D') <= b` range used after rounding the manuscript's cutoff `X`. -/
 set_option maxHeartbeats 1200000 in
@@ -403,7 +403,7 @@ theorem exists_uniform_heightShell_sum_Icc_one_le_by_exponent
         _ = C := by dsimp [C]; ring
 
 /- [derived consequence, paper equation (20) (submission PDF p. 19),
-   PDF p. 19] Uniform finite-family form of the same ordinary-shell
+   submission PDF p. 19] Uniform finite-family form of the same ordinary-shell
    estimate.  The family and the cutoff may vary, but the Abel coefficient is
    fixed by the Schmidt input before either is introduced. -/
 set_option maxHeartbeats 1600000 in
@@ -498,7 +498,7 @@ theorem exists_uniform_finite_height_inv_pow_sum_le_by_exponent
         else C := by simpa [I] using hshell hb
 
 /- [derived consequence, paper equation (20) (submission PDF p. 19) and
-   Equation (22) (submission PDF p. 19), PDF p. 19] Uniform version including the
+   Equation (22) (submission PDF p. 19)] Uniform version including the
    finitely many positive-height row spaces below height one.  That fixed set
    is independent of the manuscript cutoff `X`, so its contribution is
    selected before `b` and `T`. -/
@@ -619,7 +619,7 @@ theorem exists_uniform_finite_height_inv_pow_sum_le_by_exponent_of_pos
       exact hbase.trans ((add_le_add hplus' (le_refl M)).trans hCM)
 
 /- [derived consequence, paper equation (20) (submission PDF p. 19),
-   PDF p. 19] Uniform weighted form of the preceding height estimate.  It is
+   submission PDF p. 19] Uniform weighted form of the preceding height estimate.  It is
    the manuscript's summation-by-parts bound applied to a summand dominated by
    `Cscale * H(D')^(-q)`; its coefficient is independent of `b`, `S`, and `T`.
 -/
@@ -682,7 +682,7 @@ theorem exists_uniform_tsum_abs_le_finite_height_inv_pow_of_pos
         · simp only [if_neg hqp, if_neg hpq]
 
 /- [derived consequence, paper Equation (20) (submission PDF p. 19) and
-   Equation (22) (submission PDF p. 19), PDF p. 19] Uniform rounding bridge from
+   Equation (22) (submission PDF p. 19)] Uniform rounding bridge from
    the natural shell endpoint to the paper's real cutoff
    `X = C * T^(l*d)`.  The output is the manuscript's literal `B_l(T)`, with
    one coefficient chosen before `T` and `b`. -/
@@ -771,7 +771,7 @@ theorem exists_uniform_B_l_bound_of_nat_shell_cutoff
       rw [B_l, if_neg hnotpos, if_neg hnotzero]
       simpa using (le_refl D)
 
-/- [derived consequence, paper lemma Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
+/- [derived consequence, paper lemma Lemma 39 (submission PDF pp. 18--20)]
    Fixed-coefficient form of the manuscript's innermost `|f|` sum.  The
    support radius and uniform bound of `f`, and hence `C₂`, are selected
    before `T` and the row space `W`; the proof is the existing intrinsic
@@ -847,7 +847,7 @@ theorem Admissible.exists_uniform_integralRowMatrices_rank_sum_abs_le_of_lattice
       dsimp [C₂]
       rw [show n * (l * degree K) = l * n * degree K by ring]
 
-/- [derived consequence, paper lemma Lemma 39 (submission PDF pp. 18--20), PDF p. 19]
+/- [derived consequence, paper lemma Lemma 39 (submission PDF pp. 18--20)]
    Uniform-quantifier version of the manuscript's positive rank-`l` stratum.
    It uses the same extension count `n_k(D')`, the same rank-`l` `|f|` sum,
    and the same ordinary Abel height estimate as
@@ -963,9 +963,9 @@ theorem exists_uniform_rowSpacePositiveStratum_normalized_le_of_bounds
   rw [hnormalized]
   simpa only [abs_of_nonneg hsum_nonneg, Cscale] using hbound
 
-/- [derived consequence of paper lemmas Lemma 38 (submission PDF pp. 17--18),
-   Lemma 31 (submission PDF p. 15), Corollary 37 (submission PDF p. 17), and Lemma 39 (submission PDF pp. 18--20),
-   PDF p. 15, PDF p. 17, PDF p. 18, and PDF p. 19] Uniform positive
+/- [derived consequence of paper Lemma 38 (submission PDF pp. 17--18),
+   Lemma 31 (submission PDF p. 15), Corollary 37 (submission PDF p. 17), and
+   Lemma 39 (submission PDF pp. 18--20)] Uniform positive
    rank-`l` estimate on the literal row-space image of `𝓕_l(T)`.  The
    displayed cutoff is `X = C^crude2 T^(l*d)`, the height sum is the paper's
    ordinary Abel sum, and the conclusion is expressed with its `alpha_l` and
@@ -1160,7 +1160,7 @@ theorem exists_uniform_echelon_calF_positiveLowerStratum_le_B_l_of_raw_covering_
         (mul_le_mul_of_nonneg_left hB' hfactor_nonneg)
 
 /- [Lean infrastructure for paper lemma Lemma 39 (submission PDF pp. 18--20),
-   PDF p. 19] The manuscript absorbs the finitely many rank-dependent
+   submission PDF p. 19] The manuscript absorbs the finitely many rank-dependent
    constants for `1 ≤ l < k` into one constant.  This is the same bookkeeping
    as `exists_uniform_B_l_point_bound`, but with its constants chosen before
    the scale `T`; the paper's `alpha_l` and `B_l(T)` are unchanged. -/
@@ -1240,7 +1240,7 @@ theorem exists_uniform_B_l_point_bound_forall
         B_l n m k l d Ccrudenew T := by ring
 
 /- [derived consequence of paper lemma Lemma 31 (submission PDF p. 15) and corollary
-   Corollary 32 (submission PDF p. 15), PDF p. 15] The Schmidt upper-count
+   Corollary 32 (submission PDF p. 15)] The Schmidt upper-count
    coefficient and the manuscript's crude-height coefficient are fixed before
    `T`.  The counted family is exactly the row-space image of `𝓕_k(T)`,
    which is equal to the manuscript echelon family by the proved injective
@@ -1302,7 +1302,7 @@ declarations in this outer comment are active or counted as formalization
 coverage; the verified literal versions are in `UniformLowerRankLiteral.lean`.
 
 /- [Lean infrastructure for paper lemma Lemma 39 (submission PDF pp. 18--20),
-   PDF p. 19] Rank-preserving absolute-value version of the manuscript's
+   submission PDF p. 19] Rank-preserving absolute-value version of the manuscript's
    regrouping by the matrix row space.  The equivalence is the already
    proved `rowSpaceContainedRankEquiv`; admissibility is used only to prove
    absolute summability. -/
@@ -1353,7 +1353,7 @@ theorem tsum_abs_integralMatrices_in_rowSpace_eq_sum_contained_rowSpaces
 
 /-
 /- [Lean infrastructure for paper lemma Lemma 39 (submission PDF pp. 18--20),
-   PDF p. 19] This is the proved bridge from the manuscript's literal
+   submission PDF p. 19] This is the proved bridge from the manuscript's literal
    termwise-absolute lower-rank sum to the positive rank strata indexed by
    their own row spaces.  It uses `rowSpaceContainedRankEquiv` and the
    finite-support Fubini lemma already proved in `MainTheorems`; no
@@ -1496,7 +1496,7 @@ theorem finite_rowSpaceLowerAbsSum_eq_sum_containedRowSpaceCounts
 
 /-
 /- [derived consequence, paper lemma Lemma 39 (submission PDF pp. 18--20),
-   PDF p. 19] Quantitative form of the preceding exact bridge.  Its left
+   submission PDF p. 19] Quantitative form of the preceding exact bridge.  Its left
    side is literally the manuscript's sum of the inner `|f(T⁻¹A)|` sums;
    the rank-zero term and every positive stratum retain the paper's
    normalization, `alpha_l`, and `B_l(T)`. -/
@@ -1648,7 +1648,7 @@ theorem finite_rowSpaceLowerAbsSum_normalized_le
 -/
 
 /- [derived consequence, paper lemma Lemma 39 (submission PDF pp. 18--20) and its use in the
-   proof of Theorem 2 (submission PDF p. 2; proof pp. 20--22), PDF p. 19] Uniform form of the
+   proof of Theorem 2 (submission PDF p. 2; proof pp. 20--22)] Uniform form of the
    manuscript-required lower-rank estimate.  Its left side is the sum over
    the literal rank-`k` family of the absolute value of each lower-rank inner
    sum, not the absolute value of their aggregate.  The proof uses

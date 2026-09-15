@@ -201,7 +201,7 @@ theorem successiveMinimaAux_castSucc
       successiveMinimaAux S L i j := by
   simp [successiveMinimaAux]
 
-/- [derived consequence of Definition 25 (submission PDF p. 12), PDF p. 12] The
+/- [derived consequence of Definition 25 (submission PDF p. 12)] The
    `K`-span of an initial segment of the recursive minima is contained in the
    span of every longer initial segment. -/
 theorem previousKSpan_successiveMinimaAux_mono
@@ -413,7 +413,7 @@ theorem successiveMinimaAux_linearIndependent_of_finrank
       rw [hfun]
       exact hsnoc
 
-/- [derived consequence of Definition 25 (submission PDF p. 12), PDF p. 12] Under
+/- [derived consequence of Definition 25 (submission PDF p. 12)] Under
    the full-rank hypothesis, the admissible set at every indexed stage is
    nonempty.  This packages the rank argument above in the `Fin k` form used
    by the Euclidean supporting argument for Fieker--Stehlé Theorem 2. -/
@@ -427,7 +427,7 @@ theorem successiveMinimumSet_nonempty_of_finrank_at
   exact successiveMinimaAux_linearIndependent_of_finrank k L hfull i.val
     (Nat.le_of_lt i.isLt)
 
-/- [derived consequence of Definition 25 (submission PDF p. 12), PDF p. 12] The
+/- [derived consequence of Definition 25 (submission PDF p. 12)] The
    selected vector at an admissible full-rank stage lies outside the span of
    its predecessors. -/
 theorem successiveMinimum_mem_of_finrank
@@ -439,7 +439,7 @@ theorem successiveMinimum_mem_of_finrank
   successiveMinimum_mem_of_nonempty L i
     (successiveMinimumSet_nonempty_of_finrank_at k L hfull i)
 
-/- [derived consequence of Definition 25 (submission PDF p. 12), PDF p. 12] Each
+/- [derived consequence of Definition 25 (submission PDF p. 12)] Each
    selected minimum is nonzero because zero belongs to every predecessor
    span. -/
 theorem successiveMinimum_ne_zero_of_finrank
@@ -453,7 +453,7 @@ theorem successiveMinimum_ne_zero_of_finrank
   rw [hzero]
   exact Submodule.zero_mem _
 
-/- [derived consequence of Definition 25 (submission PDF p. 12), PDF p. 12] The
+/- [derived consequence of Definition 25 (submission PDF p. 12)] The
    indexed successive minima form a linearly independent family whenever the
    lattice span has the indicated field rank. -/
 theorem successiveMinimum_linearIndependent_of_finrank
@@ -473,7 +473,7 @@ theorem successiveMinimum_linearIndependent_of_finrank
   rw [hfun]
   exact haux
 
-/- [derived consequence of Definition 25 (submission PDF p. 12), PDF p. 12] The
+/- [derived consequence of Definition 25 (submission PDF p. 12)] The
    recursively selected norms are nondecreasing at every full-rank field
    lattice.  The row-space lemma below is its manuscript-facing specialization. -/
 theorem successiveMinimum_norm_le_of_index_le_of_finrank
@@ -758,8 +758,8 @@ theorem rowSuccessiveMinimum_K_span_eq_rowZLattice_K_span :
   apply Submodule.eq_of_le_of_finrank_eq hle
   rw [hsel, rowZLattice_K_span_finrank V]
 
-/- [derived consequence, paper Lemma 36 (submission PDF pp. 16--17), PDF p. 17,
-   together with Proposition 22 (submission PDF p. 11), PDF p. 11] The selected
+/- [derived consequence, paper Lemma 36 (submission PDF pp. 16--17),
+   together with Proposition 22 (submission PDF p. 11)] The selected
    minima determine the embedded rational row space.  The left side retains
    the manuscript's tuple of integral rows; the right side is the proved
    row-space embedding bridge used to recover the Grassmannian point. -/
@@ -803,7 +803,7 @@ theorem rowSuccessiveMinimum_ambient_span_eq_range
     _ = LinearMap.range (rowSpaceVectorEmbeddingK V) :=
       span_embeddedIntegralRowModule_eq_range_rowSpaceVectorEmbeddingK V
 
-/- [paper Lemma 36 (submission PDF pp. 16--17), PDF p. 17] Equality of two selected
+/- [paper Lemma 36 (submission PDF pp. 16--17)] Equality of two selected
    minima tuples forces equality of their rational row spaces, hence equality
    of the corresponding points of the Grassmannian.  This is the explicit
    bridge from the manuscript's tuple to the trijection representation. -/
@@ -1054,7 +1054,7 @@ theorem rowMinimaRealBasis_mem_rowZLattice
     (NumberField.RingOfIntegers.basis K j)
     (rowSuccessiveMinimum V i).property
 
-/- [derived consequence of part 2 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [derived consequence of part 2 of Lemma 27 (submission PDF pp. 12--13)]
    Scalar multiplication in the Euclidean realization is bilinear over ℝ.
    Finite-dimensional continuity therefore supplies the uniform constant in
    the manuscript's assertion that `v ∈ F₀ x` implies
@@ -1112,7 +1112,7 @@ theorem rowKRealSmulBound_apply (c : K_ℝ[K]) (x : RowVector K m) :
     ‖c • x‖ ≤ rowKRealSmulBound (K := K) (m := m) * ‖c‖ * ‖x‖ :=
   (Classical.choose_spec (exists_rowKReal_smul_bound (K := K) (m := m))).2 c x
 
-/- [derived consequence of part 2 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [derived consequence of part 2 of Lemma 27 (submission PDF pp. 12--13)]
    This is the radius of a fixed fundamental-domain substitute for the
    coefficient lattice `𝓞_K` in `K_ℝ`. -/
 noncomputable def numberFieldCoefficientRadius
@@ -1261,7 +1261,7 @@ theorem rowSuccessiveMinimum_mem (i : Fin k) :
   rowSuccessiveMinimum_mem_of_nonempty V i
     (rowSuccessiveMinimumSet_nonempty_of_lt V i.val i.isLt)
 
-/- [derived consequence of Definition 25 (submission PDF p. 12), PDF p. 12] The
+/- [derived consequence of Definition 25 (submission PDF p. 12)] The
    recursively selected norms are nondecreasing.  This is the comparison used
    in the manuscript to bound the fundamental parallelepiped by the last
    minimum. -/
@@ -1326,7 +1326,7 @@ noncomputable def rowProjection (i : Fin k) (x : rowRealSpan V) :
     FiniteDimensional.complete ℝ (rowKRealScalarLine V i)
   (rowKRealScalarLine V i).starProjection x
 
-/- [Lean infrastructure for Lemma 36 (submission PDF pp. 16--17), PDF p. 17]
+/- [Lean infrastructure for Lemma 36 (submission PDF pp. 16--17)]
    Ambient version of the line and projection occurring in the manuscript's
    definition of `π_i`.  The earlier `rowProjection` is the same projection
    computed in the row-span subtype; the bridge below proves that these are
@@ -1439,7 +1439,7 @@ theorem rowSuccessiveMinimum_mem_previousKSpan_of_index_lt
       (S := K) (rowZLattice V)
       (⟨i.val, Nat.lt_succ_self i.val⟩ : Fin (i.val + 1))).symm
 
-/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13)]
    Multiplication of a selected lattice vector by an algebraic integer stays
    in the same integral row lattice. -/
 theorem rowSuccessiveMinimum_smul_integral_mem
@@ -1453,7 +1453,7 @@ theorem rowSuccessiveMinimum_smul_integral_mem
   exact embeddedIntegralRowModule_smul_integral V a
     (rowSuccessiveMinimum V i).property
 
-/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13)]
    The integral scalar multiple also belongs to the preceding `K`-span when
    the selected vector does.  The displayed equality is the scalar-tower
    bridge from the manuscript's `K_ℝ` action to its `K`-span. -/
@@ -1498,7 +1498,7 @@ noncomputable def rowSuccessiveMinimum_add_integral_smul
     exact (rowZLattice V).add_mem (rowSuccessiveMinimum V j).property
       (rowSuccessiveMinimum_smul_integral_mem V i a)⟩
 
-/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13] The preceding
+/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13)] The preceding
    `K`-span cannot contain `l_j + α l_i`, since it already contains `l_i` and
    is closed under subtraction. -/
 set_option maxHeartbeats 800000 in
@@ -1517,7 +1517,7 @@ theorem rowSuccessiveMinimum_add_integral_smul_not_mem_previousKSpan
     simpa [rowSuccessiveMinimum_add_integral_smul] using hsub
   exact (rowSuccessiveMinimum_mem V j) hjmem
 
-/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13)]
    This is the manuscript's first norm comparison, before orthogonal
    decomposition: every `l_j + α l_i` is an admissible lattice vector. -/
 set_option maxHeartbeats 800000 in
@@ -1537,7 +1537,7 @@ theorem rowSuccessiveMinimum_norm_le_of_add_integral_smul
   have hmin := rowSuccessiveMinimum_norm_min V j w hwA
   exact hmin
 
-/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [paper: part 3 of Lemma 27 (submission PDF pp. 12--13)]
    Orthogonal decomposition turns the preceding norm comparison into the
    corresponding comparison of the projections onto `K_ℝ l_i`. -/
 set_option maxHeartbeats 800000 in
@@ -1594,7 +1594,7 @@ theorem rowProjection_norm_le_of_add_integral_smul
   rw [← hproj_add]
   exact hnorm
 
-/- [derived consequence of part 3 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [derived consequence of part 3 of Lemma 27 (submission PDF pp. 12--13)]
    The coefficient approximation in the fixed number-field lattice supplies
    the uniform constant in the manuscript's `c_{ij}` bound. -/
 set_option maxHeartbeats 800000 in
@@ -1658,7 +1658,7 @@ theorem rowProjection_norm_le_of_successiveMinima
           (rowKRealSmulBound_pos (K := K) (m := m)).le)
         (norm_nonneg _)
 
-/- [Lean infrastructure for Lemma 36 (submission PDF pp. 16--17), PDF p. 17]
+/- [Lean infrastructure for Lemma 36 (submission PDF pp. 16--17)]
    The selected lattice point is represented internally by the subtype
    `rowZLattice V`.  This choice recovers its manuscript row in
    `M_{1 × m}(𝓞_K)`; the following equality is the proved embedding bridge. -/
@@ -1683,7 +1683,7 @@ theorem integralVectorEmbedding_rowSuccessiveMinimumIntegralRow (i : Fin k) :
       RowVector K m) ∈ embeddedIntegralRowModule V
     exact (rowSuccessiveMinimum V i).property)) |>.2
 
-/- [paper, definition in Lemma 36 (submission PDF pp. 16--17), PDF p. 17]
+/- [paper, definition in Lemma 36 (submission PDF pp. 16--17)]
    Exact Lean encoding of the manuscript's
    `𝓑_k^(C)(T)`.  Rows are stored as elements of `𝓞_K^m`, and every norm and
    projection is applied after the fixed Minkowski embedding. -/
@@ -1700,7 +1700,7 @@ noncomputable def possibleSuccessiveMinimaSet (C T : ℝ) :
           (integralVectorEmbedding (K := K) m (l j))‖ ≤
         C * ‖integralVectorEmbedding (K := K) m (l i)‖)}
 
-/- [derived consequence of paper Lemma 36 (submission PDF pp. 16--17), PDF p. 17]
+/- [derived consequence of paper Lemma 36 (submission PDF pp. 16--17)]
    The manuscript's bounded tuple set `𝓑_k^(C)(T)` is finite.  The proof
    deliberately retains its rows as elements of `𝓞_K^m`: each coordinate row
    maps injectively into the fixed ambient integral-row lattice, whose bounded
@@ -1730,7 +1730,7 @@ theorem finite_possibleSuccessiveMinimaSet
   intro l hl
   exact hl.2.1
 
-/- [paper, part 1 of Lemma 36 (submission PDF pp. 16--17), PDF p. 17] The minima
+/- [paper, part 1 of Lemma 36 (submission PDF pp. 16--17)] The minima
    tuple satisfies the defining conditions of `𝓑_k^(C)(T)` once `C` dominates
    the projection constant and the last minimum has the asserted cutoff. -/
 set_option maxHeartbeats 800000 in
@@ -1773,7 +1773,7 @@ theorem rowSuccessiveMinimumIntegralTuple_mem_possibleSuccessiveMinimaSet
           ‖((rowSuccessiveMinimum V i : rowZLattice V) : rowRealSpan V)‖ := by
         exact mul_le_mul_of_nonneg_right hCproj (norm_nonneg _)
 
-/- [derived consequence of part 1 of Lemma 27 (submission PDF pp. 12--13), PDF p. 16]
+/- [derived consequence of part 1 of Lemma 27 (submission PDF pp. 12--13)]
    This is the arithmetic lower-height step in the manuscript.  `δ` is the
    fixed positive lower bound for nonzero integral rows, `Ccut` is the paper's
    factor `k^(-1/2) C{sup}`, and `hprod` is the product estimate supplied by
@@ -1856,7 +1856,7 @@ theorem rowSpaceHeight_lower_bound_of_minima
         (((δ ^ (k - 1) * Ccut) ^ d) * T ^ d) / Cprod := by ring
     _ ≤ rowSpaceHeight V := hdiv
 
-/- [derived consequence of part 2 of Lemma 27 (submission PDF pp. 12--13), PDF p. 13]
+/- [derived consequence of part 2 of Lemma 27 (submission PDF pp. 12--13)]
    The fixed integral basis and the monotonicity of the selected minima give
    the paper's covering-radius conclusion with an explicit constant. -/
 theorem rowCoveringRadius_le_of_successiveMinima
@@ -1916,7 +1916,7 @@ theorem rowCoveringRadius_le_of_successiveMinima
       ring
 
 /- [derived consequence of Lemma 27 (submission PDF pp. 12--13) and equation
-   Equation (24) (submission PDF p. 21), PDF p. 13] The covering-radius
+   Equation (24) (submission PDF p. 21)] The covering-radius
    bound and the cited product-of-minima estimate give the pointwise summand
    comparison used before the injection into `𝓑_k(T)`.  The product estimate
    is deliberately an explicit hypothesis: in the paper it is the input
@@ -2010,7 +2010,7 @@ theorem rowSuccessiveMinimum_norm_le_moduleMinimum (i : Fin k) :
     (K := K) (L := rowZLattice V) i
     (rowSuccessiveMinimumSet_nonempty_of_lt V i.val i.isLt) hprev
 
-/- [paper, proof of Lemma 36 (submission PDF pp. 16--17), PDF p. 17] If a bounded
+/- [paper, proof of Lemma 36 (submission PDF pp. 16--17)] If a bounded
    lattice set contains `k` independent vectors, the last selected minimum is
    bounded by the same radius.  The hypothesis is stated on the paper's
    lattice `Λ_D`; extracting the bounded independent rows from `D ∈ 𝓕_k(T)` is
@@ -2056,7 +2056,7 @@ theorem rowSuccessiveMinimum_last_norm_le_of_independent_bounded
 
 /- [cited input] Fieker--Stehlé, *Short Bases of Lattices over Number Fields*
    (ANTS-IX, 2010), Theorem 2, p. 3, proves the product bound under its
-   `T₂` norm.  The paper's norm (equation (11) (submission PDF p. 10), PDF p. 10) includes
+   `T₂` norm.  The paper's norm (equation (11) (submission PDF p. 10)) includes
    a discriminant/trace normalization, while the present `RowVector` uses
    Mathlib's unscaled Euclidean mixed space.  For fixed `K` the two norms and
    covolumes differ by fixed positive factors, so the manuscript needs only
@@ -2156,7 +2156,7 @@ def HasFiekerStehleProductBound (K : Type*) [Field K] [NumberField K] : Prop :=
 
 /- [derived consequence] This is the exact exponent conversion from
    Fieker--Stehlé Theorem 2 to the product form used in part 1 of
-   Lemma 27 (submission PDF pp. 12--13) (authoritative submission PDF, PDF p. 13).  It uses only
+   Lemma 27 (submission PDF pp. 12--13) (submission PDF p. 13).  It uses only
    the cited statement above, positivity of the height, and
    `degree K > 0`; in particular it introduces no new geometry-of-numbers
    assertion. -/
@@ -2243,8 +2243,8 @@ theorem exists_rowSuccessiveMinimum_prod_norm_pow_le_of_fiekerStehle
   exact rowSuccessiveMinimum_prod_norm_pow_le_of_fiekerStehle V C hk hbound
 
 /- [derived consequence] This is the rank-one instance of the product
-   inequality in Part 1 of Lemma 27 (submission PDF pp. 12--13) (authoritative submission PDF,
-   PDF p. 13).  Unlike the all-rank version immediately above, it is
+   inequality in Part 1 of Lemma 27 (submission PDF pp. 12--13), especially p. 13.
+   Unlike the all-rank version immediately above, it is
    discharged from the proved first Minkowski theorem through
    `exists_fiekerStehleProductBound_rank_one`; it has no Fieker--Stehlé
    hypothesis. -/
@@ -2312,7 +2312,7 @@ theorem rowSuccessiveMinimum_first_norm_le
         Nat.cast_mul]
 
 /- [derived consequence] This makes the first inequality of Part 1 of
-   Lemma 27 (submission PDF pp. 12--13) (authoritative submission PDF, PDF p. 13) uniform over
+   Lemma 27 (submission PDF pp. 12--13) (submission PDF p. 13) uniform over
    rank-`k` row lattices.  The paper denotes the resulting fixed constant by
    `C^{hermite}`.  It follows from the already proved first Minkowski bound;
    it is not an invocation of the separate Fieker--Stehlé product theorem. -/

@@ -24,7 +24,7 @@ abbrev M (n m : ℕ) (R : Type*) := Matrix (Fin n) (Fin m) R
    writes `K_ℝ = K ⊗_ℚ ℝ`.  We use Mathlib's Euclidean mixed space, rather
    than its supremum-normed mixed space, so finite products carry an `l²`
    geometry.  Its complex-place weights and discriminant scaling are not
-   definitionally equation Equation (11) (submission PDF p. 10); the exact manuscript metric and Haar
+   definitionally Equation (11) (submission PDF p. 10); the exact manuscript metric and Haar
    normalization are exposed in `Counting/PaperMetric.lean` and
    `Counting/MainTermNormalization.lean`.  The raw norm is used only for the
    author-approved admissibility/Riemann implementation and coarse bounds. -/

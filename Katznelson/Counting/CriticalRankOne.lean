@@ -18,8 +18,8 @@ open scoped Classical NumberField
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/- [paper, subsection Section 1.3 (submission PDF pp. 5--6), PDF p. 6, and the exceptional
-   branch of Theorem 2 (submission PDF p. 2; proof pp. 20--22), PDF p. 21] At the endpoint `d = 1`, the
+/- [paper, subsection Section 1.3 (submission PDF pp. 5--6), and the exceptional
+   branch of Theorem 2 (submission PDF p. 2; proof pp. 20--22)] At the endpoint `d = 1`, the
    ambient row-count exponent and reciprocal-norm exponent are both `m`.
    Abel summation over the manuscript's ordinary unit shells therefore gives
    the retained `1 + log b` factor. -/
@@ -124,7 +124,7 @@ theorem ambientIntegralRowModule_norm_shell_sum_Icc_critical_rank_one
         simp [Ccritical]
         ring
 
-/- [derived consequence of the paper endpoint at PDF p. 6] The
+/- [derived consequence of the paper endpoint at submission PDF p. 6] The
    ordinary-shell estimate bounds any finite family of ambient integral rows
    lying below an integer cutoff.  The fixed shell below norm one is retained
    explicitly; it is finite by discreteness of `\mathcal O_K^m`. -/
@@ -279,7 +279,7 @@ theorem ambientIntegralRowModule_finite_norm_inv_pow_sum_le_log_at_nat
     _ ≤ Ctotal * (1 + Real.log (b : ℝ)) :=
       mul_le_mul_of_nonneg_right hcoeff (by linarith)
 
-/- [Lean infrastructure for paper PDF p. 6] The manuscript's cutoff
+/- [Lean infrastructure for submission PDF p. 6] The manuscript's cutoff
    is the real number `C T`, while the ordinary shells have a natural endpoint.
    This theorem applies the already proved rounding bridge and returns the
    estimate to the exact factor `1 + log T`. -/
@@ -319,8 +319,8 @@ theorem ambientIntegralRowModule_finite_norm_inv_pow_sum_le_log
       mul_le_mul_of_nonneg_left hround' hC.le
     _ = (C * L) * (1 + Real.log T) := by ring
 
-/- [paper, subsection Section 1.3 (submission PDF pp. 5--6), PDF p. 6, and the exceptional
-   branch at PDF p. 21] This is the logarithmic estimate on the
+/- [paper, subsection Section 1.3 (submission PDF pp. 5--6), and the exceptional
+   branch at submission PDF p. 21] This is the logarithmic estimate on the
    manuscript's literal one-row set `\mathcal B_1^{(C)}(T)`.  The exact
    bridge through `possibleSuccessiveMinimaNonzeroFinset` removes only the
    zero row, whose totalized radius weight was already proved to vanish. -/
@@ -433,7 +433,7 @@ theorem possibleSuccessiveMinimaRadiusWeight_sum_le_of_critical_rank_one
   exact hbound hT S hSbound
 
 /- [derived consequence of paper equation (24) (submission PDF p. 21) and the
-   exceptional branch at PDF p. 21] The logarithmic tuple estimate is
+   exceptional branch at submission PDF p. 21] The logarithmic tuple estimate is
    returned to the manuscript's exact family `\mathcal F_1(T)` through the
    proved minima injection and covering-radius comparison.  The product
    inequality is explicit here so this theorem can also consume any faithfully

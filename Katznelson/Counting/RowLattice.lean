@@ -150,8 +150,8 @@ theorem realVectorCoordinates_injective (m : ℕ) :
   exact congrFun hxy (j, i)
 
 /- The paper fixes a lexicographic order by identifying `K_ℝ^m` with a
-   finite real coordinate space (equation (1), PDF p. 12 of the checked-in
-   TeX).  `Finite.equivFin` records the fixed enumeration of the chosen
+   finite real coordinate space (Definition 25, submission PDF p. 12).
+   `Finite.equivFin` records the fixed enumeration of the chosen
    integral-basis coordinates; transporting the usual lexicographic order on
    `Fin (Nat.card (Fin m × IntegralBasisIndex K)) → ℝ` gives the corresponding
    order on row vectors.  This is Lean infrastructure for the paper's order,
@@ -489,9 +489,9 @@ noncomputable def ambientRowEmbeddingQ (m : ℕ) :
 
 /- [Lean infrastructure] The ambient algebraic-integer row module in the
    Minkowski row space.  This is the product lattice whose projection is used
-   in the proof of Lemma 38 (submission PDF pp. 17--18) (authoritative submission PDF,
-   PDF p. 18); it is the ambient version of the integral row vectors in
-   Equation (13) (submission PDF p. 11) (PDF p. 11). -/
+   in the proof of Lemma 38 (submission PDF pp. 17--18), especially p. 18; it is the
+   ambient version of the integral row vectors in
+   Equation (13) (submission PDF p. 11). -/
 noncomputable def ambientIntegralRowModule (m : ℕ) :
     Submodule ℤ (RowVector K m) where
   carrier := {x | ∀ j, x j ∈ NumberField.mixedEmbedding.euclidean.integerLattice K}
@@ -512,7 +512,7 @@ theorem ambientIntegralRowModule_mem_iff (m : ℕ) (x : RowVector K m) :
     x ∈ ambientIntegralRowModule (K := K) m ↔
       ∀ j, x j ∈ NumberField.mixedEmbedding.euclidean.integerLattice K := Iff.rfl
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Every embedded vector with algebraic-integer coordinates belongs to the
    ambient product lattice used in the projection argument. -/
 theorem integralVectorEmbedding_mem_ambientIntegralRowModule
@@ -528,7 +528,7 @@ theorem integralVectorEmbedding_mem_ambientIntegralRowModule
     NumberField.mixedEmbedding.integerLattice K
   simp [numberEmbedding]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The ambient algebraic-integer row module is exactly the image of the
    coordinatewise integral embedding.  This makes the integral kernel of the
    projection explicit, rather than only identifying its rational span. -/
@@ -580,7 +580,7 @@ noncomputable instance ambientIntegralRowModule.discreteTopology (m : ℕ) :
 
 /- [derived consequence] The ambient product module spans the full Minkowski
    row space.  This is the ambient rank part of the projected-lattice claim
-   used in Lemma 38 (submission PDF pp. 17--18) (authoritative submission PDF, PDF p. 18).
+   used in Lemma 38 (submission PDF pp. 17--18) (submission PDF p. 18).
    It does not establish the projected module's discreteness or covolume. -/
 theorem ambientIntegralRowModule_span_top (m : ℕ) :
     Submodule.span ℝ
@@ -640,7 +640,7 @@ noncomputable instance ambientIntegralRowModule.isZLattice (m : ℕ) :
     IsZLattice ℝ (ambientIntegralRowModule (K := K) m) := by
   exact ⟨ambientIntegralRowModule_span_top m⟩
 
-/- [paper, Lemma 19 (submission PDF p. 9), PDF p. 19]
+/- [paper, Lemma 19 (submission PDF p. 9)]
    The ambient algebraic-integer row module has the expected real rank
    `m * degree K`.  This is the dimension input for the ambient lattice
    p-series used in the noncritical radius-sum estimate. -/
@@ -650,7 +650,7 @@ theorem ambientIntegralRowModule_finrank (m : ℕ) :
   rw [ZLattice.rank (K := ℝ)
     (ambientIntegralRowModule (K := K) m), rowVector_finrank]
 
-/- [paper, Lemma 19 (submission PDF p. 9), PDF p. 19]
+/- [paper, Lemma 19 (submission PDF p. 9)]
    Consequently, inverse norm powers above the ambient dimension are
    summable.  This is the ambient-lattice form of the shell estimate used in
    the noncritical part of the radius sum; no dyadic decomposition is added. -/
@@ -663,7 +663,7 @@ theorem summable_ambientIntegralRowModule_norm_inv_pow
   simpa [ambientIntegralRowModule_finrank] using hgap
 
 /- [derived consequence of paper Lemma 19 (submission PDF p. 9),
-   PDF p. 19] In the noncritical radius-sum range, the exponent appearing in
+   submission PDF p. 19] In the noncritical radius-sum range, the exponent appearing in
    the innermost row sum is strictly above the ambient real dimension.  This
    is only a convenient specialization of the preceding p-series theorem; it
    does not introduce a dyadic decomposition or replace the manuscript's
@@ -677,7 +677,7 @@ theorem summable_ambientIntegralRowModule_norm_inv_pow_of_noncritical
   apply summable_ambientIntegralRowModule_norm_inv_pow
   omega
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The rational span of the ambient algebraic-integer module is precisely the
    Minkowski image of K^m.  The forward inclusion uses the defining
    coordinatewise integer lattice; the reverse inclusion expands each
@@ -783,8 +783,8 @@ theorem ambientIntegralRowModule_ratSpan_eq_range (m : ℕ) :
 
 /- [Lean infrastructure] This is the orthogonal projection of the ambient
    product lattice into the orthogonal complement of the row span.  The paper
-   uses this projection in Lemma 38 (submission PDF pp. 17--18) (authoritative submission PDF,
-   PDF p. 18), but does not package it as a named Lean object.  No
+   uses this projection in Lemma 38 (submission PDF pp. 17--18), especially p. 18,
+   but does not package it as a named Lean object.  No
    discreteness or covolume assertion is made here. -/
 noncomputable def projectedAmbientRowMap {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -796,7 +796,7 @@ noncomputable def projectedAmbientRowModule {m l : ℕ}
     Submodule ℤ ((rowRealSpan V)ᗮ) :=
   (ambientIntegralRowModule (K := K) m).map (projectedAmbientRowMap V)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The kernel of the orthogonal projection is the lower row space itself.
    This is the real-linear half of the primitive projected-lattice argument. -/
 theorem projectedAmbientRowMap_eq_zero_iff_mem_rowRealSpan
@@ -809,7 +809,7 @@ theorem projectedAmbientRowMap_eq_zero_iff_mem_rowRealSpan
   rw [(Submodule.closed_of_finiteDimensional
     (rowRealSpan V)).submodule_topologicalClosure_eq]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The projected module is finitely generated as a `ℤ`-module because it is
    the image of the ambient algebraic-integer module.  The discrete-topology
    part of the projected-lattice claim is proved below from its rational and
@@ -822,7 +822,7 @@ noncomputable instance projectedAmbientRowModule.module_finite
   exact Module.Finite.map (ambientIntegralRowModule (K := K) m)
     (projectedAmbientRowMap V)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The projection of an ambient integral row is an element of the projected
    ambient module by the definition of `Submodule.map`. -/
 theorem projectedAmbientRowMap_mem_projectedAmbientRowModule
@@ -835,7 +835,7 @@ theorem projectedAmbientRowMap_mem_projectedAmbientRowModule
 /- [derived consequence] The real span of the projected ambient module is the
    whole orthogonal complement.  This proves the fullness part of the
    projected-lattice claim in Lemma 38 (submission PDF pp. 17--18)
-   (authoritative submission PDF, PDF p. 18); the exact covolume identity
+   (submission PDF p. 18); the exact covolume identity
    `H(D')⁻¹` remains to be proved. -/
 theorem projectedAmbientRowModule_span_top {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -996,7 +996,7 @@ theorem rowRealSpan_eq_span_embeddedRowBasisQ {m k : ℕ}
     trivial
 
 /- [derived consequence, used in the paper step Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The Minkowski image of an algebraic K-row vector can
+   submission PDF p. 18]  The Minkowski image of an algebraic K-row vector can
    lie in the real span of the lower row space only when the row vector itself
    lies in that K-row space.  This is the rational-basis/linear-independence
    bridge implicit when the paper passes from equal projected vectors to equal
@@ -1077,7 +1077,7 @@ theorem rowRealSpan_mem_ambient_to_mem
   exact hmap
 
 /- [derived consequence, used in the paper step Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Specialize the preceding intersection statement to the
+   submission PDF p. 18]  Specialize the preceding intersection statement to the
    integral vectors used by the manuscript.  The displayed subtraction is
    retained in the paper's coordinatewise notation. -/
 theorem rowRealSpan_mem_integral_difference_to_mem
@@ -1101,7 +1101,7 @@ theorem rowRealSpan_mem_integral_difference_to_mem
   rw [heq]
   exact hxy
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Inside the ambient algebraic-integer row lattice, the vectors lying in the
    real row span are precisely the primitive integral row module
    `Λ_{D'}`.  This is the lattice-intersection statement used by the
@@ -1135,7 +1135,7 @@ theorem embeddedIntegralRowModule_eq_ambient_inf_rowRealSpan
     refine (mem_embeddedIntegralRowModule_iff V x).2 ⟨aV, aV.property, ?_⟩
     simpa [aV] using ha
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The integral kernel of the projection of `𝓞_K^m` is exactly
    `Λ_{D'}`.  This combines the preceding projection-kernel fact with the
    proved ambient/intersection identification. -/
@@ -1151,7 +1151,7 @@ theorem ambientIntegralRowModule_inf_kernel_projectedAmbientRowMap_eq
     (x ∈ ambientIntegralRowModule (K := K) m ∧ x ∈ rowRealSpan V)
   rw [projectedAmbientRowMap_eq_zero_iff_mem_rowRealSpan]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    `Λ_{D'}` is saturated in the ambient integral row lattice.  Equivalently,
    an integral row whose nonzero integral multiple belongs to the lower row
    lattice already belongs to it.  This is the primitivity condition needed
@@ -1173,7 +1173,7 @@ theorem embeddedIntegralRowModule_saturated_in_ambient
   exact (smul_eq_zero.mp hzeroR).resolve_left haR
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Put the projection kernel inside the ambient integral module,
+   submission PDF p. 18]  Put the projection kernel inside the ambient integral module,
    so that its quotient is an ordinary `ℤ`-module.  This is only a change of
    carrier: its image in the Minkowski row space is the already named
    `Λ_{D'}`. -/
@@ -1183,7 +1183,7 @@ noncomputable def ambientKernelSubmodule {m l : ℕ}
   (embeddedIntegralRowModule V).comap
     (ambientIntegralRowModule (K := K) m).subtype
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Membership in the kernel regarded inside the ambient lattice is exactly
    membership in `Λ_{D'}` after forgetting the ambient subtype. -/
 theorem mem_ambientKernelSubmodule_iff
@@ -1192,7 +1192,7 @@ theorem mem_ambientKernelSubmodule_iff
     x ∈ ambientKernelSubmodule (K := K) V ↔
       (x : RowVector K m) ∈ embeddedIntegralRowModule V := Iff.rfl
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The ambient-carrier version of primitivity: the kernel submodule is
    saturated, hence its quotient has no integral torsion. -/
 theorem ambientKernelSubmodule_saturated
@@ -1204,7 +1204,7 @@ theorem ambientKernelSubmodule_saturated
   apply embeddedIntegralRowModule_saturated_in_ambient V ha x.property
   simpa using hax
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The quotient of the ambient integral lattice by `Λ_{D'}` is torsion-free.
    This is the algebraic content of the paper's use of a primitive sublattice,
    and will supply a genuine integral splitting for the covolume calculation.
@@ -1233,7 +1233,7 @@ noncomputable instance ambientKernelQuotient.isTorsionFree
     exact (Submodule.Quotient.mk_eq_zero _).mpr
       (ambientKernelSubmodule_saturated V ha hmem)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Since the quotient is both finitely generated and torsion-free over the
    PID `ℤ`, it is free.  The instance is obtained from Mathlib's verified
    PID theorem, not postulated as an external lattice fact. -/
@@ -1244,7 +1244,7 @@ noncomputable instance ambientKernelQuotient.moduleFree
         ambientKernelSubmodule (K := K) V) := by
   infer_instance
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Choose the integral splitting furnished by the preceding freeness result.
    Its defining identity is recorded immediately below, so later determinant
    calculations use a proved section rather than an unspecified complement. -/
@@ -1256,7 +1256,7 @@ noncomputable def ambientKernelQuotientSection {m l : ℕ}
   ((ambientKernelSubmodule (K := K) V).mkQ).exists_rightInverse_of_surjective
     (ambientKernelSubmodule (K := K) V).range_mkQ |>.choose
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The chosen section is a right inverse to the quotient map. -/
 theorem ambientKernelQuotientSection_spec {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -1266,7 +1266,7 @@ theorem ambientKernelQuotientSection_spec {m l : ℕ}
     (ambientKernelSubmodule (K := K) V).range_mkQ |>.choose_spec
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Restrict the orthogonal projection to the ambient integral
+   submission PDF p. 18]  Restrict the orthogonal projection to the ambient integral
    lattice and corestrict it to its image.  This names the quotient map whose
    target is exactly the projected lattice in the manuscript. -/
 noncomputable def ambientProjectedRowMap {m l : ℕ}
@@ -1278,7 +1278,7 @@ noncomputable def ambientProjectedRowMap {m l : ℕ}
       (ambientIntegralRowModule (K := K) m))
     (fun x => Submodule.mem_map.mpr ⟨x, x.property, rfl⟩)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    On underlying Minkowski vectors, the corestricted map is the manuscript's
    orthogonal projection. -/
 theorem ambientProjectedRowMap_apply {m l : ℕ}
@@ -1286,7 +1286,7 @@ theorem ambientProjectedRowMap_apply {m l : ℕ}
     (ambientProjectedRowMap (K := K) V x : (rowRealSpan V)ᗮ) =
       projectedAmbientRowMap V x := rfl
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The kernel of the ambient-to-projected map is the primitive lower lattice,
    now expressed on the ambient carrier. -/
 theorem ker_ambientProjectedRowMap_eq_ambientKernelSubmodule
@@ -1314,7 +1314,7 @@ theorem ker_ambientProjectedRowMap_eq_ambientKernelSubmodule
     rw [ambientProjectedRowMap_apply]
     exact hx.2
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    By its image definition, every projected lattice vector has an integral
    ambient lift. -/
 theorem ambientProjectedRowMap_surjective {m l : ℕ}
@@ -1329,7 +1329,7 @@ theorem ambientProjectedRowMap_surjective {m l : ℕ}
   rw [ambientProjectedRowMap_apply]
   exact hxy
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    First isomorphism theorem for the projected lattice: the free quotient of
    the ambient integral lattice by `Λ_{D'}` is identified with its orthogonal
    projection.  This is a proved integral equivalence, not a replacement of
@@ -1368,7 +1368,7 @@ theorem projectedAmbientRowModule_finrank {m l : ℕ}
     (by simpa [Nat.add_comm] using
       (rowRealSpan V).finrank_add_finrank_orthogonal)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The rational and real spans of the projected ambient module have the same
    dimension.  The rational calculation uses the ambient Minkowski image,
    the proved real-span/kernel bridge, and rank--nullity over ℚ; the real
@@ -1491,7 +1491,7 @@ theorem projectedAmbientRowModule_rat_finrank_eq_real_finrank
       m * degree K - l * degree K := projectedAmbientRowModule_finrank V
   exact hqrank.trans hrealrank.symm
 
-/- [derived consequence, paper low_rank_induction, PDF p. 18]
+/- [derived consequence of paper Lemma 38 (submission PDF pp. 17--18)]
    The projected ambient module is discrete.  This application is now
    unconditional: finite generation was proved above, and the rational/real
    span equality is the preceding rank calculation. -/
@@ -1501,7 +1501,7 @@ noncomputable instance projectedAmbientRowModule.discreteTopology
   apply discreteTopology_of_finrank_eq
   exact projectedAmbientRowModule_rat_finrank_eq_real_finrank V
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The projected module is full in its ambient real vector space, hence has
    the `IsZLattice` interface required by the lattice-counting lemmas.  Its
    exact covolume normalization is deliberately not inferred here. -/
@@ -1752,8 +1752,8 @@ noncomputable instance rowZLattice.moduleFree {m k : ℕ}
 
 /- [Lean infrastructure] This is the covolume of the primitive row lattice in
    Mathlib's unscaled Euclidean mixed-space metric.  The manuscript's height
-   uses the discriminant/trace metric in Equation (11) (submission PDF p. 10) (authoritative submission PDF,
-   PDF p. 10).  The two fixed-field metrics are uniformly equivalent on
+   uses the discriminant/trace metric in Equation (11) (submission PDF p. 10).
+   The two fixed-field metrics are uniformly equivalent on
    every fixed-dimensional row space, which is enough for the coarse
    counting and successive-minima estimates.  This raw covolume is not by
    itself used to identify the manuscript's exact main-term constant; the
@@ -2110,7 +2110,7 @@ noncomputable def rowMatrixRealSpanEquiv {m k n : ℕ}
       rfl }
   exact e
 
-/- [derived consequence, paper Lemma 29 (submission PDF p. 14), PDF p. 14]
+/- [derived consequence, paper Lemma 29 (submission PDF p. 14)]
    The preceding algebraic row decomposition becomes an isometry after the
    outer finite product is also given its `l²` norm. -/
 noncomputable def rowMatrixRealSpanLpEquiv {m k n : ℕ}
@@ -2226,7 +2226,7 @@ theorem mem_rowProductZLattice_iff {m k n : ℕ}
     (A : PiLp 2 (fun _ : Fin n => rowRealSpan V)) :
     A ∈ rowProductZLattice V ↔ ∀ i, A i ∈ rowZLattice V := Iff.rfl
 
-/- [derived consequence, paper Lemma 29 (submission PDF p. 14), PDF p. 14]
+/- [derived consequence, paper Lemma 29 (submission PDF p. 14)]
    Coordinatewise covering bounds combine with the Euclidean product norm by
    the factor `√n`.  This is the formal product-radius estimate; its intended
    use is with the intrinsic covering bounds supplied by the Voronoi/radius
@@ -2312,7 +2312,7 @@ theorem rowProductZLattice_eq_comap {m k n : ℕ}
         rowMatrixRealSpan V n) : M n m (K_ℝ[K]))).1 hA
     exact hrows i
 
-/- [derived consequence, paper Lemma 29 (submission PDF p. 14), PDF p. 14]
+/- [derived consequence, paper Lemma 29 (submission PDF p. 14)]
    Transport the preceding product estimate through the proved Euclidean
    isometry from the row-product realization to the matrix realization. -/
 theorem rowMatrixZLattice_isLatticeCovering_of_isLatticeCovering
@@ -2419,7 +2419,7 @@ noncomputable def rowLatticeBasis {m k : ℕ} (V : Grassmannian K m k) :
   Module.Free.chooseBasis ℤ (rowZLattice V)
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The lower lattice occurs in two carriers: intrinsically in
+   submission PDF p. 18]  The lower lattice occurs in two carriers: intrinsically in
    its real row span, and as the kernel submodule inside the ambient integral
    lattice.  This explicit integral equivalence keeps those carriers
    synchronized for the forthcoming block-determinant calculation. -/
@@ -2459,7 +2459,7 @@ noncomputable def ambientKernelEquivRowZLattice {m l : ℕ}
     apply Subtype.ext
     rfl
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Forgetting either carrier in the preceding equivalence gives the same
    ambient Minkowski vector. -/
 theorem ambientKernelEquivRowZLattice_coe {m l : ℕ}
@@ -2469,14 +2469,14 @@ theorem ambientKernelEquivRowZLattice_coe {m l : ℕ}
   rfl
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Transport the already chosen primitive-row basis to the
+   submission PDF p. 18]  Transport the already chosen primitive-row basis to the
    kernel carrier inside the ambient lattice. -/
 noncomputable def ambientKernelZBasis {m l : ℕ}
     (V : Grassmannian K m l) :
     Basis (rowLatticeBasisIndex V) ℤ (ambientKernelSubmodule (K := K) V) :=
   (rowLatticeBasis V).map (ambientKernelEquivRowZLattice V).symm
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The transported kernel basis has exactly the primitive row vectors as its
    ambient values. -/
 theorem ambientKernelZBasis_coe {m l : ℕ}
@@ -2488,7 +2488,7 @@ theorem ambientKernelZBasis_coe {m l : ℕ}
     ((ambientKernelEquivRowZLattice V).symm (rowLatticeBasis V i))
   simpa [ambientKernelZBasis] using h.symm
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The quotient-to-projection equivalence carries the class of an ambient
    integral vector to its orthogonal projection. -/
 theorem ambientKernelQuotientEquivProjected_apply_mk {m l : ℕ}
@@ -2512,7 +2512,7 @@ theorem ambientKernelQuotientEquivProjected_apply_mk {m l : ℕ}
   exact f.quotKerEquivOfSurjective_apply_mk hf x
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Choose a basis of the projected lattice and pull it back to
+   submission PDF p. 18]  Choose a basis of the projected lattice and pull it back to
    the free quotient of the ambient integral lattice.  The basis is used with
    the kernel basis above to form an integral block basis of the ambient
    lattice. -/
@@ -2538,7 +2538,7 @@ noncomputable def ambientKernelQuotientBasis {m l : ℕ}
     (ambientKernelQuotientEquivProjected V).symm
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Combine the primitive lower-lattice basis and lifted
+   submission PDF p. 18]  Combine the primitive lower-lattice basis and lifted
    projected-lattice basis.  `Module.Basis.sumQuot` supplies a genuine
    integral basis, so no complementary lattice is postulated. -/
 noncomputable def ambientIntegralRowZBasis {m l : ℕ}
@@ -2548,7 +2548,7 @@ noncomputable def ambientIntegralRowZBasis {m l : ℕ}
   Module.Basis.sumQuot (ambientKernelZBasis V)
     (ambientKernelQuotientBasis V)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The first block of the ambient basis is the primitive lower lattice. -/
 theorem ambientIntegralRowZBasis_inl {m l : ℕ}
     (V : Grassmannian K m l) (i : rowLatticeBasisIndex V) :
@@ -2556,7 +2556,7 @@ theorem ambientIntegralRowZBasis_inl {m l : ℕ}
       (ambientKernelZBasis V i : ambientIntegralRowModule (K := K) m) := by
   simp [ambientIntegralRowZBasis]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Modulo the lower lattice, the second block is exactly the chosen quotient
    basis. -/
 theorem ambientIntegralRowZBasis_mkQ_inr {m l : ℕ}
@@ -2566,7 +2566,7 @@ theorem ambientIntegralRowZBasis_mkQ_inr {m l : ℕ}
         ambientKernelQuotientBasis V j := by
   simp [ambientIntegralRowZBasis]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The projection of the second ambient block is the chosen projected-lattice
    basis.  This gives the lower-right block in the eventual determinant
    calculation directly in the manuscript's projected-lattice notation. -/
@@ -2594,7 +2594,7 @@ noncomputable def rowOrthonormalBasis {m k : ℕ}
         (rowZLattice V), rowZLattice_finrank V, rowRealSpan_finrank V]))
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The integral rank of the projected lattice agrees with the
+   submission PDF p. 18]  The integral rank of the projected lattice agrees with the
    real dimension of the orthogonal complement.  This is the rank identity
    needed to choose a compatible orthonormal basis for its determinant. -/
 theorem projectedLattice_finrank {m l : ℕ}
@@ -2604,7 +2604,7 @@ theorem projectedLattice_finrank {m l : ℕ}
   rw [ZLattice.rank (K := ℝ) (projectedAmbientRowModule (K := K) V)]
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  An orthonormal basis of the projected real space indexed by
+   submission PDF p. 18]  An orthonormal basis of the projected real space indexed by
    the projected integral lattice basis. -/
 noncomputable def projectedOrthonormalBasis {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -2615,7 +2615,7 @@ noncomputable def projectedOrthonormalBasis {m l : ℕ}
         (projectedAmbientRowModule (K := K) V), projectedLattice_finrank V]))
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Join orthonormal bases of the row space and its orthogonal
+   submission PDF p. 18]  Join orthonormal bases of the row space and its orthogonal
    complement through the verified orthogonal decomposition. -/
 noncomputable def ambientOrthonormalBasis {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -2625,7 +2625,7 @@ noncomputable def ambientOrthonormalBasis {m l : ℕ}
     (rowRealSpan V).orthogonalDecomposition.symm
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Regard the integral block basis as a real basis before taking
+   submission PDF p. 18]  Regard the integral block basis as a real basis before taking
    its determinant against `ambientOrthonormalBasis`. -/
 noncomputable def ambientIntegralRowRealBasis {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -2634,14 +2634,14 @@ noncomputable def ambientIntegralRowRealBasis {m l : ℕ}
   (ambientIntegralRowZBasis V).ofZLatticeBasis ℝ
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The real basis associated to the projected integral lattice. -/
+   submission PDF p. 18]  The real basis associated to the projected integral lattice. -/
 noncomputable def projectedRealBasis {m l : ℕ}
     (V : Grassmannian K m l) :
     Basis (projectedLatticeBasisIndex V) ℝ ((rowRealSpan V)ᗮ) :=
   (projectedLatticeBasis V).ofZLatticeBasis ℝ
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The two basis-change maps whose determinants are the raw
+   submission PDF p. 18]  The two basis-change maps whose determinants are the raw
    covolumes of the projected and ambient lattices. -/
 noncomputable def projectedBasisChange {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -2656,7 +2656,7 @@ noncomputable def ambientBasisChange {m l : ℕ}
     (ambientIntegralRowRealBasis V) (Equiv.refl _)
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Unfold the real bases back to their integral lattice vectors. -/
+   submission PDF p. 18]  Unfold the real bases back to their integral lattice vectors. -/
 theorem ambientIntegralRowRealBasis_apply {m l : ℕ}
     (V : Grassmannian K m l)
     (q : rowLatticeBasisIndex V ⊕ projectedLatticeBasisIndex V) :
@@ -2673,7 +2673,7 @@ theorem projectedRealBasis_apply {m l : ℕ}
     (projectedAmbientRowModule (K := K) V) j
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Each basis-change map sends its chosen orthonormal basis to
+   submission PDF p. 18]  Each basis-change map sends its chosen orthonormal basis to
    the corresponding real lattice basis. -/
 theorem ambientBasisChange_apply_ambientOrthonormalBasis {m l : ℕ}
     (V : Grassmannian K m l)
@@ -2691,7 +2691,7 @@ theorem projectedBasisChange_apply_projectedOrthonormalBasis {m l : ℕ}
     (projectedRealBasis V) (Equiv.refl _)
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The two index blocks of the ambient orthonormal basis are the
+   submission PDF p. 18]  The two index blocks of the ambient orthonormal basis are the
    row-space and orthogonal-complement bases, viewed in the ambient space. -/
 theorem ambientOrthonormalBasis_apply_inl {m l : ℕ}
     (V : Grassmannian K m l) (i : rowLatticeBasisIndex V) :
@@ -2707,7 +2707,7 @@ theorem ambientOrthonormalBasis_apply_inr {m l : ℕ}
   apply (rowRealSpan V).orthogonalDecomposition.injective
   simp [ambientOrthonormalBasis, OrthonormalBasis.prod_apply, Function.comp_def]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    On the row-space block, the ambient basis change is exactly the basis
    change defining the primitive row-lattice covolume. -/
 theorem ambientBasisChange_apply_rowOrthonormalBasis {m l : ℕ}
@@ -2721,7 +2721,7 @@ theorem ambientBasisChange_apply_rowOrthonormalBasis {m l : ℕ}
   rw [ambientIntegralRowZBasis_inl]
   exact ambientKernelZBasis_coe V i
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    On the projected block, orthogonally projecting the ambient basis change
    gives the projected-lattice basis change. -/
 theorem projectedAmbientRowMap_ambientBasisChange_apply_projectedOrthonormalBasis
@@ -2741,7 +2741,7 @@ theorem projectedAmbientRowMap_ambientBasisChange_apply_projectedOrthonormalBasi
   simpa [ambientProjectedRowMap_apply] using h
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The embedded row-space orthonormal basis spans exactly the
+   submission PDF p. 18]  The embedded row-space orthonormal basis spans exactly the
    row space in the ambient Minkowski vector space. -/
 theorem rowRealSpan_eq_span_range_rowOrthonormalBasis {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -2757,7 +2757,7 @@ theorem rowRealSpan_eq_span_range_rowOrthonormalBasis {m l : ℕ}
     simpa using (rowOrthonormalBasis V).toBasis.span_eq
   rw [hspan, Submodule.map_subtype_top]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The ambient basis change preserves the lower row space.  This is precisely
    the zero lower-left block in the determinant calculation. -/
 theorem ambientBasisChange_maps_rowRealSpan {m l : ℕ}
@@ -2778,7 +2778,7 @@ theorem ambientBasisChange_maps_rowRealSpan {m l : ℕ}
   · intro a y _ hy
     simpa using (rowRealSpan V).smul_mem a hy
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The first real block is the primitive row-lattice basis in ambient
    coordinates. -/
 theorem ambientIntegralRowZBasis_coe_inl {m l : ℕ}
@@ -2810,7 +2810,7 @@ noncomputable def rowBasisChange {m k : ℕ} (V : Grassmannian K m k) :
     rowRealSpan V ≃ₗ[ℝ] rowRealSpan V :=
   (rowOrthonormalBasis V).toBasis.equiv (rowRealBasis V) (Equiv.refl _)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Restricting the ambient integral basis change to the lower row space gives
    exactly the basis change whose determinant is `H(D')`. -/
 theorem ambientBasisChange_restrict_eq_rowBasisChange {m l : ℕ}
@@ -2837,7 +2837,7 @@ theorem ambientBasisChange_restrict_eq_rowBasisChange {m l : ℕ}
     ((rowLatticeBasis V).ofZLatticeBasis_apply ℝ (rowZLattice V) i).symm
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Identify the real quotient by the lower row space with its
+   submission PDF p. 18]  Identify the real quotient by the lower row space with its
    orthogonal complement using the same projection occurring in the
    manuscript's projected lattice. -/
 noncomputable def rowSpaceQuotientEquivProjection {m l : ℕ}
@@ -2846,7 +2846,7 @@ noncomputable def rowSpaceQuotientEquivProjection {m l : ℕ}
   (rowRealSpan V).quotientEquivOfIsCompl (rowRealSpan V)ᗮ
     (rowRealSpan V).isCompl_orthogonal
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    This quotient identification composed with the quotient map is the
    manuscript's orthogonal projection. -/
 theorem rowSpaceQuotientEquivProjection_comp_mkQ {m l : ℕ}
@@ -2884,7 +2884,7 @@ theorem rowSpaceQuotientEquivProjection_comp_mkQ {m l : ℕ}
     exact Submodule.orthogonalProjectionOnto_mem_subspace_eq_self v
   simp [map_add, hleft, hright, horthoLeft, horthoRight]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Pointwise form of the preceding bridge, expressed in the projected-lattice
    notation already used by the rest of the development. -/
 theorem rowSpaceQuotientEquivProjection_apply_mkQ {m l : ℕ}
@@ -2896,7 +2896,7 @@ theorem rowSpaceQuotientEquivProjection_apply_mkQ {m l : ℕ}
   exact h
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The endomorphism induced by the ambient integral basis change
+   submission PDF p. 18]  The endomorphism induced by the ambient integral basis change
    on the quotient by the lower row space. -/
 noncomputable def ambientBasisChangeQuotient {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -2904,7 +2904,7 @@ noncomputable def ambientBasisChangeQuotient {m l : ℕ}
   (rowRealSpan V).mapQ (rowRealSpan V) (ambientBasisChange V).toLinearMap
     (ambientBasisChange_maps_rowRealSpan V)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Conjugating the quotient action by the projection identification gives the
    projected-lattice basis change.  This identifies the lower-right block in
    the manuscript's determinant calculation. -/
@@ -2935,7 +2935,7 @@ theorem rowSpaceQuotientEquivProjection_conj_ambientBasisChangeQuotient
   rw [rowSpaceQuotientEquivProjection_apply_mkQ]
   exact projectedAmbientRowMap_ambientBasisChange_apply_projectedOrthonormalBasis V j
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Determinants are invariant under the preceding quotient conjugation. -/
 theorem ambientBasisChangeQuotient_det_eq_projectedBasisChange_det {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -2945,7 +2945,7 @@ theorem ambientBasisChangeQuotient_det_eq_projectedBasisChange_det {m l : ℕ}
   exact (LinearMap.det_conj (ambientBasisChangeQuotient V)
     (rowSpaceQuotientEquivProjection V)).symm
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The ambient determinant factors into the lower primitive-row block and
    the projected quotient block. -/
 theorem ambientBasisChange_det_eq_rowBasisChange_det_mul_projectedBasisChange_det
@@ -3088,7 +3088,7 @@ theorem rowSpaceHeight_eq_rowBasisChange_det_abs {m k : ℕ}
   rw [hvec]
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  The orthogonal-complement subtype needs its canonical Borel
+   submission PDF p. 18]  The orthogonal-complement subtype needs its canonical Borel
    structure explicitly when its covolume is expressed through a fundamental
    domain. -/
 noncomputable local instance rowLatticeProjectedRowMeasurableSpace {m l : ℕ}
@@ -3100,7 +3100,7 @@ local instance rowLatticeProjectedRowBorelSpace {m l : ℕ}
     BorelSpace ((rowRealSpan V)ᗮ) := ⟨rfl⟩
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Fundamental domains of the compatible ambient and projected
+   submission PDF p. 18]  Fundamental domains of the compatible ambient and projected
    orthonormal bases have Euclidean measure one. -/
 theorem ambientOrthonormalBasis_fundamentalDomain_measureReal {m l : ℕ}
     (V : Grassmannian K m l) :
@@ -3132,7 +3132,7 @@ theorem projectedOrthonormalBasis_fundamentalDomain_measureReal {m l : ℕ}
     (projectedOrthonormalBasis V).volume_parallelepiped]
 
 /- [Lean infrastructure, used for paper Lemma 38 (submission PDF pp. 17--18),
-   PDF p. 18]  Determinants of the ambient and projected basis changes in
+   submission PDF p. 18]  Determinants of the ambient and projected basis changes in
    their compatible orthonormal coordinates. -/
 set_option maxHeartbeats 5000000 in
 set_option synthInstance.maxHeartbeats 800000 in
@@ -3152,7 +3152,7 @@ theorem projectedBasisChange_det {m l : ℕ} (V : Grassmannian K m l) :
     (Module.Basis.det_basis (projectedRealBasis V)
       (projectedOrthonormalBasis V).toBasis)
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    The following are covolume identities in Mathlib's raw Euclidean metric.
    They are intentionally kept separate from the paper-normalized measure;
    the explicit metric-conversion bridge is still required before using them
@@ -3199,7 +3199,7 @@ theorem projectedAmbientRowModule_covolume_eq_projectedBasisChange_det_abs
     rfl
   rw [hvec]
 
-/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18), PDF p. 18]
+/- [derived consequence, paper Lemma 38 (submission PDF pp. 17--18)]
    Raw-metric form of the primitive projection formula.  It is the exact
    determinant computation behind the manuscript's projected-lattice step,
    before the separately recorded conversion to the manuscript metric. -/
@@ -3326,7 +3326,7 @@ theorem rowProductZLattice_covolume_eq_rowMatrixZLattice_covolume {m k n : ℕ}
     (e := (rowMatrixRealSpanLpIsometryEquiv (n := n) V).symm.toContinuousLinearEquiv)
     hmp
 
-/- [derived consequence, paper Lemma 29 (submission PDF p. 14), PDF p. 14]
+/- [derived consequence, paper Lemma 29 (submission PDF p. 14)]
    The exact covolume identity for the matrix realization of `M_n(Λ_D)`. -/
 theorem rowMatrixZLattice_covolume_eq_rowSpaceHeight_pow {m k n : ℕ}
     (V : Grassmannian K m k) :
@@ -3576,7 +3576,7 @@ theorem rowMatrixRank_eq_iff_rowSpace_eq {m k n : ℕ}
   change integralMatrixRank B.1 = k ↔ matrixRowSpace B.1 = V.1
   exact (rowSpace_eq_iff_rank_eq_of_rowsIn V B.1 B.2).symm
 
-/- [paper, proof of Lemma 36 (submission PDF pp. 16--17), PDF p. 17] A rank-`k`
+/- [paper, proof of Lemma 36 (submission PDF pp. 16--17)] A rank-`k`
    matrix in the row lattice contains `k` independent integral rows.  The
    row-space equality is the bridge from the matrix rank condition to the
    finite-dimensional independence argument. -/
