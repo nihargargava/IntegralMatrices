@@ -27,5 +27,5 @@ The integrity of this repository has been verified by the hard-working robots of
 Palomar registry. It is now registered as [PALOMAR-2026-09-15-000002](https://palomar-registry.org/entry.html?id=PALOMAR-2026-09-15-000002&version=1).
 
 In an oversimplified manner of speaking, what this means usually is that the 
-Palomar robots agree that this is repository indeed contains proofs of theorems
-that it claims to be a formalization of.
+Palomar robots agree that this repository indeed contains 
+a formalization of the above theorems.
