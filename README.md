@@ -19,3 +19,13 @@ See [`notes/source-attribution.md`](notes/source-attribution.md) for the full
 list of attributions and the submission-PDF fingerprint.
 
 Licensed under [GPL-3.0](LICENSE).
+
+
+# Palomar submission
+
+The integrity of this repository has been verified by the hard-working robots of 
+Palomar registry. It is now registered as [PALOMAR-2026-09-15-000002](https://palomar-registry.org/entry.html?id=PALOMAR-2026-09-15-000002&version=1).
+
+In an oversimplified manner of speaking, what this means is that the 
+Palomar robots agree that this is indeed a proof of the theorem
+that it claims to be.
